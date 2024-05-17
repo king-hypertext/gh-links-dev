@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./icons/css/all.min.css" />
+  <link rel="stylesheet" href="./bootstrap/css/bootstrap.css" />
+  <title>GH-LINKS</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <script type="text/javascript">
+    self.addEventListener('load', () => {
+      console.log('js loaded');
+      document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('blur', () => {
+          if (input.value == null || input.value == '') {
+            input.classList.remove('active')
+          } else if (input.value !== null) {
+            input.classList.add('active')
+          }
+        })
+      });
+    });
+  </script>
+</body>
+
+</html>
