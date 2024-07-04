@@ -40,6 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'candidate' => [
+            'driver' => 'session',
+            'provider' => 'candidates',
+        ],
+        'employer' => [
+            'driver' => 'session',
+            'provider' => 'employers',
+        ],
     ],
 
     /*
@@ -64,7 +72,14 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-
+        'candidates' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Candidate::class,
+        ],
+        'employers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Employer::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -97,8 +112,19 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        'candidates' => [
+            'provider' => 'candidates',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'employers' => [
+            'provider' => 'employers',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout
