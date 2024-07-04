@@ -34,13 +34,13 @@ self.addEventListener('DOMContentLoaded', () => {
     });
     //handle employee signup 
     const $response = $('#response');
-    const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin me-2 "></span>';
+    const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin ms-2 "></span>';
     $('form#reg-as-candidate').on('submit', function (e) {
         e.preventDefault();
         console.log(e);
         $('form#reg-as-candidate :submit').html($loader + 'saving data ...').addClass('disabled');
         const candidate_data = $(this).serialize();
-        $.ajax('/app/register', {
+        $.ajax('/app/candidate/create-account', {
             type: 'POST',
             data: candidate_data,
             success: function (response) {
@@ -51,8 +51,8 @@ self.addEventListener('DOMContentLoaded', () => {
             },
             error: function (error) {
                 console.log('Error:', error);
-                if (err.status === 422) {
-                    const response = err.responseJSON.errors;
+                if (error.status === 422) {
+                    const response = error.responseJSON.errors;
                     var ErrorList = '';
                     Object.keys(response).map(error => {
                         ErrorList += `<li>${response[error][0]}</li>`;
@@ -63,7 +63,7 @@ self.addEventListener('DOMContentLoaded', () => {
                             </ul>
                         `;
                     $response.show().html(errorMessage);
-                } else if (err.status === 500) {
+                } else if (error.status === 500) {
                     $response.show().text('An unexpected error occurred');
                 }
                 $('form#reg-as-candidate :submit').text('register').removeClass('disabled');
@@ -75,10 +75,10 @@ self.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         console.log(e);
         $('form#reg-as-employer :submit').html($loader + 'saving data ...').addClass('disabled');
-        const candidate_data = $(this).serialize();
+        const employer_data = $(this).serialize();
         $.ajax('/app/employer/create-account', {
             type: 'POST',
-            data: candidate_data,
+            data: employer_data,
             success: function (response) {
                 console.log('Success:', response);
                 if (response.success) {
@@ -108,13 +108,73 @@ self.addEventListener('DOMContentLoaded', () => {
         });
     });
     // handle employee login
-    $('form#login-as-employee').on('submit', function (e) {
+    $('form#login-as-candidate').on('submit', function (e) {
         e.preventDefault();
         console.log(e);
+        $('form#reg-as-candidate :submit').html('authenticating... ' + $loader);
+        $.ajax('/app/login/candidate', {
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (response) {
+                console.log('Success:', response);
+                if (response.success) {
+                    window.location.href = response.redirect_url;
+                }
+            },
+            error: function (error) {
+                console.log('Error:', error);
+                if (error.status === 422) {
+                    const response = error.responseJSON.errors;
+                    var ErrorList = '';
+                    Object.keys(response).map(error => {
+                        ErrorList += `<li>${response[error][0]}</li>`;
+                    });
+                    const errorMessage = `
+                            <ul class="list-unstyled mb-0">
+                            ${ErrorList}
+                            </ul>
+                        `;
+                    $response.show().html(errorMessage);
+                } else if (error.status === 403) {
+                    $response.show().text(error.responseText);
+                }
+                $('form#reg-as-candidate :submit').html('login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
+            }
+        });
     });
     // handle employer login
     $('form#login-as-employer').on('submit', function (e) {
         e.preventDefault();
         console.log(e);
+        $('form#reg-as-employer :submit').html('authenticating... ' + $loader);
+        $.ajax('/app/login/employer', {
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (response) {
+                console.log('Success:', response);
+                if (response.success) {
+                    window.location.href = response.redirect_url;
+                }
+            },
+            error: function (error) {
+                console.log('Error:', error);
+                if (error.status === 422) {
+                    const response = error.responseJSON.errors;
+                    var ErrorList = '';
+                    Object.keys(response).map(error => {
+                        ErrorList += `<li>${response[error][0]}</li>`;
+                    });
+                    const errorMessage = `
+                            <ul class="list-unstyled mb-0">
+                            ${ErrorList}
+                            </ul>
+                        `;
+                    $response.show().html(errorMessage);
+                } else if (error.status === 403) {
+                    $response.show().text(error.responseText);
+                }
+                $('form#reg-as-employer :submit').html('login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
+            }
+        });
     });
 })

@@ -29,23 +29,40 @@ class EmployersController extends Controller
             [
                 'first_name' => 'required|string',
                 'last_name' => 'required|string',
-                'username' => 'required|string',
+                'username' => 'required|string|unique:employers,username',
                 'phone_number' => 'required|string',
-                'email' => 'required|email',
+                'email' => 'required|email|unique:employers,email',
                 'gender' => 'required|in:male,female',
                 'password' => 'required|string|confirmed',
                 'accept_terms' => 'required|accepted'
             ],
             [
-                'accept_terms' => 'The terms of services must be accepted'
+                'accept_terms' => 'The terms of services must be accepted',
+                'email' => 'The email is already linked with another account',
+                'username' => "The username '{$request->username}' already exists",
             ]
         );
         // dd($request->all());
+        $dashboard = redirect()->route('employer.dashboard')->with('success', 'Account created successfully')->getTargetUrl();
         $data = Employer::create(array_map('strtolower', $request->all()));
-        $dashboard = redirect()->route('employer.dashboard')->with('success', 'Account created successfully');
-        if (Auth::guard('candidate')->attempt(['username' => $data->username, 'password' => $data->password])) {
-            return response(['success' => true, 'redirect_url' => $dashboard]);
+        Auth::guard('employer')->login($data);
+        /* $user =   */
+        // dd($user,);
+        return $request->ajax() ?
+            response(['success' => true, 'redirect_url' => $dashboard]) :
+            response(['success' => false, 'message' => 'Failed to create account']);
+    }
+    // log the user out of the system
+    public function logout()
+    {
+        if (!Auth::guard('employer')->check()) {
+            return redirect()->route('login');
         }
+        session()->regenerate();
+        session()->invalidate();
+        session()->flush();
+        Auth::guard('employer')->logout();
+        return redirect()->route('login')->with('info', 'You have been logged out successfully');
     }
     /**
      * Store a newly created resource in storage.
@@ -89,6 +106,7 @@ class EmployersController extends Controller
     public function dashboard()
     {
         $employer = Employer::find(auth('employer')->id());
-        return view('employer.da    shboard', compact('employer'));
+        // dd($employer);
+        return view('employer.dashboard', compact('employer'));
     }
 }

@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CandidateController;
 
-Route::resource('/candidates', CandidateController::class);
-Route::prefix('candidate')->group(function () {
-    Route::get('/dashboard', 'EmployeeController@dashboard')->name('candidate.dashboard');
+Route::middleware(['candidate'])->group(function () {
+    Route::prefix('candidate')->group(function () {
+        Route::resource('/candidates', CandidateController::class);
+        Route::get('/dashboard', [CandidateController::class, 'dashboard'])->name('candidate.dashboard');
+        Route::any('/logout', [CandidateController::class, 'logout'])->name('candidate.logout');
+    });
 });

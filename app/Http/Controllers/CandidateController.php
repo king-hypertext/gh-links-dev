@@ -27,24 +27,46 @@ class CandidateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function register(Request $request)
     {
-        $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'username' => 'required|string',
-            'phone_number' => 'required|string',
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ], []);
-        Candidate::create(array_map('strtolower', $request->all()));
-        // $back = redirect()->back()->with('success', 'Candidate created successfully')->getTargetUrl();
-        if (Auth::guard('candidate')->attempt($request->only(['username', 'password']))) {
-            $dashboard = redirect()->route('employee.dashboard')->with('success', 'Account created successfully');
-            return response(['success' => true, 'redirect_url' => $dashboard]);
-        }
+        $request->validate(
+            [
+                'first_name' => 'required|string',
+                'last_name' => 'required|string',
+                'username' => 'required|string|unique:candidates,username',
+                'phone_number' => 'required|string',
+                'email' => 'required|email|unique:candidates,email',
+                'gender' => 'required|in:male,female',
+                'password' => 'required|string|confirmed',
+                'accept_terms' => 'required|accepted'
+            ],
+            [
+                'accept_terms' => 'The terms of services must be accepted',
+                'email' => 'The email is already linked with another account',
+                'username' => "The username '{$request->username}' already exists",
+            ]
+        );
+        // dd($request->all());
+        $dashboard = redirect()->route('candidate.dashboard')->with('success', 'Account created successfully')->getTargetUrl();
+        $data = Candidate::create(array_map('strtolower', $request->all()));
+        Auth::guard('candidate')->login($data);
+        /* $user =   */
+        // dd($user,);
+        return $request->ajax() ?
+            response(['success' => true, 'redirect_url' => $dashboard]) :
+            response(['success' => false, 'message' => 'Failed to create account']);
     }
 
+    public function logout() {
+        if (!Auth::guard('candidate')->check()) {
+            return redirect()->route('login');
+        }
+        session()->regenerate();
+        session()->invalidate();
+        session()->flush();
+        Auth::guard('candidate')->logout();
+        return redirect()->route('login')->with('info', 'You have been logged out successfully');
+    }
     /**
      * Display the specified resource.
      */

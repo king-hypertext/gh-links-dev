@@ -90,7 +90,7 @@
                             <input required onchange="document.getElementById('register').disabled = !this.checked"
                                 name="accept_terms" class="form-check-input" type="checkbox" value="1"
                                 id="agree">
-                            <label class="form-check-label" for="agree">I agree to the Terms of Services</label>
+                            <label class="form-check-label user-select-none" for="agree">I agree to the Terms of Services</label>
                         </div>
                     </div>
                     <div class="row form-group mx-1 mb-3">

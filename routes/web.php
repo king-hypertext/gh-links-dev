@@ -12,3 +12,4 @@ Route::middleware('auth')->group(function () {
 include 'jobs.php';
 include 'auth.php';
 include 'employer.php';
+include 'candidate.php';

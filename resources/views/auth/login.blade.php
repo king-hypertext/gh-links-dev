@@ -12,9 +12,12 @@
         </li>
     </ul>
     <!-- Tabs content -->
+    <div style="display: none;" id="response" class="alert alert-danger" role="alert">
+    </div>
     <div class="tab-content" id="ex2-content">
         <div class="tab-pane fade show active" id="candidate" role="tabpanel" aria-labelledby="candidate">
-            <form id="login-as-candidate" autocomplete="off" method="POST">
+            <form id="login-as-candidate" autocomplete="on" method="POST">
+                @csrf
                 <div class="container-fluid mt-3">
                     <div class="form-group mb-3">
                         <div data-mdb-input-init class="form-outline">
@@ -42,7 +45,8 @@
             </form>
         </div>
         <div class="tab-pane fade" id="employer" role="tabpanel" aria-labelledby="employer">
-            <form id="login-as-employer" autocomplete="off" method="POST">
+            <form id="login-as-employer" autocomplete="on" method="POST">
+                @csrf
                 <div class="container-fluid mt-3">
                     <div class="form-group mb-3">
                     </div>

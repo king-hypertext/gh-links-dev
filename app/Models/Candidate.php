@@ -18,7 +18,7 @@ class Candidate extends Authenticatable
         'phone_number',
         'email',
         'password',
-        // 'is_candidate',
+        'accept_terms'
         // 'job_id', // foreign key for Job model
     ];
 

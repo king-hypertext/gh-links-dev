@@ -21,6 +21,6 @@ class EnsureIsEmployer
         return
             $request->ajax() ?
             response(['message' => 'You are not allowed to access this page'], 401) :
-            redirect()->to(route('login'))->with('warning', 'You are not allowed to access this page');
+            redirect()->to(route('login'))->with('warning', 'You are not authorized to access this page');
     }
 }
