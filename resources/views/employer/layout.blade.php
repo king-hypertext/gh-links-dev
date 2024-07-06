@@ -6,19 +6,27 @@
     <meta charset="utf-8">
     <title>GH-LINKS DASHBOARD</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="" name="author">
+    <meta content="Kingsley Osei Opoku" name="author">
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    {{-- <link rel="shortcut icon" href="assets/images/favicon.ico"/> --}}
 
     <!-- Theme Config Js -->
+    <link rel="stylesheet" href="{{ asset('app/dashboard/css/icons.min.css') }}">
     <script src="{{ asset('app/dashboard/js/hyper-config.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('app/plugins/bootstrap/bootstrap.min.css') }}" /> --}}
     <link href="{{ asset('app/dashboard/css/app-modern.min.css') }}" rel="stylesheet" id="app-style">
     <link rel="stylesheet" href="{{ asset('app/plugins/mdb/mdb.min.css') }}">
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css">
     <script src="{{ asset('app/plugins/jquery/external/jquery.js') }}"></script>
+    <style>
+        .tox-statusbar__branding {
+            display: none !important;
+        }
+
+        .tox-promotion {
+            visibility: hidden !important;
+        }
+    </style>
 </head>
 
 <body class="show">
@@ -72,7 +80,7 @@
                     <li class="dropdown d-lg-none">
                         <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
-                            <i class="ri-search-line"></i>
+                            <i class="ri-search-line font-22"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-animated dropdown-lg p-0">
                             <form class="p-3">
@@ -83,100 +91,23 @@
                     </li>
 
 
-                    <li class="dropdown notification-list">
-                        <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
-                            role="button" aria-haspopup="false" aria-expanded="false">
-                            <i class="fa-regular fa-bell"></i>
-                            <span class="noti-icon-badge"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
-                            <div class="p-2 border-top-0 border-start-0 border-end-0 border-dashed border">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h6 class="m-0 font-16 fw-semibold"> Notification</h6>
-                                    </div>
-                                    <div class="col-auto">
-                                        <a href="javascript: void(0);" class="text-dark text-decoration-underline">
-                                            <small>Clear All</small>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="px-2" style="max-height: 300px;" data-simplebar="init">
-                                <div class="simplebar-wrapper" style="margin: 0px -12px;">
-                                    <div class="simplebar-height-auto-observer-wrapper">
-                                        <div class="simplebar-height-auto-observer"></div>
-                                    </div>
-                                    <div class="simplebar-mask">
-                                        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                                            <div class="simplebar-content-wrapper" tabindex="0" role="region"
-                                                aria-label="scrollable content" style="height: auto; overflow: hidden;">
-                                                <div class="simplebar-content" style="padding: 0px 12px;">
-
-                                                    <h5 class="text-muted font-13 fw-normal mt-2">Today</h5>
-                                                    <!-- item-->
-
-                                                    <a href="javascript:void(0);"
-                                                        class="dropdown-item p-0 notify-item card unread-noti shadow-none mb-2 d-none">
-                                                        <div class="card-body">
-                                                            <span class="float-end noti-close-btn text-muted"><i
-                                                                    class="mdi mdi-close"></i></span>
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="flex-shrink-0">
-                                                                    <div class="notify-icon bg-primary">
-                                                                        <i class="mdi mdi-comment-account-outline"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="flex-grow-1 text-truncate ms-2">
-                                                                    <h5 class="noti-item-title fw-semibold font-14">
-                                                                        Datacorp <small
-                                                                            class="fw-normal text-muted ms-1">1 min
-                                                                            ago</small></h5>
-                                                                    <small class="noti-item-subtitle text-muted">Caleb
-                                                                        Flakelar commented on Admin</small>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-
-                                                    <h5 class="text-muted font-13 fw-normal mt-0">30 Dec 2021</h5>
-
-                                                    <div class="text-center">
-                                                        <i class="mdi mdi-dots-circle mdi-spin text-muted h3 mt-0"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="simplebar-placeholder" style="width: 0px; height: 0px;"></div>
-                                </div>
-                                <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
-                                    <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
-                                </div>
-                                <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
-                                    <div class="simplebar-scrollbar" style="height: 0px; display: none;"></div>
-                                </div>
-                            </div>
-
-                            <!-- All-->
-                            <a href="javascript:void(0);"
-                                class="dropdown-item text-center text-primary notify-item border-top border-light py-2">
-                                View All
-                            </a>
-
+                    <li class="d-none d-sm-inline-block">
+                        <div class="nav-link" id="light-dark-mode" data-bs-toggle="tooltip" data-bs-placement="left"
+                            aria-label="Theme Mode" data-bs-original-title="Theme Mode">
+                            <i class="ri-moon-line font-22"></i>
                         </div>
                     </li>
 
+
                     <li class="d-none d-md-inline-block">
                         <a class="nav-link" href="" data-toggle="fullscreen">
-                            <i class="fa-solid fa-expand"></i>
+                            <i class="ri-fullscreen-line font-22"></i>
                         </a>
                     </li>
 
                     <li class="dropdown">
                         <a class="nav-link dropdown-toggle arrow-none nav-user px-2" data-bs-toggle="dropdown"
-                            href="#profile" role="button" aria-haspopup="false" aria-expanded="false">
+                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <span class="account-user-avatar">
                                 {{-- <img src="assets/images/users/avatar-1.jpg" alt="user-image" width="32"
                                     class="rounded-circle"> --}}
@@ -187,18 +118,17 @@
                             </span>
                             <span class="d-lg-flex flex-column gap-1 d-none">
                                 <h5 class="my-0 h6">{{ $user?->full_name }}</h5>
-                                {{-- <h6 class="my-0 h6 fw-normal">Founder</h6> --}}
+                                <h6 class="my-0 h6 fw-normal" style="font-size: 10px;">{{ $user?->username }}</h6>
                             </span>
                         </a>
-                        <div id="profile"
-                            class="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
                             <!-- item-->
                             <div class=" dropdown-header noti-title">
                                 <h6 class="text-overflow m-0">Welcome !</h6>
                             </div>
 
                             <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
+                            <a href="{{ route('my-account.show') }}" class="dropdown-item">
                                 <i class="mdi mdi-account-circle me-1"></i>
                                 <span>My Account</span>
                             </a>
@@ -214,14 +144,6 @@
                                 <i class="mdi mdi-lifebuoy me-1"></i>
                                 <span>Support</span>
                             </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
-                                <i class="mdi mdi-lock-outline me-1"></i>
-                                <span>Lock Screen</span>
-                            </a>
-
-                            <!-- item-->
                             <a href="{{ route('employer.logout') }}" class="dropdown-item">
                                 <i class="mdi mdi-logout me-1"></i>
                                 <span>Logout</span>
@@ -264,7 +186,7 @@
 
             <!-- Full Sidebar Menu Close Button -->
             <div class="button-close-fullsidebar">
-                <i class="fa-solid fa-compress align-middle"></i>
+                <i class="fa-solid fa-compress-arrows-alt align-middle"></i>
             </div>
 
             <!-- Sidebar -->
@@ -305,21 +227,27 @@
                                             </a>
                                         </li>
                                         <li class="side-nav-item">
-                                            <a href="{{ route('your-profile.edit') }}" class="side-nav-link py-1">
-                                                <i class="fa-solid fa-address-card"></i>
-                                                <span> Account Setup</span>
+                                            <a href="{{ route('your-profile.create') }}" class="side-nav-link py-1">
+                                                <i class="fa fa-user-circle"></i>
+                                                <span> Profile Setup</span>
                                             </a>
                                         </li>
                                         <li class="side-nav-item">
                                             <a href="{{ route('post-job.create') }}" class="side-nav-link py-1">
-                                                <i class="fa-regular fa-paper-plane"></i> {{-- <span class="badge bg-success float-end">5</span> --}}
-                                                <span> Post Job </span>
+                                                <i class="fa-regular fa-square-plus"></i>
+                                                <span> Post a Job </span>
                                             </a>
                                         </li>
                                         <li class="side-nav-item">
                                             <a href="{{ route('post-job.index') }}" class="side-nav-link py-1">
-                                                <i class="fa-solid fa-list-check"></i>
-                                                <span> Job Lists</span>
+                                                <i class="fas fa-suitcase"></i>
+                                                <span> My Jobs</span>
+                                            </a>
+                                        </li>
+                                        <li class="side-nav-item">
+                                            <a href="{{ route('post-job.index') }}" class="side-nav-link py-1">
+                                                <i class="fa-solid fa-bookmark"></i>
+                                                <span> Saved Candidates </span>
                                             </a>
                                         </li>
                                     </ul>

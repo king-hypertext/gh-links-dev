@@ -61,16 +61,16 @@ class AuthController extends Controller
         }
         if (Auth::guard('candidate')->attempt($credentials)) {
             $request->session()->regenerate();
-            // $redirect_url = redirect()->intended()->with('success', 'You have successfully log in')->getTargetUrl();
+            $redirect_url = redirect()->intended()->with('success', 'You have successfully log in')->getTargetUrl();
             return
-                // auth('candidate')->user();
-                // $request->ajax() ?
-                // response(['success' => true, 'redirect_url' => $redirect_url]) :
+                $request->ajax() ?
+                response(['success' => true, 'redirect_url' => $redirect_url]) :
                 redirect()->intended(route('home'))->with('success', 'You have successfully log in');
         }
-        return back()->withErrors(['password' => 'invalid login credentials']);
-        // $request->ajax() ?
-        // response('invalid login credentials', 403) :
+        return
+            $request->ajax() ?
+            response('invalid login credentials', 403) :
+            back()->withErrors(['password' => 'invalid login credentials']);
     }
     public function authenticate_employer(Request $request)
     {

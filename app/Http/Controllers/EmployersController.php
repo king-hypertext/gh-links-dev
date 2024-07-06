@@ -43,8 +43,8 @@ class EmployersController extends Controller
         );
         // dd($request->all());
         $dashboard = redirect()->route('employer.dashboard')->with('success', 'Account created successfully')->getTargetUrl();
-        $data = Employer::create(array_map('strtolower', $request->all()));
-        Auth::guard('employer')->login($data);
+        $user = Employer::create(array_map('strtolower', $request->all()));
+        Auth::guard('employer')->login($user);
         /* $user =   */
         // dd($user,);
         return $request->ajax() ?
@@ -61,7 +61,7 @@ class EmployersController extends Controller
         session()->invalidate();
         session()->flush();
         Auth::guard('employer')->logout();
-        return redirect()->route('login')->with('info', 'You have been logged out successfully');
+        return redirect()->route('login', ['tab' => 'employer'])->with('info', 'You have been logged out successfully');
     }
     /**
      * Store a newly created resource in storage.

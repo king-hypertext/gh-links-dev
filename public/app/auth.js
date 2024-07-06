@@ -2,20 +2,12 @@ self.addEventListener('DOMContentLoaded', () => {
     setInterval(() => {
         $('[data-date-time]').html(new Date().toUTCString())
     }, 1000);
-    document.querySelectorAll('input').forEach(input =>
-        input.addEventListener('blur', () => {
-            if (input.value == null || input.value == '') {
-                input.classList.remove('active')
-            } else if (input.value !== null) {
-                input.classList.add('active')
-            }
-        })
-    );
     var urlParams = new URLSearchParams(window.location.search);
     var activeTab = urlParams.get('tab');
 
     if (activeTab !== null) {
         $('#ex1 a[href="#' + activeTab + '"]').tab('show');
+
     }
 
     // toggle show password
@@ -36,7 +28,7 @@ self.addEventListener('DOMContentLoaded', () => {
     });
     //handle employee signup 
     const $response = $('#response');
-    const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin ms-2"></span>';
+    const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin me-2"></span>';
     $('form#reg-as-candidate').on('submit', function (e) {
         e.preventDefault();
         console.log(e);
@@ -75,7 +67,6 @@ self.addEventListener('DOMContentLoaded', () => {
     // handle employer signup 
     $('form#reg-as-employer').on('submit', function (e) {
         e.preventDefault();
-        console.log(e);
         $('form#reg-as-employer :submit').html($loader + 'saving data ...').addClass('disabled');
         const employer_data = $(this).serialize();
         $.ajax('/app/employer/create-account', {
@@ -111,9 +102,8 @@ self.addEventListener('DOMContentLoaded', () => {
     });
     // handle employee login
     $('form#login-as-candidate').on('submit', function (e) {
+        $('form#login-as-candidate :submit').html($loader + 'authenticating...').addClass('disabled');
         e.preventDefault();
-        console.log(e);
-        $('form#reg-as-candidate :submit').html('authenticating... ' + $loader);
         $.ajax('/app/login/candidate', {
             type: 'POST',
             data: $(this).serialize(),
@@ -140,15 +130,14 @@ self.addEventListener('DOMContentLoaded', () => {
                 } else if (error.status === 403) {
                     $response.show().text(error.responseText);
                 }
-                $('form#reg-as-candidate :submit').html('secure login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
+                $('form#login-as-candidate :submit').html('secure login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
             }
         });
     });
     // handle employer login
     $('form#login-as-employer').on('submit', function (e) {
+        $('form#login-as-employer :submit').html($loader + 'authenticating...').addClass('disabled');
         e.preventDefault();
-        console.log(e);
-        $('form#reg-as-employer :submit').html('authenticating... ' + $loader);
         $.ajax('/app/login/employer', {
             type: 'POST',
             data: $(this).serialize(),
@@ -176,7 +165,7 @@ self.addEventListener('DOMContentLoaded', () => {
                 } else if (error.status === 403) {
                     $response.show().text(error.responseText);
                 }
-                $('form#reg-as-employer :submit').html('secure login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
+                $('form#login-as-employer :submit').html('secure login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
             }
         });
     });

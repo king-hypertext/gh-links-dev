@@ -16501,9 +16501,9 @@ html[data-sidenav-user=true] .leftbar-user {
 }
 
 .side-nav .menuitem-active>a {
-    color: var(--ct-menu-item-active-color);
+    color: #fff;
     font-weight: 500;
-    background-color: #000;
+    background-color: #4f4f4f;
 }
 
 .side-nav .menuitem-active>a:active,

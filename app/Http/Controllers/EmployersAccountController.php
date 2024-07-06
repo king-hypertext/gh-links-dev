@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Job;
+use App\Models\Employer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
-class JobsController extends Controller
+class EmployersAccountController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // return view('pages.jobs.index', [
-        //     'page_title' => 'ALL JOBS',
-        //     'jobs' => ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5']
-        // ]);
+        //
     }
 
     /**
@@ -24,7 +20,7 @@ class JobsController extends Controller
      */
     public function create()
     {
-        return view('employer.post-job.index', ['page_title' => 'Create']);
+        //
     }
 
     /**
@@ -38,15 +34,16 @@ class JobsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Job $job)
+    public function show(Employer $employer)
     {
-        //
+        $path = 'my account';
+        return view('employer.account.index', compact('employer', 'path'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Job $job)
+    public function edit(Employer $employer)
     {
         //
     }
@@ -54,7 +51,7 @@ class JobsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Job $job)
+    public function update(Request $request, Employer $employer)
     {
         //
     }
@@ -62,7 +59,7 @@ class JobsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Job $job)
+    public function destroy(Employer $employer)
     {
         //
     }
