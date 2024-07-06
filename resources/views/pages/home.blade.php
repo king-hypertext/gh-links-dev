@@ -1,34 +1,35 @@
 @extends('layout.app-layout')
 @section('content')
-    <div class="container-flui body-picture-bg p-2 p-md-5 text-white">
+    <div class="container-flui body-picture-bg bg:transparent-dark p-2 p-md-5 text-white">
         <h1 class="fw-bold my-3 text-capitalize fs-2">your easiest way to get your new job</h1>
         <h6 class="h6">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, magni odit repellendus
             molestias
             ipsam aliquid quasi pariatur? Voluptate, incidunt porro veritatis obcaecati enim officia tenetur nam similique
-            veniam modi vel?</h6>
+            veniam modi vel?
+        </h6>
         <div class="row my-5">
             <div class="col-sm-8">
-                <div class="card shadow-1-primary" style="">
+                <div class="card shadow-1-primary animate__animated animate__fadeIn" style="">
                     <form action="/jobs" method="GET">
                         <div class="card-body my-1">
                             <div class="row">
-                                <div class="col-sm-4 g-3">
+                                <div class="col-12 col-sm-4 g-2 g-md-3">
                                     <div class="form-outline" data-mdb-input-init>
                                         <input required type="text" class="form-control" name="job_title"
-                                            id="job_title" />
+                                            id="job_title" title="Enter a keyword"/>
                                         <label class="form-label" for="job_title">Job Title</label>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 g-3">
+                                <div class="col-12 col-sm-4 g-2 g-md-3">
                                     <div class="form-outline" data-mdb-input-init>
                                         <input required type="text" class="form-control" name="job_location"
                                             id="job_location" />
                                         <label class="form-label" for="job_location">Job Location</label>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 g-3">
+                                <div class="col-12 col-sm-4 g-2 g-md-3">
                                     <div class="d-sm-flex">
-                                        <button type="submit" class="btn btn-primary text-capitalize">
+                                        <button type="submit" class="btn btn-primary text-capitalize text-nowrap">
                                             <span class="fas fa-search me-2"></span>
                                             find job
                                         </button>
@@ -41,9 +42,9 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid">
-        <div class="row my-5">
-            <div class="col-sm-4 g-3">
+    <div class="container-fluid my-2">
+        <div class="row mb-5 mb-md-3">
+            <div class="col-sm-4 g-2 g-md-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -58,7 +59,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4 g-3">
+            <div class="col-sm-4 g-5 g-md-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -73,7 +74,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4 g-3">
+            <div class="col-sm-4 g-5 g-md-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -89,12 +90,14 @@
                 </div>
             </div>
         </div>
-
-        <div class="row my-5">
+    </div>
+    {{-- how gh-links work --}}
+    <div class="body-picture-bg bg:transparent-primary p-2 p-md-5">
+        <div class="row">
             <div class="d-flex justify-content-center justify-content-sm-start">
-                <h5 class="h5 text-uppercase fw-bold fs-3">how gh-links work</h5>
+                <h5 class="h5 text-uppercase fw-bold fs-3 text-white">how gh-links work</h5>
             </div>
-            <div class="col-sm-3 g-3">
+            <div class="col-sm-3 g-5 g-md-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -110,7 +113,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3 g-3">
+            <div class="col-sm-3 g-5 g-md-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -125,7 +128,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3 g-3">
+            <div class="col-sm-3 g-5 g-md-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -140,12 +143,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3 g-3">
+            <div class="col-sm-3 g-5 g-md-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="d-flex align-items-center mt-4 justify-content-center">
-                                <i class="fas fa-bookmark bg-body-secondary py-4 px-3 rounded-circle fa-lg"></i>
+                                <i class="fa-regular fa-circle-check bg-body-secondary py-4 px-3 rounded-circle fa-lg"></i>
                             </div>
                             <div class="card-body text-center">
                                 <h4 class="card-title fw-bold fs-6">Apply for Job</h4>
@@ -156,8 +159,5 @@
                 </div>
             </div>
         </div>
-
-        welcome <span class="h6">{{ auth()?->user()?->username }}</span>
-        <!-- Simplicity is the ultimate sophistication. - Leonardo da Vinci -->
     </div>
 @endsection

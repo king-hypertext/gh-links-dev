@@ -57,28 +57,28 @@ class CandidateController extends Controller
             response(['success' => false, 'message' => 'Failed to create account']);
     }
 
-    public function logout() {
+    public function logout(Request $request)
+    {
         if (!Auth::guard('candidate')->check()) {
-            return redirect()->route('login');
+            return redirect()->route('login')->with('warning', 'You must be logged in');
         }
-        session()->regenerate();
-        session()->invalidate();
-        session()->flush();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         Auth::guard('candidate')->logout();
-        return redirect()->route('login')->with('info', 'You have been logged out successfully');
+        return redirect('/')->with('info', 'You have been logged out successfully');
     }
     /**
      * Display the specified resource.
      */
-    public function show(Candidate $employee)
+    public function show(Candidate $candidate)
     {
-        //
+        return view('candidate.profile', compact('candidate'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Candidate $employee)
+    public function edit(Candidate $candidate)
     {
         //
     }
@@ -86,7 +86,7 @@ class CandidateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Candidate $employee)
+    public function update(Request $request, Candidate $candidate)
     {
         //
     }
@@ -94,13 +94,13 @@ class CandidateController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Candidate $employee)
+    public function destroy(Candidate $candidate)
     {
         //
     }
-    public function dashboard(Request $request)
+    public function profile(Request $request)
     {
         $candidate = Candidate::find(auth('candidate')->id());
-        return view('candidate.dashboard', compact('candidate'));
+        return view('candidate.profile', compact('candidate'));
     }
 }

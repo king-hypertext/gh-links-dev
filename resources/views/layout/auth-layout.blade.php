@@ -8,35 +8,18 @@
     <link rel="stylesheet" href="{{ asset('app/plugins/alert/sweetalert2.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/mdb/mdb.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('app/plugins/animate-css/animate.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/app.css') }}" />
     <title>GH LINKS - {{ $page_title ?? '' }}</title>
     <script src="{{ asset('app/plugins/jquery/jquery.js') }}"></script>
     <script src="{{ asset('app/plugins/alert/sweetalert2.all.min.js') }}"></script>
-    <style>
-        .app-form {
-            height: 100%;
-            width: 100%;
-            position: relative;
-            display: flex;
-            place-items: center;
-            justify-content: center;
-            background-color: inherit;
-        }
-
-        .input-group-icon {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-        }
-    </style>
 </head>
 
-<body class="app-form">
+<body class="app-form my-3">
     <div class="row justify-content-center container">
-        <div class="card p-4 px-md-5 pb-3 border-0" style="max-width: 540px">
-            <h5 class="h4 text-uppercase fw-semibold text-center">gh links</h5>
+        <div class="card p-4 px-md-5 pb-3 border-0 animate__animated animate__fadeIn" style="max-width: 540px">
+            <h5 class="h4 text-uppercase fw-semibold text-center text-info user-select-none cursor-pointer  "
+                onclick="window.open('{{ route('home') }}','_self')">gh links</h5>
             <div class="text-center mt-2">
                 <h6 class="h6" data-date-time="true"></h6>
             </div>

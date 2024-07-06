@@ -1,4 +1,4 @@
-<div class="modal fade" id="register" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="form"
+{{-- <div class="modal fade" id="register" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="form"
     aria-labelledby="modalTitleId" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen-md-down" role="form">
         <div class="modal-content">
@@ -27,4 +27,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}

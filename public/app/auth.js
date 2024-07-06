@@ -11,11 +11,13 @@ self.addEventListener('DOMContentLoaded', () => {
             }
         })
     );
-    $('form#login').on('submit', () => {
-        $('form#login :submit').
-            html('<span id="btn-icon" class="fas fa-spinner fa-spin me-2 "></span> authenticating...');
-        return 1;
-    });
+    var urlParams = new URLSearchParams(window.location.search);
+    var activeTab = urlParams.get('tab');
+
+    if (activeTab !== null) {
+        $('#ex1 a[href="#' + activeTab + '"]').tab('show');
+    }
+
     // toggle show password
     $('.input-group-icon > i').on('click', (e) => {
         target = e.currentTarget.offsetParent.offsetParent.children[0];
@@ -34,7 +36,7 @@ self.addEventListener('DOMContentLoaded', () => {
     });
     //handle employee signup 
     const $response = $('#response');
-    const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin ms-2 "></span>';
+    const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin ms-2"></span>';
     $('form#reg-as-candidate').on('submit', function (e) {
         e.preventDefault();
         console.log(e);
@@ -138,7 +140,7 @@ self.addEventListener('DOMContentLoaded', () => {
                 } else if (error.status === 403) {
                     $response.show().text(error.responseText);
                 }
-                $('form#reg-as-candidate :submit').html('login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
+                $('form#reg-as-candidate :submit').html('secure login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
             }
         });
     });
@@ -153,7 +155,8 @@ self.addEventListener('DOMContentLoaded', () => {
             success: function (response) {
                 console.log('Success:', response);
                 if (response.success) {
-                    window.location.href = response.redirect_url;
+                    // console.log(response);
+                    window.open(response.redirect_url, '_self');
                 }
             },
             error: function (error) {
@@ -173,7 +176,7 @@ self.addEventListener('DOMContentLoaded', () => {
                 } else if (error.status === 403) {
                     $response.show().text(error.responseText);
                 }
-                $('form#reg-as-employer :submit').html('login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
+                $('form#reg-as-employer :submit').html('secure login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
             }
         });
     });

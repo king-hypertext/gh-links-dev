@@ -17,13 +17,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('first_name');
-            $table->boolean('is_candidate')->default(true);
-            $table->enum('gender', ['male', 'female']);
+            // $table->boolean('is_candidate')->default(true);
+            // $table->enum('gender', ['male', 'female']);
             $table->string('last_name');
             $table->string('full_name')->virtualAs("CONCAT(first_name, ' ', last_name)");
             $table->string('phone_number');
             $table->boolean('accept_terms');
             $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

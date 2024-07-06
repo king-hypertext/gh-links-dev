@@ -36,7 +36,7 @@
             </ul>
         </div>
         <div class="col-sm-3 g-3">
-            <h6 class="h6 mb-1 fw-semibold text-capitalize">
+            <h6 class="h6 mb-1 fw-semibold text-capitalize" id="a">
                 quick links
             </h6>
             <hr class="mt-0">
@@ -68,7 +68,7 @@
                     <a class="link-light text-muted fw-lighter" href="">Browse Employers</a>
                 </li>
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="">Candidate Dashboard</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('profile.show') }}">Candidate Profile</a>
                 </li>
                 <li>
                     <a class="link-light text-muted fw-lighter" href="">Saved Jobs</a>
@@ -82,13 +82,13 @@
             <hr class="mt-0">
             <ul class="list-unstyled">
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="">Post a Job</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('post-job.create') }}">Post a Job</a>
                 </li>
                 <li>
                     <a class="link-light text-muted fw-lighter" href="">Browse Candidates</a>
                 </li>
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="">Employers Dashboard</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('employer.dashboard') }}">Employers Dashboard</a>
                 </li>
                 <li>
                     <a class="link-light text-muted fw-lighter" href="">Applications</a>
@@ -98,7 +98,7 @@
     </div>
     <hr class="m-0">
     <div class="d-flex justify-content-sm-between flex-column flex-sm-row flex-sm-nowrap  align-items-center">
-        <h6 class="h6 fw-lighter">
+        <h6 class="mt-3" style="font-size: 12px;">
             &copy; 2024. GH-LINKS . All Rights Reserved.
         </h6>
         <style>
@@ -124,4 +124,5 @@
             </li>
         </ul>
     </div>
+    @include('layout.scroll-top')
 </div>

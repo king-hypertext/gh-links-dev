@@ -5,11 +5,11 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     return view('pages.home');
-});
+})->name('home');
 Route::middleware('auth')->group(function () {
-    Route::get('/user', [HomeController::class, 'home'])->name('home');
+    Route::get('/user', [HomeController::class, 'home'])->name('auth.home');
 });
 include 'jobs.php';
-include 'auth.php';
 include 'employer.php';
 include 'candidate.php';
+include 'auth.php';

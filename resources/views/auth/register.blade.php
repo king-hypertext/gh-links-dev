@@ -26,14 +26,14 @@
                 <div class="container-fluid mt-3">
                     <div class="form-group mb-3">
                         <div class="row ">
-                            <div class="col-md-6">
+                            <div class="col-md-6 g-4">
                                 <div data-mdb-input-init class="form-outline">
                                     <input autofocus required name="first_name" type="text" id="fn"
                                         class="form-control" />
                                     <label class="form-label" for="fn">First name</label>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 g-4">
                                 <div data-mdb-input-init class="form-outline">
                                     <input required name="last_name" type="text" id="ln" class="form-control" />
                                     <label class="form-label" for="ln">Last name</label>
@@ -107,14 +107,14 @@
                 <div class="container-fluid mt-3">
                     <div class="form-group mb-3">
                         <div class="row ">
-                            <div class="col-md-6">
+                            <div class="col-md-6 g-4">
                                 <div data-mdb-input-init class="form-outline">
                                     <input autofocus required name="first_name" type="text" id="efn"
                                         class="form-control" />
                                     <label class="form-label" for="efn">First name</label>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 g-4">
                                 <div data-mdb-input-init class="form-outline">
                                     <input required name="last_name" type="text" id="eln"
                                         class="form-control" />

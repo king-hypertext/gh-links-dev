@@ -21,7 +21,6 @@ class EmployersController extends Controller
      */
     public function create()
     {
-        //
     }
     public function register(Request $request)
     {
@@ -105,8 +104,8 @@ class EmployersController extends Controller
     }
     public function dashboard()
     {
-        $employer = Employer::find(auth('employer')->id());
+        $user = Employer::find(auth('employer')->id());
         // dd($employer);
-        return view('employer.dashboard', compact('employer'));
+        return view('employer.dashboard', compact('user'));
     }
 }

@@ -14,14 +14,23 @@
     <!-- Tabs content -->
     <div style="display: none;" id="response" class="alert alert-danger" role="alert">
     </div>
+    @if ($errors->any())
+        <div class="alert alert-danger text-center" role="alert">
+            <ul class="list-unstyled mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="tab-content" id="ex2-content">
         <div class="tab-pane fade show active" id="candidate" role="tabpanel" aria-labelledby="candidate">
-            <form id="login-as-candidate" autocomplete="on" method="POST">
+            <form {{-- id="login-as-candidate"  --}}autocomplete="on" action="{{ route('login.candidate') }}" method="POST">
                 @csrf
                 <div class="container-fluid mt-3">
                     <div class="form-group mb-3">
                         <div data-mdb-input-init class="form-outline">
-                            <input required name="user" type="text" id="un" class="form-control" />
+                            <input autofocus required name="user" type="text" id="un" class="form-control" />
                             <label class="form-label" for="un">Username or Email</label>
                         </div>
                     </div>
@@ -36,7 +45,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">login
+                            <button type="submit" class="btn btn-primary">secure login
                                 <i class="fas fa-arrow-right ms-2"></i>
                             </button>
                         </div>
@@ -67,7 +76,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <button type="submit" class="btn btn-primary">
-                            login
+                            secure login
                             <i class="fas fa-arrow-right ms-2"></i>
                         </button>
                     </div>
@@ -78,46 +87,4 @@
             <a href="{{ route('register') }}">Don't have an account? Register</a>
         </div>
     </div>
-
-    {{-- <h6 class="text-center h5 text-primary  text-uppercase mb-4">login</h6>
-        <form id="login" method="POST" action="{{ route('login.authenticate') }}" autocomplete="on">
-            @csrf
-            @if (session('password_changed'))
-                <div class="alert alert-info  text-center  text-info">{{ session('password_changed') }}</div>
-            @endif
-            @if (session('error'))
-                <div class="h6 alert alert-danger alert-dismissible text-danger text-center">
-                    <ul class="list-unstyled text-center">
-                        <li>{{ session('error') }}</li>
-                    </ul>
-                </div>
-            @endif
-            @if ($errors->any())
-                <div class="h6 alert alert-danger alert-dismissible text-danger text-center">
-                    <ul class="list-unstyled text-center">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <div class="form-outline mb-4">
-                <input required type="text" autofocus onfocus="this.select()" name="username" id="username"
-                    class="form-control form-control-lg" value="{{ @old('username') }}" />
-                <label class="form-label" for="username">Username</label>
-            </div>
-            <div class="form-outline mb-4">
-                <input required type="password" name="password" id="password" class="form-control form-control-lg" />
-                <label class="form-label" for="password">Password</label>
-            </div>
-            <div class="form-group">
-                <button type="submit"class="btn btn-lg btn-primary btn-block">
-                    Secure Login
-                </button>
-            </div>
-        </form>
-        <div class="form-text">
-            Forgotten Password? <a href="#" onclick="window.alert('Password reset \nPlease Contact your IT Manager')"
-                title="Click to reset your password" class="btn-link">Reset</a>
-        </div> --}}
 @endsection

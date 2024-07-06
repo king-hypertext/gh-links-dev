@@ -15,12 +15,12 @@ class EnsureIsEmployer
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user('employer')->is_employer == true) {
+        if (auth('employer')->check()/* is_employer == true */) {
             return $next($request);
         }
         return
             $request->ajax() ?
             response(['message' => 'You are not allowed to access this page'], 401) :
-            redirect()->to(route('login'))->with('warning', 'You are not authorized to access this page');
+            redirect()->to(route('login', ['tab' => 'employer']))->with('warning', 'You are not authorized to access this page');
     }
 }

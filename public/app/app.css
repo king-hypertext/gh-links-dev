@@ -12,6 +12,18 @@ body {
     background: url(../../app/images/bd-bg.jpg);
 }
 
+.body-picture-bg.bg\:transparent-primary {
+    background-size: cover;
+    background-color: rgba(0, 51, 255, 0.63);
+    background-blend-mode: multiply;
+}
+
+.body-picture-bg.bg\:transparent-dark {
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.63);
+    background-blend-mode: multiply;
+}
+
 main {
     flex: 1;
 }
@@ -28,11 +40,55 @@ footer {
     /* position: relative; */
 }
 
+/* search dropdown */
+.search-dropdown {
+    width: 100%;
+    height: 100%;
+    position: fixed !important;
+    top: 60px !important;
+    background:  rgba(0, 0, 0, 0.2);
+    top: 0;
+    left: 0;
+    z-index: 105;
+    display: none;   
+    outline: 0;
+}
+
+.search-dropdown .search-dialog {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 540px;
+}
+
+.search-dropdown.show {
+    transition: transform .3s ease-out;
+    transform: translate(0, -10px);
+}
+
 .nav-menu div.menu {
     border-radius: .37rem;
 }
 
+.app-form {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    place-items: center;
+    justify-content: center;
+    background-color: inherit;
+}
 
+.input-group-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
 
 
 .form-outline {
