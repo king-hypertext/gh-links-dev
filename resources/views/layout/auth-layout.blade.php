@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="{{ asset('icon.svg') }}" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="{{ asset('icon.svg') }}" />
     {{-- <link rel="stylesheet" href="{{ asset('app/plugins/bootstrap/bootstrap.min.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('app/plugins/alert/sweetalert2.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/mdb/mdb.min.css') }}" />

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="{{ asset('icon.svg') }}" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="{{ asset('icon.svg') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/selectize/selectize.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/select2/css/select2.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.css') }}" />
@@ -26,8 +28,8 @@
     <!-- Breathing in, I calm body and mind. Breathing out, I smile. - Thich Nhat Hanh -->
     @include('layout.header')
     <main class="app-container container px-0">
-        <div class="container-fluid px-0">          
-            
+        <div class="container-fluid px-0">
+
             @yield('content')
         </div>
         @include('modals.login')

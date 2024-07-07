@@ -31,7 +31,7 @@ class EmployersController extends Controller
                 'username' => 'required|string|unique:employers,username',
                 'phone_number' => 'required|string',
                 'email' => 'required|email|unique:employers,email',
-                'gender' => 'required|in:male,female',
+                // 'gender' => 'required|in:male,female',
                 'password' => 'required|string|confirmed',
                 'accept_terms' => 'required|accepted'
             ],
@@ -45,8 +45,6 @@ class EmployersController extends Controller
         $dashboard = redirect()->route('employer.dashboard')->with('success', 'Account created successfully')->getTargetUrl();
         $user = Employer::create(array_map('strtolower', $request->all()));
         Auth::guard('employer')->login($user);
-        /* $user =   */
-        // dd($user,);
         return $request->ajax() ?
             response(['success' => true, 'redirect_url' => $dashboard]) :
             response(['success' => false, 'message' => 'Failed to create account']);

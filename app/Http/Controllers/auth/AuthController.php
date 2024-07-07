@@ -91,9 +91,14 @@ class AuthController extends Controller
                 'email' => $user,
                 'password' => $request['password']
             ];
-            $request->validate([
-                'user' => 'required|email|exists:employers,email'
-            ]);
+            $request->validate(
+                [
+                    'user' => 'required|email|exists:employers,email'
+                ],
+                [
+                    'user.exists' => "Email '{$request->user}' does not exists"
+                ]
+            );
         } else {
             // $user is not an email
             $credentials = [

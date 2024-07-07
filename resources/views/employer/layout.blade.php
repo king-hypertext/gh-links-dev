@@ -202,7 +202,7 @@
                                 <div class="simplebar-content" style="padding: 0px;">
                                     <!-- Leftbar User -->
                                     <div class="leftbar-user">
-                                        <a href="{{ route('profile.show') }}" title="Profile">
+                                        <a href="{{ route('my-account.show') }}" title="Profile">
                                             {{-- <img src="assets/images/users/avatar-1.jpg" alt="user-image"
                                                 height="45" class="rounded-circle shadow-sm d-none"> --}}
                                             <svg class="rounded-circle shadow" style="height: 65px;width: 65px;"
@@ -227,7 +227,7 @@
                                             </a>
                                         </li>
                                         <li class="side-nav-item">
-                                            <a href="{{ route('your-profile.create') }}" class="side-nav-link py-1">
+                                            <a href="{{ route('employer.company-profile') }}" class="side-nav-link py-1">
                                                 <i class="fa fa-user-circle"></i>
                                                 <span> Profile Setup</span>
                                             </a>

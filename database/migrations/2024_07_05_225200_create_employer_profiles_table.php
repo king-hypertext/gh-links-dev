@@ -13,6 +13,19 @@ return new class extends Migration
     {
         Schema::create('employer_profiles', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('employer_id')->constrained('employers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('company_name');
+            $table->text('company_logo');
+            $table->text('company_banner');
+            $table->longText('company_description');
+            $table->foreignId('organization_id')->constrained('organizations');
+            $table->foreignId('industry_id')->constrained('industries');
+            $table->string('company_size');
+            $table->string('company_website');
+            $table->date('company_founding_year');
+            $table->longText('company_vision');
+            $table->text('company_location');
+            $table->string('company_email');
             $table->timestamps();
         });
     }

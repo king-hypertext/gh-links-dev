@@ -59,13 +59,13 @@
                             <label class="form-label" for="email">Email</label>
                         </div>
                     </div>
-                    <div class="form-group mb-3">
+                    {{-- <div class="form-group mb-3">
                         <select name="gender" required class="form-select" data-mdb-select-init>
                             <option value="" selected>Select Gender</option>
                             <option value="female">Female</option>
                             <option value="male">Male</option>
                         </select>
-                    </div>
+                    </div> --}}
                     <div class="form-group mb-3">
                         <div class="form-outline" data-mdb-input-init>
                             <input required type="password" name="password" class="form-control" id="password">
@@ -141,13 +141,13 @@
                             <label class="form-label" for="eemail">Email</label>
                         </div>
                     </div>
-                    <div class="form-group mb-3">
+                    {{-- <div class="form-group mb-3">
                         <select name="gender" required class="form-select" data-mdb-select-init>
                             <option value="" selected>Select Gender</option>
                             <option value="female">Female</option>
                             <option value="male">Male</option>
                         </select>
-                    </div>
+                    </div> --}}
                     <div class="form-group mb-3">
                         <div class="form-outline" data-mdb-input-init>
                             <input required type="password" name="password" class="form-control" id="epassword">

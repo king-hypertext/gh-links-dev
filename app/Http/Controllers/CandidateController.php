@@ -36,7 +36,7 @@ class CandidateController extends Controller
                 'username' => 'required|string|unique:candidates,username',
                 'phone_number' => 'required|string',
                 'email' => 'required|email|unique:candidates,email',
-                'gender' => 'required|in:male,female',
+                // 'gender' => 'required|in:male,female',
                 'password' => 'required|string|confirmed',
                 'accept_terms' => 'required|accepted'
             ],
