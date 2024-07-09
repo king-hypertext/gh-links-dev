@@ -15,7 +15,7 @@ class Employer extends Authenticatable
         'username',
         'phone_number',
         'email',
-        // 'gender',
+        'about',
         'accept_terms',
         'password',
         // 'job_id', // foreign key for Job model

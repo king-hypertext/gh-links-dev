@@ -13,6 +13,7 @@ Route::middleware(['employer'])->group(function () {
         Route::get('/company-profile', [EmployerProfileController::class, 'show'])->name('employer.company-profile');
         Route::post('/company-profile', [EmployerProfileController::class, 'store'])->name('employer.company-profile.save');
         Route::singleton('my-account', EmployersAccountController::class);
+        Route::put('/reset-password', [EmployersAccountController::class, 'update_password'])->name('employer.reset_password');
         Route::resource('/post-job', JobsController::class);
         Route::any('/logout', [EmployersController::class, 'logout'])->name('employer.logout');
     });

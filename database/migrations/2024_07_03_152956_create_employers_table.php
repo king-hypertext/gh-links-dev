@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('first_name');
             $table->string('last_name');
-            // $table->enum('gender', ['male', 'female']);
+            $table->enum('gender', ['male', 'female']);
             $table->string('full_name')->virtualAs("CONCAT(first_name, ' ', last_name)");
             $table->string('phone_number');
             $table->boolean('accept_terms');

@@ -46,12 +46,9 @@ class CandidateController extends Controller
                 'username' => "The username '{$request->username}' already exists",
             ]
         );
-        // dd($request->all());
-        $dashboard = redirect()->route('candidate.dashboard')->with('success', 'Account created successfully')->getTargetUrl();
-        $data = Candidate::create(array_map('strtolower', $request->all()));
-        Auth::guard('candidate')->login($data);
-        /* $user =   */
-        // dd($user,);
+        $dashboard = redirect()->route('home')->with('success', 'Account created successfully')->getTargetUrl();
+        $user = Candidate::create(array_map('strtolower', $request->all()));
+        Auth::guard('candidate')->login($user);
         return $request->ajax() ?
             response(['success' => true, 'redirect_url' => $dashboard]) :
             response(['success' => false, 'message' => 'Failed to create account']);

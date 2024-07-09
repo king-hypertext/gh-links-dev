@@ -1,5 +1,16 @@
 (() => {
     self.addEventListener('DOMContentLoaded', () => {
+        var urlParams = new URLSearchParams(window.location.search);
+        var activeTab = urlParams.get('tab');
+        const currentUrl = window.location.href;
+        var TargetLink = document.querySelectorAll('ul#nav li a');
+        TargetLink.forEach(e => {
+            if (e.href == currentUrl) {
+                e.classList.add('active');
+            } else {
+                e.classList.remove('active');
+            }
+        });
         console.log('js loaded');
         setInterval(() => {
             $('[data-date-time]').html(new Date().toUTCString())
@@ -69,7 +80,7 @@
                 $('#btn-back-to-top').fadeOut();
                 $('header').removeClass('shadow fixed-top animate__fadeIn').css('top', '0px');
             }
-        });       
+        });
 
     });
 })();

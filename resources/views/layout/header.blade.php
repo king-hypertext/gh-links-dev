@@ -2,6 +2,56 @@
     <header class="d-flex w-100 justify-content-center animate__animated" style="z-index: 1040">
         <div style="z-index: 1045;" class="app-container bg-white py-2 d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center justify-content-sm-between">
+                <style>
+                    .dropdown-menu.dropdown-item {
+                        padding: 10px;
+                    }
+
+                    .dropdown-menu.dropdown-item:hover {
+                        background-color: #f8f9fa;
+                    }
+
+                    .dropdown-menu.dropdown-item.active {
+                        background-color: #f8f9fa;
+                        color: #212529;
+                    }
+
+                    .dropdown-item i {
+                        margin-right: .5rem;
+                        color: #212529;
+                        cursor: pointer;
+                        align-content: center;
+                        justify-content: center;
+                    }
+                </style>
+                <div class="dropdown me-1">
+                    <button class="btn btn-secondary px-3" type="button" id="dropdownMenuButton" data-mdb-dropdown-init
+                        data-mdb-ripple-init aria-expanded="false">
+                        <i class="fas fa-bars-staggered"></i>
+                    </button>
+                    <ul id="nav" class="dropdown-menu shadow rounded-0 rounded-top-0" aria-labelledby="dropdownMenuButton">
+                        <li>
+                            <a class="dropdown-item" href="{{ route('home') }}">
+                                <i class="fa-solid fa-house"></i>
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('jobs') }}">
+                                <i class="fa-solid fa-suitcase"></i>
+                                <span>Find Job</span>
+                            </a>
+                        </li>
+                        @auth('candidate')
+                            <li>
+                                <a class="dropdown-item" href="{{ route('profile.show') }}">
+                                    <i class="fa-solid fa-user-circle"></i>
+                                    <span> Profile </span>
+                                </a>
+                            </li>
+                        @endauth
+                    </ul>
+                </div>
                 <div class="d-flex flex-row align-middle">
                     <a href="/" class="align-items-center text-dark text-uppercase text-decoration-none">
                         <svg style="height: 30px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -12,12 +62,8 @@
                     </a>
                 </div>
             </div>
-            {{-- <div class="">
-                <button class="btn shadow-none px-3 btn-secondary mx-2">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div> --}}
-            <button type="button" id="app-search" title="search gh-links" class="btn shadow-none px-3 btn-secondary mx-2">
+            <button type="button" id="app-search" title="search gh-links"
+                class="btn shadow-none px-3 btn-secondary mx-2">
                 <i class="fas fa-search"></i>
             </button>
             <div class="search-dropdown shadow">

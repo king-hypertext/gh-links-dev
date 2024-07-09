@@ -7,16 +7,15 @@
     <title>GH-LINKS DASHBOARD</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Kingsley Osei Opoku" name="author">
-
-    <!-- App favicon -->
-    {{-- <link rel="shortcut icon" href="assets/images/favicon.ico"/> --}}
-
-    <!-- Theme Config Js -->
-    <link rel="stylesheet" href="{{ asset('app/dashboard/css/icons.min.css') }}">
+    <link rel="shortcut icon" href="{{ asset('icon.svg') }}" type="image/x-icon" />
+    <link rel="stylesheet" href="{{ asset('app/dashboard/css/icons.min.css') }}" />
     <script src="{{ asset('app/dashboard/js/hyper-config.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}">
-    <link href="{{ asset('app/dashboard/css/app-modern.min.css') }}" rel="stylesheet" id="app-style">
-    <link rel="stylesheet" href="{{ asset('app/plugins/mdb/mdb.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}" />
+    <link href="{{ asset('app/dashboard/css/app-modern.min.css') }}" rel="stylesheet" id="app-style" />
+    <link rel="stylesheet" href="{{ asset('app/plugins/mdb/mdb.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('app/dashboard/dropzone/dropzone.css') }}" />
+    <link rel="stylesheet" href="{{ asset('app/plugins/alert/sweetalert2.min.css') }}" />
+    <script src="{{ asset('app/plugins/alert/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('app/plugins/jquery/external/jquery.js') }}"></script>
     <style>
         .tox-statusbar__branding {
@@ -227,7 +226,8 @@
                                             </a>
                                         </li>
                                         <li class="side-nav-item">
-                                            <a href="{{ route('employer.company-profile') }}" class="side-nav-link py-1">
+                                            <a href="{{ route('employer.company-profile') }}"
+                                                class="side-nav-link py-1">
                                                 <i class="fa fa-user-circle"></i>
                                                 <span> Profile Setup</span>
                                             </a>
@@ -307,35 +307,71 @@
                 </div> <!-- container -->
 
             </div> <!-- content -->
-
-            <!-- Footer Start -->
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>2024 © Hyper - Coderthemes.com
-                        </div>
-                        <div class="col-md-6">
-                            <div class="text-md-end footer-links d-none d-md-block">
-                                <a href="javascript: void(0);">About</a>
-                                <a href="javascript: void(0);">Support</a>
-                                <a href="javascript: void(0);">Contact Us</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-            <!-- end Footer -->
-
         </div>
-
-        <!-- ============================================================== -->
-        <!-- End Page content -->
-        <!-- ============================================================== -->
-
     </div>
+    <script type="text/javascript">
+        const showSuccessAlert = Swal.mixin({
+            position: 'top-right',
+            toast: true,
+            timer: 6500,
+            showCloseButton: true,
+            showConfirmButton: false,
+            timerProgressBar: false,
+            onOpen: () => {
+                setInterval(() => {
+                    Swal.close()
+                }, 6500);
+            },
+            showClass: {
+                popup: `
+                    animate__animated
+                    animate__fadeInDown
+                    animate__faster
+                    `
+            },
+        });
+    </script>
+    @if (session('success'))
+        <script type="text/javascript">
+            showSuccessAlert.fire({
+                icon: 'success',
+                text: '{{ session('success') }}',
+                padding: '15px',
+                width: 'auto'
+            });
+        </script>
+    @endif
+    @if (session('error'))
+        <script type="text/javascript">
+            showSuccessAlert.fire({
+                icon: 'error',
+                text: '{{ session('error') }}',
+                padding: '15px',
+                width: 'auto'
+            });
+        </script>
+    @endif
+    @if (session('warning'))
+        <script type="text/javascript">
+            showSuccessAlert.fire({
+                icon: 'warning',
+                text: '{{ session('warning') }}',
+                padding: '15px',
+                width: 'auto'
+            });
+        </script>
+    @endif
+    @if (session('info'))
+        <script type="text/javascript">
+            showSuccessAlert.fire({
+                icon: 'info',
+                text: '{{ session('info') }}',
+                padding: '15px',
+                width: 'auto'
+            });
+        </script>
+    @endif
+    <script src="{{ asset('app/dashboard/dropzone/dropzone-min.js') }}"></script>
     <script src="{{ asset('app/plugins/bootstrap/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('app/plugins/mdb/mdb.umd.min.js') }}"></script>
     <script src="{{ asset('app/plugins/tinymce/tinymce.min.js') }}"></script>

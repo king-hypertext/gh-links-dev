@@ -13,10 +13,10 @@ class JobsController extends Controller
      */
     public function index()
     {
-        // return view('pages.jobs.index', [
-        //     'page_title' => 'ALL JOBS',
-        //     'jobs' => ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5']
-        // ]);
+        return view('pages.jobs.index', [
+            'page_title' => 'ALL JOBS',
+            'jobs' => ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5']
+        ]);
     }
 
     /**

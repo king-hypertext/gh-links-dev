@@ -25,7 +25,7 @@
     @endif
     <div class="tab-content" id="ex2-content">
         <div class="tab-pane fade show active" id="candidate" role="tabpanel" aria-labelledby="candidate">
-            <form id="login-as-candidate" autocomplete="on" {{-- action="{{ route('login.candidate') }}" --}} method="POST">
+            <form id="login-as-candidate" autocomplete="on" method="POST">
                 @csrf
                 <div class="container-fluid mt-3">
                     <div class="form-group mb-3">
