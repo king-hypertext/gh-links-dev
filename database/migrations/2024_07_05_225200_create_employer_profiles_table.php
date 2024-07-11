@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employer_id')->constrained('employers')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('company_name');
-            $table->text('company_logo');
-            $table->text('company_banner');
             $table->longText('company_description');
             $table->foreignId('organization_id')->constrained('organizations');
             $table->foreignId('industry_id')->constrained('industries');

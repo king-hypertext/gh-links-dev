@@ -9,12 +9,16 @@
     <meta content="Kingsley Osei Opoku" name="author">
     <link rel="shortcut icon" href="{{ asset('icon.svg') }}" type="image/x-icon" />
     <link rel="stylesheet" href="{{ asset('app/dashboard/css/icons.min.css') }}" />
-    <script src="{{ asset('app/dashboard/js/hyper-config.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.theme.css') }}" />
+    <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.css') }}" />
+    
     <link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}" />
     <link href="{{ asset('app/dashboard/css/app-modern.min.css') }}" rel="stylesheet" id="app-style" />
     <link rel="stylesheet" href="{{ asset('app/plugins/mdb/mdb.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/dashboard/dropzone/dropzone.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/alert/sweetalert2.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('app/plugins/select2/css/select2.min.css') }}" />
+    <script src="{{ asset('app/dashboard/js/hyper-config.js') }}"></script>
     <script src="{{ asset('app/plugins/alert/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('app/plugins/jquery/external/jquery.js') }}"></script>
     <style>
@@ -375,7 +379,9 @@
     <script src="{{ asset('app/plugins/bootstrap/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('app/plugins/mdb/mdb.umd.min.js') }}"></script>
     <script src="{{ asset('app/plugins/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('app/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('app/dashboard/js/app.min.js') }}"></script>
+    <script src="{{ asset('app/plugins/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('app/dashboard/dashboard.js') }}"></script>
 </body>
 

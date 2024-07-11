@@ -42,6 +42,20 @@
         $('input[name="job_location"').autocomplete({
             source: job_locations,
         });
+        $('input[name="job_type"').autocomplete({
+            minLength: 0,
+            source: [
+                'full-time',
+                'part-time',
+                'freelance',
+                'contract',
+                'temporary',
+                'internship',
+            ],
+        });
+        $('input[name="job_type"').focus(function() {
+            $(this).autocomplete('search', $(this).val());
+        });
 
         $('#menu-toggler').click(function () {
             var toggler_icon = $(this).find('i#toggler-icon');
@@ -77,11 +91,11 @@
             if ($(this).scrollTop() >= 100) {
                 $('#btn-back-to-top').fadeIn();
                 $('header').addClass('shadow fixed-top animate__fadeIn');
-                $('header > div.app-container').addClass('bg-white').removeClass('bg-body-secondary');
+                $('header > div.app-container').addClass('bg-white').removeClass('bg-secondary');
             } else {
                 $('#btn-back-to-top').fadeOut();
                 $('header').removeClass('shadow fixed-top animate__fadeIn').css('top', '0px');
-                $('header > div.app-container').removeClass('bg-white').addClass('bg-body-secondary');
+                $('header > div.app-container').removeClass('bg-white').addClass('bg-secondary');
             }
         });
         const token = $('[name="_token"]').attr('content');
@@ -111,6 +125,11 @@
                 //     }
                 // });
             });
+        });
+        $(document).on('click', 'button#search-job', () => {
+            var $t = $('input#search-job-job_title').val(),
+                $l = $('input#search-job-location').val();
+            window.location.href = '/jobs?job_title=' + $t + '&location=' + $l;
         });
     });
 })();

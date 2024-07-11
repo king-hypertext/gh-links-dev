@@ -23,7 +23,7 @@
             }
         </style>
         <div class="card shadow-2 my-4 rounded-0">
-            <form action="/jobs">
+            {{-- <form id="search-job" action="/jobs"> --}}
                 <div class="card-body p-1">
                     <div class="row flex-row justify-content-center justify-content-lg-between search-row">
                         <div class="col-sm-6 gy-2 gy-md-0 col-lg-5">
@@ -32,7 +32,7 @@
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                 </span>
                                 <input placeholder="Search by: job title, position..." style="padding-left: 40px;"
-                                    type="text" name="job_title" class="form-control" id="job_title">
+                                    type="text" name="job_title" class="form-control" id="search-job-job_title">
                             </div>
                         </div>
                         <div class="col-sm-6 gy-2 gy-md-0 col-lg-5">
@@ -41,18 +41,18 @@
                                     <i class="fa-solid fa-location-crosshairs"></i>
                                 </span>
                                 <input placeholder="Capital, district, town..." style="padding-left: 40px;" type="text"
-                                    name="location" class="form-control" id="location">
+                                    name="location" class="form-control" id="search-job-location">
                             </div>
                         </div>
                         <div class="col-sm-12 gy-2 gy-md-0 col-lg-2">
-                            <button type="submit" class="btn btn-info rounded-0 text-nowrap float-end">
+                            <button type="button" id="search-job" class="btn btn-info rounded-0 text-nowrap float-end">
                                 <i class="me-2 fas fa-magnifying-glass"></i>
                                 <span>search</span>
                             </button>
                         </div>
                     </div>
                 </div>
-            </form>
+            {{-- </form> --}}
         </div>
     </div>
     <div class="container-fluid my-4">

@@ -19,9 +19,10 @@
         }
     </style>
     <div class="row shadow-2 my-4 rounded-0 bg-secondary">
+        <form class="form-horizontal">
         <div class="card-body p-1">
-            <div class="row flex-row justify-content-center justify-content-lg-between search-row">
-                <div class="col-sm-6 gy-2 gy-md-0 col-lg-5">
+            <div class="row  search-row">
+                <div class="col-sm-3 gy-2 gy-md-0 col-lg-3">
                     <div class="form-group" data-mdb-input-init>
                         <span class="input-group-icon-left-align">
                             <i class="fa-solid fa-magnifying-glass"></i>
@@ -30,7 +31,7 @@
                             name="job_title" class="form-control" id="job_title">
                     </div>
                 </div>
-                <div class="col-sm-6 gy-2 gy-md-0 col-lg-5">
+                <div class="col-sm-3 gy-2 gy-md-0 col-lg-3">
                     <div class="form-group" data-mdb-input-init>
                         <span class="input-group-icon-left-align">
                             <i class="fa-solid fa-location-crosshairs"></i>
@@ -39,14 +40,35 @@
                             name="location" class="form-control" id="location">
                     </div>
                 </div>
-                <div class="col-sm-12 gy-2 gy-md-0 col-lg-2">
-                    <button class="btn btn-info rounded-0">
+                <div class="col-sm-3 gy-2 gy-md-0 col-lg-3">
+                    <div class="form-group" data-mdb-input-init>
+                        <span class="input-group-icon-left-align">
+                            <i class="fa-solid fa-business-time"></i>
+                        </span>
+                        <input placeholder="Select job type" style="padding-left: 40px;" type="text"
+                            name="job_type" class="form-control" id="job_type">
+                    </div>
+                </div>
+                <div class="col-sm-3 gy-2 gy-md-0 col-lg-3">
+                    <div class="form-group" data-mdb-input-init>
+                        <span class="input-group-icon-left-align">
+                            <i class="fw-light fst-normal fa-sm">GHS</i>
+                        </span>
+                        <input placeholder="Minimun salary" style="padding-left: 45px;" type="number" min="1" max="500000" maxlength="6"
+                            name="min-salary" class="form-control" id="min-salary">
+                    </div>
+                </div>
+            </div>
+            <div class="row flex-row justify-content-end">
+                <div class="col-sm-12 gy-2 col-lg-2">
+                    <button type="submit" class="btn btn-info rounded-0">
                         <i class="me-2 fas fa-magnifying-glass"></i>
                         <span>search job</span>
                     </button>
                 </div>
             </div>
         </div>
+    </form>
     </div>
     <div class="row my-4 px-0">
         <div class="col-sm-6 col-lg-4">

@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class EmployerProfile extends Model
 {
     use HasFactory;
-    protected $fillable=[
+    protected $table = 'employer_profiles';
+    protected $fillable = [
         'employer_id',
         'company_name',
-        'company_logo',
-        'company_banner',
         'company_description',
 
         'company_type_id',
@@ -24,9 +23,10 @@ class EmployerProfile extends Model
 
         'company_location',
         'company_email',
-        // 'company_phone',
-        // 'company_employees',
-        // 'company_social_media',
     ];
-    // a table to be created for phone numbers and social media accounts
+    // a table has been created for phone numbers, images and social media accounts
+    public function image()
+    {
+        return $this->hasOne(CompanyImage::class, 'employer_profile_id', 'id');
+    }
 }

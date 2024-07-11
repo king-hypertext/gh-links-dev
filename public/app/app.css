@@ -68,6 +68,8 @@ footer {
     display: flex;
     align-items: center;
     margin: 0 auto;
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
     max-width: 540px;
 }
 
