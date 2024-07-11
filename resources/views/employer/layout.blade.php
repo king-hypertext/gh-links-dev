@@ -233,19 +233,19 @@
                                             </a>
                                         </li>
                                         <li class="side-nav-item">
-                                            <a href="{{ route('post-job.create') }}" class="side-nav-link py-1">
+                                            <a href="{{ route('job.create') }}" class="side-nav-link py-1">
                                                 <i class="fa-regular fa-square-plus"></i>
                                                 <span> Post a Job </span>
                                             </a>
                                         </li>
                                         <li class="side-nav-item">
-                                            <a href="{{ route('post-job.index') }}" class="side-nav-link py-1">
+                                            <a href="{{ route('job.index') }}" class="side-nav-link py-1">
                                                 <i class="fas fa-suitcase"></i>
                                                 <span> My Jobs</span>
                                             </a>
                                         </li>
                                         <li class="side-nav-item">
-                                            <a href="{{ route('post-job.index') }}" class="side-nav-link py-1">
+                                            <a href="#" class="side-nav-link py-1">
                                                 <i class="fa-solid fa-bookmark"></i>
                                                 <span> Saved Candidates </span>
                                             </a>

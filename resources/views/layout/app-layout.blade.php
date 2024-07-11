@@ -1,9 +1,11 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="_token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('icon.svg') }}" type="image/x-icon" />
     <link rel="apple-touch-icon" href="{{ asset('icon.svg') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/selectize/selectize.css') }}" />
@@ -24,16 +26,11 @@
     <script src="{{ asset('app/plugins/jquery/jquery.js') }}"></script>
 </head>
 
-<body class="bg-white ">
+<body class="bg-white animate__animated animate__fadeIn">
     <!-- Breathing in, I calm body and mind. Breathing out, I smile. - Thich Nhat Hanh -->
     @include('layout.header')
-    <main class="app-container container px-0">
-        <div class="container-fluid px-0">
-
-            @yield('content')
-        </div>
-        @include('modals.login')
-        @include('modals.register')
+    <main class="container-fluid app-container">
+        @yield('content')
         @include('modals.logout')
     </main>
     <footer class="text-bg-dark">

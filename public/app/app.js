@@ -57,6 +57,7 @@
         $(document).on('click', '#app-search', function (e) {
             if (!$('.search-dropdown').hasClass('show')) {
                 $('.search-dropdown').show().addClass('show');
+                $('form#full-search input').focus()
             } else {
                 $('.search-dropdown').hide().removeClass('show');
             }
@@ -76,11 +77,40 @@
             if ($(this).scrollTop() >= 100) {
                 $('#btn-back-to-top').fadeIn();
                 $('header').addClass('shadow fixed-top animate__fadeIn');
+                $('header > div.app-container').addClass('bg-white').removeClass('bg-body-secondary');
             } else {
                 $('#btn-back-to-top').fadeOut();
                 $('header').removeClass('shadow fixed-top animate__fadeIn').css('top', '0px');
+                $('header > div.app-container').removeClass('bg-white').addClass('bg-body-secondary');
             }
         });
-
+        const token = $('[name="_token"]').attr('content');
+        var cards = $('.job-card'), bookmarks = $(cards).find('.bookmark');
+        $.each(cards, (i, card) => {
+            const targetUrl = $(card).data('target-url');
+            card.addEventListener('click', () => {
+                window.open(targetUrl);
+            });
+        });
+        $.each(bookmarks, (i, bookmark) => {
+            const targetId = $(bookmark).closest('.job-card').data('target-id');
+            bookmark.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // perform http request to bookmark job
+                // $.ajax('', {
+                //     type: 'POST',
+                //     data: {
+                //         _token: token,
+                //         job_id: targetId,
+                //     },
+                //     succes: res => {
+                //         console.log(res);
+                //     },
+                //     error: err => {
+                //         console.log(err);
+                //     }
+                // });
+            });
+        });
     });
 })();

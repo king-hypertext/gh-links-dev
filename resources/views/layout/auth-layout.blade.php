@@ -20,8 +20,11 @@
 <body class="app-form my-3">
     <div class="row justify-content-center container">
         <div class="card p-4 px-md-5 pb-3 border-0 animate__animated animate__fadeIn" style="max-width: 540px">
-            <h5 class="h4 text-uppercase fw-semibold text-center text-info user-select-none cursor-pointer  "
-                onclick="window.open('{{ route('home') }}','_self')">gh links</h5>
+            <h5 class="h4 text-uppercase fw-semibold text-center user-select-none cursor-pointer mb-0"
+                onclick="window.open('{{ route('home') }}','_self')">
+                <img src="{{ asset('icon.svg') }}" height="20" alt="" class="d-none">
+                gh links
+            </h5>
             <div class="text-center mt-2">
                 <h6 class="h6" data-date-time="true"></h6>
             </div>

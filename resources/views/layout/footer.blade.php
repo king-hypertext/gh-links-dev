@@ -1,4 +1,5 @@
 <div class="app-container container">
+    <!-- The biggest battle is the war against ignorance. - Mustafa Kemal Atatürk -->
     <div class="row mt-1 p-2">
         <style type="text/css">
             .text-bg-dark {
@@ -11,16 +12,17 @@
                 color: var(--mdb-secondary) !important;
             }
         </style>
-        <!-- The biggest battle is the war against ignorance. - Mustafa Kemal Atatürk -->
         <div class="col-sm-3 g-3">
             <h6 class="h6 mb-1 fw-bold text-capitalize">
                 gh links
             </h6>
             <hr class="mt-0">
             <ul class="list-unstyled">
-                <li class="text-muted">For enquiries,   <i class="fas fa-phone"></i>
-                    <strong>
-                        <a href="tel:+#" class="text-decoration-none text-muted fw-lighter">(000) 000
+                <li class="text-muted">For enquiries, <i class="fas fa-phone"></i>
+                    <strong class="d-flex flex-column align-middle align-items-start">
+                        <a href="tel:+#" class="text-decoration-none text-muted fw-lighter">(+233) 000
+                            0000</a>
+                        <a href="tel:+#" class="text-decoration-none text-muted fw-lighter">(+233) 000
                             0000</a>
                     </strong>
                 </li>
@@ -62,10 +64,10 @@
             <hr class="mt-0">
             <ul class="list-unstyled">
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="{{ route('jobs') }}">Browse Jobs</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('jobs.index') }}">Browse Jobs</a>
                 </li>
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="">Browse Employers</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('company.index') }}">Browse Employers</a>
                 </li>
                 <li>
                     <a class="link-light text-muted fw-lighter" href="{{ route('profile.show') }}">Candidate Profile</a>
@@ -82,13 +84,14 @@
             <hr class="mt-0">
             <ul class="list-unstyled">
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="{{ route('post-job.create') }}">Post a Job</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('job.create') }}">Post a Job</a>
                 </li>
                 <li>
                     <a class="link-light text-muted fw-lighter" href="">Browse Candidates</a>
                 </li>
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="{{ route('employer.dashboard') }}">Employers Dashboard</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('employer.dashboard') }}">Employers
+                        Dashboard</a>
                 </li>
                 <li>
                     <a class="link-light text-muted fw-lighter" href="">Applications</a>

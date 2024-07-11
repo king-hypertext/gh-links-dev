@@ -6,7 +6,13 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function home(Request $request){
+    public function search(Request $request)
+    {
+        $search = $request->input('q');
+        return $search;
+    }
+    public function home(Request $request)
+    {
         return view('pages.home', ['page_title' => 'Home']);
     }
 }

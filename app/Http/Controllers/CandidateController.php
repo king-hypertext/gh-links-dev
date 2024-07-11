@@ -62,7 +62,7 @@ class CandidateController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         Auth::guard('candidate')->logout();
-        return redirect('/')->with('info', 'You have been logged out successfully');
+        return redirect(route('home'))->with('info', 'You have been logged out successfully');
     }
     /**
      * Display the specified resource.

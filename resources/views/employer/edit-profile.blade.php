@@ -153,7 +153,6 @@
                     <label for="name" class="form-label">Company Name</label>
                     <input type="text" name="name" id="name" class="form-control" placeholder=""
                         aria-describedby="helpId" />
-                    {{-- <small id="helpId" class="text-muted">Help text</small> --}}
                 </div>
                 <div class="mb-3">
                     <div class="mb-3">
@@ -165,9 +164,12 @@
                 </div>
                 <div class="mb-3">
                     <div class="d-gri gap-2">
-                        <button type="submit" class="btn btn-primary">
-                            Save and continue <i class="fa fa-arrow-right"></i>
-                        </button>
+                        <a class="btn btn-primary" data-mdb-tab-init id="account-setup-tab-1"
+                            href="#account-setup-tabs-1" role="tab" aria-controls="account-setup-tabs-1"
+                            aria-selected="true">
+                            next
+                            <i class="fa fa-arrow-right ms-2"></i>
+                        </a>
                     </div>
                 </div>
             </form>

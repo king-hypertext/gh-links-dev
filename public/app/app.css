@@ -32,14 +32,22 @@ footer {
     padding: 5px;
     display: block;
 }
-
+.cursor-pointer {
+    cursor: pointer  !important;
+}
+.cursor-default {
+    cursor: default !important;;
+}
 .app-container {
     width: 100%;
     max-width: 1024px;
     margin: 0 auto;
-    /* position: relative; */
+    position: relative;
 }
-
+.text-bg-dark {
+    color: #fff !important;
+    background-color: RGBA(var(--bs-dark-rgb), var(--bs-bg-opacity, 1)) !important;
+}
 /* search dropdown */
 .search-dropdown {
     width: 100%;

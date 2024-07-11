@@ -9,6 +9,8 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/user', [HomeController::class, 'home'])->name('auth.home');
 });
+// Route::get('/user/:id', function)
+Route::get('/search', [HomeController::class, 'search'])->name('search');
 include 'jobs.php';
 include 'employer.php';
 include 'candidate.php';

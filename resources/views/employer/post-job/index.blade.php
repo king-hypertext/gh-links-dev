@@ -1,7 +1,8 @@
 @extends('employer.layout')
 @section('content')
 
+<!-- Simplicity is the essence of happiness. - Cedric Bledsoe -->
     <div>
-        <!-- Simplicity is the essence of happiness. - Cedric Bledsoe -->
+        my jobs
     </div>
 @endsection
