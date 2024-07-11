@@ -14,8 +14,8 @@ class EmployerProfile extends Model
         'company_name',
         'company_description',
 
-        'company_type_id',
-        'company_industry_id',
+        'organization_id',
+        'industry_id',
         'company_size',
         'company_website',
         'company_founding_year',
@@ -25,8 +25,28 @@ class EmployerProfile extends Model
         'company_email',
     ];
     // a table has been created for phone numbers, images and social media accounts
+    public function employer()
+    {
+        return $this->belongsTo(Employer::class, 'employer_id', 'id');
+    }
     public function image()
     {
         return $this->hasOne(CompanyImage::class, 'employer_profile_id', 'id');
+    }
+    public function phoneNumbers()
+    {
+        return $this->hasMany(CompanyPhoneNumber::class, 'employer_profile_id', 'id');
+    }
+    public function socialMediaAccounts()
+    {
+        return $this->hasMany(CompanySocialMediaLink::class, 'employer_profile_id', 'id');
+    }
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class, 'organization_id', 'id');
+    }
+    public function industry()
+    {
+        return $this->belongsTo(Industry::class, 'industry_id', 'id');
     }
 }

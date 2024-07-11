@@ -33,9 +33,31 @@ class EmployerProfileController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-        // EmployerProfile::create($request);
-        return redirect()->route('employer.company-profile.save', ['tab' => 'set-up'])->with('success', 'profile updated successfully');
+        // dd($request);
+        $request->validate([
+            'employer_id' => 'required|exists:employers,id',
+            'company_name' => 'required|string',
+            'company_description' => 'required|string',
+
+            'organization_id' => 'required|exists:organizations,id',
+            'industry_id' => 'required|exists:industries,id',
+            'company_size' => 'required|string',
+            'company_website' => 'required|active_url',
+            'company_founding_year' => 'required|date',
+            'company_vision' => 'required|string',
+
+            'company_location' => 'required|string',
+            'company_email' => 'required|email',
+        ]);
+        $profile = EmployerProfile::where('employer_id', auth('employer')->id())->first();
+        if ($profile->exists()) {
+            $profile->update($request->all());
+            // return response(['success' =>true, ])
+        } else {
+            EmployerProfile::create($request->all());
+        }
+        $redirect_url = redirect()->route('employer.company-profile', ['tab' => 'account-image-upload'])->with('success', 'profile updated successfully')->getTargetUrl();
+        return response(['success' => true, 'next_tab' => $redirect_url]);
     }
     public function storeImages(Request $request)
     {

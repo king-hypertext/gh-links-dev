@@ -25,10 +25,17 @@
         });
         // $('.selectize').selectize();
         $('.select2').select2({
-            placeholder: 'Select an option',
-            allowClear: true,
-            theme: 'bootstrap5',
+            // placeholder: 'Select an option',
+            allowClear: false,
+            // theme: 'bootstrap5',
 
         });
+        
+        var urlParams = new URLSearchParams(window.location.search);
+        var activeTab = urlParams.get('tab');
+        console.log(activeTab,$('a[href="#' + activeTab + '"]'));
+        if (activeTab !== null) {
+            $('a[href="#' + activeTab + '"]').tab('show');
+        }
     });
 })();

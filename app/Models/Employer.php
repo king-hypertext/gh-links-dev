@@ -25,7 +25,10 @@ class Employer extends Authenticatable
         'password',
         'remember_token',
     ];
-
+    public function profile()
+    {
+        return $this->hasOne(EmployerProfile::class, 'employer_id', 'id');
+    }
     protected function casts(): array
     {
         return [

@@ -11,12 +11,12 @@
     <link rel="stylesheet" href="{{ asset('app/dashboard/css/icons.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.css') }}" />
-    
+
     <link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}" />
-    <link href="{{ asset('app/dashboard/css/app-modern.min.css') }}" rel="stylesheet" id="app-style" />
-    <link rel="stylesheet" href="{{ asset('app/plugins/mdb/mdb.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/dashboard/dropzone/dropzone.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/alert/sweetalert2.min.css') }}" />
+    <link href="{{ asset('app/dashboard/css/app-modern.min.css') }}" rel="stylesheet" id="app-style" />
+    <link rel="stylesheet" href="{{ asset('app/plugins/mdb/mdb.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/select2/css/select2.min.css') }}" />
     <script src="{{ asset('app/dashboard/js/hyper-config.js') }}"></script>
     <script src="{{ asset('app/plugins/alert/sweetalert2.all.min.js') }}"></script>

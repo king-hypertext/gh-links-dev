@@ -24,34 +24,34 @@
         </style>
         <div class="card shadow-2 my-4 rounded-0">
             {{-- <form id="search-job" action="/jobs"> --}}
-                <div class="card-body p-1">
-                    <div class="row flex-row justify-content-center justify-content-lg-between search-row">
-                        <div class="col-sm-6 gy-2 gy-md-0 col-lg-5">
-                            <div class="form-group" data-mdb-input-init>
-                                <span class="input-group-icon-left-align">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </span>
-                                <input placeholder="Search by: job title, position..." style="padding-left: 40px;"
-                                    type="text" name="job_title" class="form-control" id="search-job-job_title">
-                            </div>
-                        </div>
-                        <div class="col-sm-6 gy-2 gy-md-0 col-lg-5">
-                            <div class="form-group" data-mdb-input-init>
-                                <span class="input-group-icon-left-align">
-                                    <i class="fa-solid fa-location-crosshairs"></i>
-                                </span>
-                                <input placeholder="Capital, district, town..." style="padding-left: 40px;" type="text"
-                                    name="location" class="form-control" id="search-job-location">
-                            </div>
-                        </div>
-                        <div class="col-sm-12 gy-2 gy-md-0 col-lg-2">
-                            <button type="button" id="search-job" class="btn btn-info rounded-0 text-nowrap float-end">
-                                <i class="me-2 fas fa-magnifying-glass"></i>
-                                <span>search</span>
-                            </button>
+            <div class="card-body p-1">
+                <div class="row flex-row justify-content-center justify-content-lg-between search-row">
+                    <div class="col-sm-6 gy-2 gy-md-0 col-lg-5">
+                        <div class="form-group" data-mdb-input-init>
+                            <span class="input-group-icon-left-align">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                            <input placeholder="Search by: job title, position..." style="padding-left: 40px;"
+                                type="text" name="job_title" class="form-control" id="search-job-job_title">
                         </div>
                     </div>
+                    <div class="col-sm-6 gy-2 gy-md-0 col-lg-5">
+                        <div class="form-group" data-mdb-input-init>
+                            <span class="input-group-icon-left-align">
+                                <i class="fa-solid fa-location-crosshairs"></i>
+                            </span>
+                            <input placeholder="Capital, district, town..." style="padding-left: 40px;" type="text"
+                                name="location" class="form-control" id="search-job-location">
+                        </div>
+                    </div>
+                    <div class="col-sm-12 gy-2 gy-md-0 col-lg-2">
+                        <button type="button" id="search-job" class="btn btn-info rounded-0 text-nowrap float-end">
+                            <i class="me-2 fas fa-magnifying-glass"></i>
+                            <span>search</span>
+                        </button>
+                    </div>
                 </div>
+            </div>
             {{-- </form> --}}
         </div>
     </div>
@@ -310,10 +310,50 @@
         </div>
     </div>
     <div class="row my-4">
+
         <div class="d-flex justify-content-center justify-content-sm-start">
             <h5 class="h5 text-uppercase fw-bold fs-3 text-info">Top Companies</h5>
         </div>
-        <div class="col-sm-4">
+
+        @forelse ($companies as $i => $item)
+            <div class="col-sm-4">
+                <div class="card shadow-2 my-2 mx-md-0 user-select-none job-card">
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-center align-items-center mt-3">
+                            <div class="col-3">
+                                <img src="{{ $item->image->logo_image }}" height="55" width="55"
+                                    alt="company-logo" class="img-thumbnail img-circle">
+                            </div>
+                            <div class="col-8  flex-column align-items-center justify-center">
+                                <div class="col-auto">
+                                    <h6 class="h6 fw-semibold text-capitalize text-truncate">
+                                        {{ $item->company_name }}
+                                    </h6>
+                                </div>
+                                <div class="col-auto d-flex justify-content-start align-items-center">
+                                    <i class="fas fa-map-marker-alt me-2"></i>
+                                    <span class="flex-nowrap text-nowrap text-truncate text-capitalize">
+                                        {{ $item->company_location }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2 mt-2">
+                            <button type="button" onclick="window.open(this.id, '_blank')"
+                                id="{{ route('company.show', [$item->id]) }}" class="btn btn-secondary text-capitalize">
+                                open positions (2)
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        @empty
+        <div class="col-sm-12 text-center">
+            <h5 class="h5 text-uppercase fw-bold fs-3 text-info">No companies found.</h5>
+        </div>
+        @endforelse
+        {{-- <div class="col-sm-4">
             <div class="card shadow-2 my-2 mx-md-0 user-select-none job-card">
                 <div class="card-body">
                     <div class="d-flex flex-row justify-center align-items-center mt-3">
@@ -372,36 +412,6 @@
 
                 </div>
             </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="card shadow-2 my-2 mx-md-0 user-select-none job-card">
-                <div class="card-body">
-                    <div class="d-flex flex-row justify-center align-items-center mt-3">
-                        <div class="col-3">
-                            <img src="{{ asset('company-logo.svg') }}" height="55" width="55" alt="company-logo"
-                                class="img-thumbnail img-circle">
-                        </div>
-                        <div class="col-8  flex-column align-items-center justify-center">
-                            <div class="col-auto">
-                                <h6 class="h6 fw-semibold text-capitalize text-truncate">
-                                    Amali-Tech.
-                                </h6>
-                            </div>
-                            <div class="col-auto d-flex justify-content-start align-items-center">
-                                <i class="fas fa-map-marker-alt me-2"></i>
-                                <span class="flex-nowrap text-nowrap text-truncate text-capitalize">accra, ghana</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2 mt-2">
-                        <button type="button" onclick="window.open(this.id, '_blank')"
-                            id="{{ route('company.show', [1]) }}" class="btn btn-secondary text-capitalize">
-                            open positions (2)
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        </div> --}}
     </div>
 @endsection

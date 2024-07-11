@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmployerProfile;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -69,7 +70,9 @@ class JobsController extends Controller
     }
     public function company_details(Request $request)
     {
-        return view('pages.company.details');
+        $id = $request->company;
+        $company = EmployerProfile::query()->where('employer_id', $id)->first();
+        return view('pages.company.details', compact('company'));
     }
     public function company(Request $request)
     {
