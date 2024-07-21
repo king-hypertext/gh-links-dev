@@ -15,6 +15,6 @@ class CandidateProfile extends Model
     ];
     public function candidate()
     {
-        return $this->belongsTo(Candidate::class);
+        return $this->belongsTo(Candidate::class, 'candidate_id', 'id');
     }
 }

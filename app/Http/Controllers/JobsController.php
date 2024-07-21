@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EmployerProfile;
+use App\Models\City;
 use App\Models\Job;
+use App\Models\District;
 use Illuminate\Http\Request;
+use App\Models\EmployerProfile;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
 class JobsController extends Controller
@@ -12,12 +15,49 @@ class JobsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function autocompleteJobList(Request $request)
     {
-        return view('pages.jobs.index', [
-            'page_title' => 'ALL JOBS',
-            'jobs' => ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5']
-        ]);
+        $title = str_replace(['\\', '/', '.', '_', ',', '\''], ' ', $request->input('query'));
+        $data = Job::query()->where('title', 'LIKE', "%{$title}%")->get('title');
+        return response()->json($data);
+    }
+    public function index(Request $request)
+    {
+        $job = new Job();
+        $search = false;
+        if ($request->anyFilled(['job_title', 'location', 'job_type', 'min_salary'])) {
+            $search = true;
+            $location = $request->location;
+            $type = $request->job_type;
+            $salary = $request->min_salary;
+            $jobs = $job->query()
+                ->when($request->filled('job_title'), function ($q) use ($request) {
+                    $title = str_replace(['\\', '/', '.', '_', ',', '\''], ' ', $request->job_title);
+                    return $q->orWhere('title', 'LIKE', "%{$title}%");
+                })
+                ->when($request->filled('job_type'), function ($q) use ($type) {
+                    return $q->orWhere('type', 'LIKE', "%{$type}%");
+                })
+                ->when($request->filled('min_salary'), function ($q) use ($salary) {
+                    return $q->orWhere('max_salary', '>=', $salary);
+                })->when($request->filled('location'), function ($q) use ($location) {
+                    return  $q->orWhereHas('city', function ($q) use ($location) {
+                        $q->orWhere('name', 'LIKE', "%{$location}%")
+                            ->orWhere('capital', 'LIKE', "%{$location}%");
+                    });
+                })
+                // ->dd();
+                ->paginate(6);
+        } else {
+            $jobs =  $job->newInstance()->paginate(12);
+        }
+        // dd($jobs->last()->company);
+        $page_title = 'ALL JOBS';
+        $related_jobs = Job::paginate(6);
+        return view(
+            'pages.jobs.index',
+            compact('jobs', 'search', 'page_title',  'related_jobs')
+        );
     }
 
     /**
@@ -42,7 +82,9 @@ class JobsController extends Controller
     public function show(Job $job, $id)
     {
         // dd($id);
-        return view('pages.jobs.details');
+        $job = Job::find($id);
+        $page_title = 'JOBS (' . strtoupper($job->title) . ')';
+        return view('pages.jobs.details', compact('job', 'page_title'));
     }
 
     /**
@@ -72,10 +114,17 @@ class JobsController extends Controller
     {
         $id = $request->company;
         $company = EmployerProfile::query()->where('employer_id', $id)->first();
-        return view('pages.company.details', compact('company'));
+        $page_title = strtoupper($company->company_name);
+        return view('pages.company.details', compact('company', 'page_title'));
     }
     public function company(Request $request)
     {
         return view('pages.company.index');
+    }
+    public function getDistricts(Request $request)
+    {
+        $cityId = $request->input('city_id');
+        $districts = District::where('city_id', $cityId)->get();
+        return response()->json($districts);
     }
 }

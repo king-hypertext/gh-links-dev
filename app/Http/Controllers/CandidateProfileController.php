@@ -12,7 +12,7 @@ class CandidateProfileController extends Controller
      */
     public function index()
     {
-        //
+        return '<div class="mod';
     }
 
     /**
@@ -36,7 +36,7 @@ class CandidateProfileController extends Controller
      */
     public function show(CandidateProfile $candidateProfile)
     {
-        //
+        return  view('candidate.layout', ); 
     }
 
     /**

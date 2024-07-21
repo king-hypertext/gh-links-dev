@@ -27,6 +27,7 @@
         <div class="tab-pane fade show active" id="candidate" role="tabpanel" aria-labelledby="candidate">
             <form id="login-as-candidate" autocomplete="on" method="POST">
                 @csrf
+                <input type="hidden" name="to">
                 <div class="container-fluid mt-3">
                     <div class="form-group mb-3">
                         <div data-mdb-input-init class="form-outline">
@@ -87,4 +88,7 @@
             <a href="{{ route('register') }}">Don't have an account? Register</a>
         </div>
     </div>
+    <script>
+        document.querySelector('[name="to"]').value = new URLSearchParams(window.location.search).get('to');
+    </script>
 @endsection

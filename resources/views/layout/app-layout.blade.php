@@ -106,6 +106,7 @@
     <script src="{{ asset('app/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('app/app.js') }}"></script>
     <script src="{{ asset('app/auth.js') }}"></script>
+    @yield('script')
 </body>
 
 </html>

@@ -11,10 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('jobs', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->timestamps();
-        // });
+        Schema::create('gh_jobs', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('type');
+            $table->integer('min_salary');
+            $table->foreignId('company_id')->constrained('employer_profiles');
+            $table->integer('max_salary');
+            $table->foreignId('salary_id')->constrained('salaries');
+            $table->foreignId('education_id')->constrained('education');
+            $table->string('min_experience');
+            $table->integer('open_vacancies');
+            $table->foreignId('entry_id')->constrained('job_experience');
+            $table->foreignId('city_id')->constrained('cities');
+            $table->longText('description');
+            $table->text('benefits');
+            $table->timestamps();
+        });
     }
 
     /**

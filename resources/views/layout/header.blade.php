@@ -117,20 +117,24 @@
                     <i class="fas fa-search"></i>
                 </button>
                 <div class="search-dropdown shadow">
-                    <form id="full-search" action="/search">
+                    <form id="full-search" class="form-search" action="/search">
                         <div class="search-dialog" aria-labelledby="dropdownMenuButton">
                             <div class="card w-100 shadow-sm">
                                 <div class="card-body">
-                                    <div class="modal-header pb-3">
-                                        <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                        <button id="close-search" title="exit search" type="button"
-                                            class="btn shadow-sm">
-                                            <i class="fa fa-xmark"></i>
-                                        </button>
+                                    <div class="modal-header text-center">
+                                        <h5 class="modal-title" id="exampleModalLabel">
+                                            search <span class="text-uppercase fw-bold">
+                                                gh-links
+                                            </span>
+                                        </h5>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group d-flex flex-row justify-content-between">
                                         <input type="search" name="q" class="form-control"
                                             placeholder="Search: companies, positions...">
+                                        <button id="close-search" title="exit search" type="button"
+                                            class="btn btn-secondary shadow-sm ms-2 p-2 ">
+                                            <i class="fa fa-xmark fa-2x"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>

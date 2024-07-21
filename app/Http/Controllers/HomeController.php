@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employer;
 use App\Models\EmployerProfile;
+use App\Models\Job;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -18,6 +19,7 @@ class HomeController extends Controller
         $companies = EmployerProfile::select(['company_name', 'id', 'employer_id', 'company_location'])->paginate(10);
         // dd($companies);
         $page_title = 'HOME';
-        return view('pages.home', compact('companies', 'page_title'));
+        $jobs = Job::paginate(10);
+        return view('pages.home', compact('companies', 'page_title', 'jobs'));
     }
 }

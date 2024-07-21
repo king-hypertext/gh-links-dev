@@ -21,7 +21,7 @@ class AuthController extends Controller
     }
     public function authenticate_candidate(Request $request)
     {
-        // dd($request->all());
+        $url = $request->to;
         $user = $request['user'];
         $request->validate(
             [
@@ -61,11 +61,13 @@ class AuthController extends Controller
         }
         if (Auth::guard('candidate')->attempt($credentials)) {
             $request->session()->regenerate();
-            $redirect_url = redirect()->intended()->with('success', 'You have successfully log in')->getTargetUrl();
+            $redirect_url = $request->to ?
+                redirect()->to($url)->with('success', 'You have successfully log in')->getTargetUrl() :
+                redirect()->intended()->with('success', 'You have successfully log in')->getTargetUrl();
             return
                 $request->ajax() ?
                 response(['success' => true, 'redirect_url' => $redirect_url]) :
-                redirect()->intended(route('home'))->with('success', 'You have successfully log in');
+                redirect()->intended()->with('success', 'You have successfully log in');
         }
         return
             $request->ajax() ?

@@ -1,11 +1,9 @@
 @extends('employer.layout')
 @section('content')
-    <div>
-        <!-- Life is available only in the present moment. - Thich Nhat Hanh -->
-        @php
-            $user = auth('employer')->user();
-        @endphp
-    </div>
+    <!-- Life is available only in the present moment. - Thich Nhat Hanh -->
+    @php
+        $user = auth('employer')->user();
+    @endphp
     <div class="row">
         <div class="col-xl-4 col-lg-5">
             <div class="card text-center">

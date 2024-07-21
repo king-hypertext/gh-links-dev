@@ -39,7 +39,8 @@
             "nsukwao", // North East Region
             "yamoransa" // Savannah Region
         ];
-        $('input[name="job_location"').autocomplete({
+        $('input[name="job_location"], input[name="location"]').autocomplete({
+            minLength: 0,
             source: job_locations,
         });
         $('input[name="job_type"').autocomplete({
@@ -53,7 +54,27 @@
                 'internship',
             ],
         });
-        $('input[name="job_type"').focus(function() {
+        $('input[name="job_title"]').autocomplete({
+            minLength: 3,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/autocompleteJobList',
+                    dataType: 'json',
+                    data: {
+                        query: request.term
+                    },
+                    success: function (data) {
+                        $.each(data, function (i, d) {
+                            response(d);
+                        });
+                    }
+                });
+            },
+            select: function (event, ui) {
+
+            }
+        });
+        $('input[name="job_type"], input[name="location"]').focus(function () {
             $(this).autocomplete('search', $(this).val());
         });
 
@@ -126,10 +147,41 @@
                 // });
             });
         });
+        $.each($('button.copy-url'), (i, button) => {
+            var url = $(button).data('url');
+            $(button).on('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(url);
+                    alert('link copied to clipboard');
+                } catch (error) {
+                    console.error('clipboard error', error);
+                }
+            });
+        });
+        $.each($('button.share-to-whatsapp'), (i, button) => {
+            var url = $(button).data('url');
+            const text = `I saw this job at GH-LINKS. Check it out! \n${url} `;
+            $(button).on('click', async () => {
+                try {
+                    window.open(`https://api.whatsapp.com/send/?text=${encodeURIComponent(text)}`);
+                } catch (error) {
+                    console.error('clipboard error', error);
+                }
+            });
+        });
         $(document).on('click', 'button#search-job', () => {
             var $t = $('input#search-job-job_title').val(),
                 $l = $('input#search-job-location').val();
             window.location.href = '/jobs?job_title=' + $t + '&location=' + $l;
+        });
+        // $('.form-search').
+        $('button#apply-job').on('click', (e) => {
+            // alert('Apply')
+            const is_login = e.currentTarget.dataset.is_login;
+            if (is_login == false) {
+                return window.location.href = '/app/login?to=' + window.location.pathname;
+            }
+            $('#modal-apply').modal('show');
         });
     });
 })();

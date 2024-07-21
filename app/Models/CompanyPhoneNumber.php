@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class CompanyPhoneNumber extends Model
 {
     use HasFactory;
+    protected $table = 'employer_phone_numbers';
 }

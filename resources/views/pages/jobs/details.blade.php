@@ -1,164 +1,167 @@
 @extends('layout.app-layout')
 @section('content')
-<style>
-    .icon.fas{
-        color: var(--bs-success) !important;
-    }
-</style>
+    <style>
+        .icon.fas {
+            color: var(--bs-success) !important;
+        }
+    </style>
+    @use(Carbon\Carbon)
     <!-- Happiness is not something readymade. It comes from your own actions. - Dalai Lama -->
-    <div class="row shadow-1 my-3 pb-2">
-        <div class="col-lg-6 col-sm-6 flex flex-row g-3">
-            <div class="d-flex flex-row justify-content-start  mt-3">
-                <img src="{{ asset('company-logo.svg') }}" height="65" width="65" alt="company-logo"
-                    class="img-thumbnail rounded-circle flex-col me-2">
-                <div class="col-auto d-flex flex-column justify-content-end align-items-baseline">
-                    <h6 class="h5 fw-semibold text-capitalize text-truncate text-success">
-                        frontend developer / web designer
-                    </h6>
-                    <div class="col-auto d-flex flex-row align-items-center align-middle">
-                        {{-- <i class="icon fas fa-map-marker-alt"></i> --}}
-                        <h6 class="text-truncate fw-semibold text-capitalize mb-0">amali tech.</h6>
-                        <span class="btn btn-success cursor-default shadow-0 text-nowrap px-2 py-1 ms-2">full time</span>
+    <div class="container">
+        <div class="row shadow-1 my-3 pb-2">
+            <div class="col-lg-6 col-sm-6 flex flex-row g-3">
+                <div class="d-flex flex-row justify-content-start  mt-3">
+                    <img src="{{ $job->company->image->logo_image }}" height="65" width="65" alt="company-logo"
+                        class="img-thumbnail flex-col me-2">
+                    <div class="col-auto d-flex flex-column justify-content-end align-items-baseline">
+                        <h6 class="h5 fw-semibold text-capitalize text-truncate text-success">
+                            {{ strtoupper($job->title) }}
+                        </h6>
+                        <div class="col-auto d-flex flex-row align-items-center align-middle">
+                            {{-- <i class="icon fas fa-map-marker-alt"></i> --}}
+                            <h6 class="text-truncate fw-semibold text-capitalize mb-0">
+                                <a href="{{ route('company.show', $job->company->id) }}" class="link-dark nav-link">
+                                    {{ $job->company->company_name }}
+                                </a>
+                            </h6>
+                            <span
+                                class="btn btn-success cursor-default shadow-0 text-nowrap px-2 py-1 ms-2">{{ $job->type }}</span>
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
-        <div class="col-lg-6 col-sm-6 d-flex flex-row align-items-center justify-content-start justify-content-md-end g-3">
-            <div class="d-grid gap-2">
-                <button type="button" name="" id="" class="btn btn-primary rounded-0">
+            <div
+                class="col-lg-6 col-sm-6 d-flex flex-row align-items-center justify-content-start justify-content-sm-end g-3">
+                {{-- <div class="d-grid text-sm-end gap-2"> --}}
+                <button {{ auth('candidate')->check() ? '' : 'disabled' }}
+                    class="btn btn-secondary me-1 px-3 rounded-1 bookmark" title="add to favourite job lists">
+                    <i class="far fa-bookmark"></i>
+                </button>
+                <button type="button" data-is_login="{{ auth('candidate')->check() ? 1 : 0 }}" id="apply-job"
+                    class="btn btn-primary rounded-0" title="click to apply for this job">
                     <span>
                         apply
                     </span>
                     <i class="fas fa-arrow-right ms-2"></i>
                 </button>
+                {{-- </div> --}}
             </div>
         </div>
     </div>
-    <div class="row mb3">
-        <div class="col-sm-7">
+    <div class="row mb-3">
+        <div class="col-sm-7 col-lg-7 order-sm-1 order-2 mt-sm-0 mt-4">
             <h6 class="h6 fw-bold text-capitalize">
                 job description
             </h6>
             <div id="job-description">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat cum suscipit nihil corporis odit, numquam
-                natus maiores illum quibusdam impedit voluptatum vel iusto veritatis esse enim. Repellendus accusamus animi
-                sed.
+                {!! $job->description !!}
             </div>
             <h6 class="h6 fw-bold text-capitalize mt-3">
                 job requirements
             </h6>
-            <ul>
-                <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae adipisci suscipit eveniet,
-                    architecto non nisi recusandae accusamus porro cupiditate sequi animi iste cum beatae reiciendis
-                    distinctio eum at natus nostrum.</li>
-                <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae adipisci suscipit eveniet,
-                    architecto non nisi recusandae accusamus porro cupiditate sequi animi iste cum beatae reiciendis
-                    distinctio eum at natus nostrum.</li>
-                <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae adipisci suscipit eveniet,
-                    architecto non nisi recusandae accusamus porro cupiditate sequi animi iste cum beatae reiciendis
-                    distinctio eum at natus nostrum.</li>
-                <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae adipisci suscipit eveniet,
-                    architecto non nisi recusandae accusamus porro cupiditate sequi animi iste cum beatae reiciendis
-                    distinctio eum at natus nostrum.</li>
-                <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae adipisci suscipit eveniet,
-                    architecto non nisi recusandae accusamus porro cupiditate sequi animi iste cum beatae reiciendis
-                    distinctio eum at natus nostrum.</li>
-                <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae adipisci suscipit eveniet,
-                    architecto non nisi recusandae accusamus porro cupiditate sequi animi iste cum beatae reiciendis
-                    distinctio eum at natus nostrum.</li>
-            </ul>
+            {!! $job->requirements !!}
             <h6 class="h6 fw-bold text-capitalize mt-3">
                 job benefits
             </h6>
-            <ul>
-                <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae adipisci suscipit eveniet,
-                    architecto non nisi recusandae accusamus porro cupiditate sequi animi iste cum beatae reiciendis
-                    distinctio eum at natus nostrum.</li>
-                <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae adipisci suscipit eveniet,
-                    architecto non nisi recusandae accusamus porro cupiditate sequi animi iste cum beatae reiciendis
-                    distinctio eum at natus nostrum.</li>
-                <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae adipisci suscipit eveniet,
-                    architecto non nisi recusandae accusamus porro cupiditate sequi animi iste cum beatae reiciendis
-                    distinctio eum at natus nostrum.</li>
-
-            </ul>
+            {!! $job->benefits !!}
         </div>
-        <div class="col-sm-5">
-            <div class="row shadow-1 p-3">
-                <div class="col-12">
-                    <div class="d-flex flex-column align-items-center ">
-                        <h6 class="fw-semibold">salary (GHS)</h6>
-                        <h6>
-                            <span class="btn btn-outline-success cursor-default shadow-0 text-nowrap px-2 py-1">
-                                GHS 10, 000 - GHS 50, 000
-                            </span>
-                        </h6>
-                        <h6 class="text-muted text-lead">monthly salary</h6>
+        <div class="col-sm-5 col-lg-5 order-sm-2 order-1">
+            <div class="container">
+                <div class="row  shadow-2 p-3 border-primary">
+                    <div class="col-12">
+                        <div class="d-flex flex-column align-items-center ">
+                            <h6 class="fw-semibold">Salary (GHS)</h6>
+                            <h6>
+                                <span class="btn btn-outline-success cursor-default shadow-0 text-nowrap px-2 py-1">
+                                    {{ 'GHS ' . number_format($job->min_salary, 2, '.', ',') }} -
+                                    {{ number_format($job->max_salary, 2, '.', ',') }}
+                                </span>
+                            </h6>
+                            <h6 class="text-muted text-lead">{{ $job->salary->type }} salary</h6>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row shadow-1 p-3 mt-2">
+            <div class="container-fluid  shadow-2 p-3 mt-4">
                 <div class="col-12">
                     <div class="row">
                         <h6 class="h6 fw-bold text-capitalize">
                             job overview
                         </h6>
-                        <div class="col-sm-4 gy-3">
+                        <div class="col-6 col-sm-6 gy-3">
                             <div class="d-flex flex-column align-items-start align-middle">
-                                <i class="icon fas fa-suitcase"></i>
+                                <i class="icon fas fa-calendar-alt"></i>
                                 <span class="fw-lighter text-capitalize" style="font-size: 12px;">
                                     date posted:
                                 </span>
                                 <h6 class="h6 mb-0  text-black">
-                                    {{ Date('d M, Y') }}
+                                    {{ Carbon::parse($job->created_at)->format('d M Y') }}
                                 </h6>
                             </div>
                         </div>
-                        <div class="col-sm-4 gy-3">
+                        <div class="col-6 col-sm-6 gy-3">
                             <div class="d-flex flex-column align-items-start align-middle">
                                 <i class="icon fas fa-layer-group"></i>
                                 <span class="fw-lighter text-capitalize" style="font-size: 12px;">
                                     entry level:
                                 </span>
                                 <h6 class="h6 mb-0  text-black text-capitalize">
-                                    beginner
+                                    {{ $job->job_experience->level }}
                                 </h6>
                             </div>
                         </div>
-                        <div class="col-sm-4 gy-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-6 col-sm-6 gy-3">
                             <div class="d-flex flex-column align-items-start align-middle">
                                 <i class="icon fas fa-gear"></i>
                                 <span class="fw-lighter text-capitalize" style="font-size: 12px;">
                                     experience:
                                 </span>
                                 <h6 class="h6 mb-0  text-black text-capitalize">
-                                    N/A
+                                    {{ $job->job_experience->level }}
                                 </h6>
                             </div>
                         </div>
-                        <div class="col-sm-4 gy-3">
+                        <div class="col-6 col-sm-6 gy-3">
                             <div class="d-flex flex-column align-items-start align-middle">
                                 <i class="icon fas fa-graduation-cap"></i>
                                 <span class="fw-lighter text-capitalize" style="font-size: 12px;">
                                     education:
                                 </span>
                                 <h6 class="h6 mb-0  text-black text-capitalize">
-                                    graduate
+                                    {{ $job->education->level }}
                                 </h6>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row shadow-1 p-3">
-                <h6 class="h6 fw-bold">
-                    Share this Job:
-                </h6>
-                <div class="col-12">
-
+            <div class="container">
+                <div class="row shadow-2 p-3 mt-4">
+                    <h6 class="h6 fw-bold">
+                        Share this Job:
+                    </h6>
+                    <div class="col-12">
+                        <ul class="list-unstyled d-flex">
+                            <li>
+                                <button class="btn btn-sm btn-secondary m-1 copy-url" title="copy url"
+                                    data-url="{{ request()->fullUrl() }}">
+                                    <i class="fa-regular fa-copy"></i> Copy Link
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-sm btn-secondary m-1 share-to-whatsapp" title="share on whatsapp"
+                                    data-url="{{ request()->fullUrl() }}">
+                                    <i class="fab fa-whatsapp"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    @include('modals.apply-job')
 @endsection

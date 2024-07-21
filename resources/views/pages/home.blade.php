@@ -40,7 +40,7 @@
                             <span class="input-group-icon-left-align">
                                 <i class="fa-solid fa-location-crosshairs"></i>
                             </span>
-                            <input placeholder="Capital, district, town..." style="padding-left: 40px;" type="text"
+                            <input autocomplete="off" placeholder="Capital, district, town..." style="padding-left: 40px;" type="text"
                                 name="location" class="form-control" id="search-job-location">
                         </div>
                     </div>
@@ -176,7 +176,58 @@
         <div class="d-flex justify-content-center justify-content-sm-start">
             <h5 class="h5 text-uppercase fw-bold fs-3 text-info">featured jobs</h5>
         </div>
-        <div class="col-sm-6 col-lg-4">
+        {{ $jobs }}
+        @forelse ($jobs as $job)
+            <div class="col-sm-6 col-lg-4">
+                <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card" data-target-id="1"
+                    data-target-url="{{ route('jobs.show', [$job->id]) }}">
+                    <div class="card-body">
+                        <div class="flex justify-start align-items-center">
+                            <h5 class="card-title fw-bold text-uppercase text-truncate">
+                                {{ $job->title }}
+                            </h5>
+                        </div>
+                        <div class="d-flex flex-row justify-start align-items-center">
+                            <div class="col-4">
+                                <span class="btn btn-outline-success text-nowrap px-2 py-1">{{ $job->type }}</span>
+                            </div>
+                            <div class="col-8">
+                                <span class="fw-bold text-capitalize">minimum salary:</span>
+                                {{ 'GHS ' . number_format($job->min_salary, 2, '.', ',') }}
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-row justify-center align-items-center mt-3">
+                            <div class="col-3">
+                                <img src="{{ $job->company?->image?->logo_image }}" height="55" width="55"
+                                    alt="company-logo" class="img-thumbnail img-circle">
+                            </div>
+                            <div class="col-8  flex-column align-items-center justify-center">
+                                <div class="col-auto">
+                                    <h6 class="h6 fw-semibold text-capitalize text-truncate">
+                                        {{ $job->company?->company_name }}
+                                    </h6>
+                                </div>
+                                <div class="col-auto d-flex justify-content-start align-items-center">
+                                    <i class="fas fa-map-marker-alt me-2"></i>
+                                    <span class="flex-nowrap text-nowrap text-truncate text-capitalize">
+                                        {{ $job->city?->name . ', Ghana' }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-1 d-flex flex-row justify-content-center align-items-center">
+                                <button {{ auth('candidate')->check() ? '' : 'disabled' }}
+                                    class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark" title="bookmark">
+                                    <i class="far fa-bookmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @empty
+        @endforelse
+        {{-- <div class="col-sm-6 col-lg-4">
             <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card" data-target-id="1"
                 data-target-url="{{ route('jobs.show', [1]) }}">
                 <div class="card-body">
@@ -278,7 +329,7 @@
                             <span class="btn btn-outline-success text-nowrap px-2 py-1">full time</span>
                         </div>
                         <div class="col-8">
-                            <span class="fw-bold">salary:</span> GHS 100,000
+                            <span class="fw-bold text-capitalize">minimum salary:</span> GHS 100,000
                         </div>
                     </div>
 
@@ -307,7 +358,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
     <div class="row my-4">
 
@@ -317,7 +368,7 @@
 
         @forelse ($companies as $i => $item)
             <div class="col-sm-4">
-                <div class="card shadow-2 my-2 mx-md-0 user-select-none job-card">
+                <div class="card shadow-2 my-2 mx-md-0 user-select-none">
                     <div class="card-body">
                         <div class="d-flex flex-row justify-center align-items-center mt-3">
                             <div class="col-3">
@@ -341,7 +392,7 @@
                         <div class="d-grid gap-2 mt-2">
                             <button type="button" onclick="window.open(this.id, '_blank')"
                                 id="{{ route('company.show', [$item->id]) }}" class="btn btn-secondary text-capitalize">
-                                open positions (2)
+                                open positions {{ '(' . $item->jobs->count() . ')' ?? '(' . 0 . ')' }}
                             </button>
                         </div>
 
@@ -349,9 +400,9 @@
                 </div>
             </div>
         @empty
-        <div class="col-sm-12 text-center">
-            <h5 class="h5 text-uppercase fw-bold fs-3 text-info">No companies found.</h5>
-        </div>
+            <div class="col-sm-12 text-center">
+                <h5 class="h5 text-uppercase fw-bold fs-3 text-info">No companies found.</h5>
+            </div>
         @endforelse
         {{-- <div class="col-sm-4">
             <div class="card shadow-2 my-2 mx-md-0 user-select-none job-card">

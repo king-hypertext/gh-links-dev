@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JobsController;
 
 Route::get('/',[HomeController::class, 'home'])->name('home');
 Route::middleware('auth')->group(function () {
@@ -9,6 +10,7 @@ Route::middleware('auth')->group(function () {
 });
 // Route::get('/user/:id', function)
 Route::get('/search', [HomeController::class, 'search'])->name('search');
+Route::get('/get-districts', [JobsController::class, 'getDistricts']);
 include 'jobs.php';
 include 'employer.php';
 include 'candidate.php';

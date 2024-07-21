@@ -37,7 +37,7 @@
                             </p>
                             <p class="text-muted mb-2 font-13"><strong>Joined on :</strong>
                                 <span class="ms-2 ">
-                                    {{ Carbon::parse(auth('employer')->user()->created_at)->format('l, d M Y') . ' (' . Carbon::parse(auth('employer')->user()->created_at)->longAbsoluteDiffForHumans() . ')' }}
+                                    {{ Carbon::parse(auth('employer')->user()->created_at)->format('l, d M Y') . ' (' . Carbon::parse(auth('employer')->user()->created_at)->longRelativeDiffForHumans() . ')' }}
                                 </span>
                             </p>
                         </div>
@@ -168,9 +168,10 @@
                                 </div>
                             </div> <!-- end col -->
                         </form>
+                        
                         <p class="text-muted mb-2 font-13"><strong>Last updated at :</strong>
                             <span class="ms-2 ">
-                                {{ Carbon::parse(auth('employer')->user()->updated_at)->format('l, d M Y') . ' (' . Carbon::parse(auth('employer')->user()->updated_at)->longAbsoluteDiffForHumans() . ')' }}
+                                {{ Carbon::parse(auth('employer')->user()->updated_at)->format('l, d M Y') . ' (' . Carbon::parse(auth('employer')->user()->updated_at)->longRelativeDiffForHumans() . ')' }}
                             </span>
                         </p>
                     </div>
