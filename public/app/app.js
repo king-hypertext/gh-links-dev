@@ -3,7 +3,7 @@
         var urlParams = new URLSearchParams(window.location.search);
         var activeTab = urlParams.get('tab');
         const currentUrl = window.location.href;
-        var TargetLink = document.querySelectorAll('ul#nav li a');
+        var TargetLink = document.querySelectorAll('ul#nav li a, .list-group a');
         TargetLink.forEach(e => {
             if (e.href == currentUrl) {
                 e.classList.add('active');

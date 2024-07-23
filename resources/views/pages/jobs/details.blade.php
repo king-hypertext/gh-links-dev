@@ -9,7 +9,7 @@
     <!-- Happiness is not something readymade. It comes from your own actions. - Dalai Lama -->
     <div class="container">
         <div class="row shadow-1 my-3 pb-2">
-            <div class="col-lg-6 col-sm-6 flex flex-row g-3">
+            <div class="col-lg-6 col-sm-6 d-flex flex-row g-3">
                 <div class="d-flex flex-row justify-content-start  mt-3">
                     <img src="{{ $job->company->image->logo_image }}" height="65" width="65" alt="company-logo"
                         class="img-thumbnail flex-col me-2">

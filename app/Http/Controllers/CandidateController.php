@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidate;
+use App\Models\CandidateProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,9 +12,26 @@ class CandidateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $candidate = new CandidateProfile();
+        if ($request->anyFilled(['position', 'location'])) {
+            $location = $request->location;
+            $position = $request->position;
+            $candidates = $candidate->query()->when($request->filled('position'), function ($q) use ($position) {
+                return $q->orWhere('position', 'LIKE', '%{' . $position . '}%');
+            })->when($request->filled('location'), function ($q) use ($location) {
+                return $q->orWhereHas('city', function ($q) use ($location) {
+                    $q->orWhere('name', 'LIKE', "%{$location}%")
+                        ->orWhere('capital', 'LIKE', "%{$location}%");
+                });
+            })->paginate(6);
+        } else {
+            $candidates = $candidate->newInstance(['full_name', 'gender', 'location', 'experience'])->paginate(12);
+        }
+        $page_title = 'ALL CANDIDATES';
+
+        return view('pages.candidate.index', compact('page_title', 'candidates'));
     }
 
     /**
@@ -67,11 +85,17 @@ class CandidateController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Candidate $candidate)
+    public function show(Candidate $candidate/* , $username */)
     {
-        return view('candidate.profile', compact('candidate'));
+        return view('pages.candidate.details', compact('candidate'));
     }
 
+    public function showByUsername($username, Candidate $candidate)
+    {
+        $candidate = $candidate->whereUsername($username)->first();
+        abort_unless($candidate !== null, 404);
+        return view('pages.candidate.details', compact('candidate'));
+    }
     /**
      * Show the form for editing the specified resource.
      */

@@ -5,21 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JobExperience extends Model
+class JobApplication extends Model
 {
     use HasFactory;
+    protected $table = 'job_applications';
     protected $fillable = [
+        'job_id',
         'candidate_profile_id',
-        'is_current',
-        'position',
-        'company',
-        'company_location',
-        'job_description',
-        'position',
-        'started_at',
-        'ended_at',
+        'applied_at',
+        'status'
     ];
-    protected $table = 'job_experience';
+    public function job()
+    {
+        return $this->belongsTo(Job::class,  'job_id', 'id');
+    }
     public function candidate()
     {
         return $this->belongsTo(CandidateProfile::class, 'candidate_profile_id', 'id');

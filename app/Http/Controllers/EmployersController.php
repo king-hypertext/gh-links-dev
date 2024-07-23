@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employer;
 use Illuminate\Http\Request;
+use App\Models\EmployerProfile;
 use Illuminate\Support\Facades\Auth;
 
 class EmployersController extends Controller
@@ -105,5 +106,25 @@ class EmployersController extends Controller
         $user = Employer::find(auth('employer')->id());
         // dd($employer);
         return view('employer.dashboard', compact('user'));
+    }
+    public function company(Request $request)
+    {
+        $page_title = 'ALL COMPANIES';
+        $companies = EmployerProfile::paginate(12);
+        return view('pages.company.index', compact('companies', 'page_title'));
+    }
+    public function company_details(Request $request)
+    {
+        $id = $request->company;
+        $company = EmployerProfile::query()->where('employer_id', $id)->first();
+        $page_title = strtoupper($company->company_name);
+        return view('pages.company.details', compact('company', 'page_title'));
+    }
+    public function showByCompanyName($company_name, EmployerProfile $company)
+    {
+        $company = $company->whereCompanyName($company_name)->first();
+        abort_unless($company !== null, 404);
+        $page_title = strtoupper($company->company_name);
+        return view('pages.company.details', compact('company', 'page_title'));
     }
 }

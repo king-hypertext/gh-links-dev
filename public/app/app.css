@@ -1,3 +1,12 @@
+:root {
+    --bd-bg-color: rgb(240, 240, 240);
+}
+
+.custom-bg {
+    background-color: var(--bd-bg-color);
+    opacity: 1;
+}
+
 body {
     position: relative;
     right: 0;
@@ -6,14 +15,17 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: var(--bd-bg-color);
 }
-.body-picture-bg::before{
-     filter: blur(1px);
-     -moz-filter: blur(1px);
-     -webkit-filter: blur(1px);
+
+.body-picture-bg::before {
+    filter: blur(1px);
+    -moz-filter: blur(1px);
+    -webkit-filter: blur(1px);
     -o-filter: blur(1px);
     -ms-filter: blur(1px);
 }
+
 .body-picture-bg {
     background: url(../../app/images/bd-bg.jpg);
 }
@@ -38,33 +50,39 @@ footer {
     padding: 5px;
     display: block;
 }
+
 .cursor-pointer {
-    cursor: pointer  !important;
+    cursor: pointer !important;
 }
+
 .cursor-default {
-    cursor: default !important;;
+    cursor: default !important;
+    ;
 }
+
 .app-container {
     width: 100%;
     max-width: 1024px;
     margin: 0 auto;
     position: relative;
 }
+
 .text-bg-dark {
     color: #fff !important;
     background-color: RGBA(var(--bs-dark-rgb), var(--bs-bg-opacity, 1)) !important;
 }
+
 /* search dropdown */
 .search-dropdown {
     width: 100%;
     height: 100%;
     position: fixed !important;
     top: 60px !important;
-    background:  rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
     top: 0;
     left: 0;
     z-index: 105;
-    display: none;   
+    display: none;
     outline: 0;
 }
 
@@ -105,17 +123,20 @@ footer {
     transform: translateY(-50%);
     cursor: pointer;
 }
-.input-group-icon-left-align{
+
+.input-group-icon-left-align {
     position: absolute;
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    cursor: pointer;    
+    cursor: pointer;
 }
-.form-group{
+
+.form-group {
     position: relative;
     width: 100%;
 }
+
 .form-outline {
     position: relative;
     width: 100%

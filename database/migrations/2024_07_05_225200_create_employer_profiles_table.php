@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('employer_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employer_id')->constrained('employers')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('company_name');
+            $table->string('company_name')->unique('company')->index('company_name');
             $table->longText('company_description');
             $table->foreignId('organization_id')->constrained('organizations');
             $table->foreignId('industry_id')->constrained('industries');

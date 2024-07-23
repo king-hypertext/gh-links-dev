@@ -24,8 +24,9 @@ return new class extends Migration
             $table->integer('open_vacancies');
             $table->foreignId('entry_id')->constrained('job_experience');
             $table->foreignId('city_id')->constrained('cities');
+            $table->longText('requirements');
             $table->longText('description');
-            $table->text('benefits');
+            $table->longText('benefits');
             $table->timestamps();
         });
     }

@@ -35,8 +35,9 @@ class Candidate extends Authenticatable
             'accept_terms' => 'boolean'
         ];
     }
+
     public function profile()
     {
-        return $this->hasOne(CandidateProfile::class, 'profile_id', 'id');
+        return $this->hasOne(CandidateProfile::class, 'candidate_id', 'id');
     }
 }

@@ -237,7 +237,7 @@
                                             </a>
                                         </li>
                                         <li class="side-nav-item">
-                                            <a href="{{ route('job.create') }}" class="side-nav-link py-1">
+                                            <a href="{{ route('my-jobs.create') }}" class="side-nav-link py-1">
                                                 <i class="fa-regular fa-square-plus"></i>
                                                 <span> Post a Job </span>
                                             </a>
@@ -380,8 +380,8 @@
     <script src="{{ asset('app/plugins/mdb/mdb.umd.min.js') }}"></script>
     <script src="{{ asset('app/plugins/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('app/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('app/dashboard/js/app.min.js') }}"></script>
     <script src="{{ asset('app/plugins/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('app/dashboard/js/app.min.js') }}"></script>
     <script src="{{ asset('app/dashboard/dashboard.js') }}"></script>
 </body>
 

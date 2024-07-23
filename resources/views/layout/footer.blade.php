@@ -73,7 +73,7 @@
                     <a class="link-light text-muted fw-lighter" href="{{ route('profile.show') }}">Candidate Profile</a>
                 </li>
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="">Saved Jobs</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('candidate.saved-jobs') }}">Saved Jobs</a>
                 </li>
             </ul>
         </div>
@@ -84,17 +84,17 @@
             <hr class="mt-0">
             <ul class="list-unstyled">
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="{{ route('job.create') }}">Post a Job</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('my-jobs.create') }}">Post a Job</a>
                 </li>
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="">Browse Candidates</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('candidates.index') }}">Browse Candidates</a>
                 </li>
                 <li>
                     <a class="link-light text-muted fw-lighter" href="{{ route('employer.dashboard') }}">Employers
                         Dashboard</a>
                 </li>
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="">Applications</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('job-applications.index') }}">Applications</a>
                 </li>
             </ul>
         </div>
@@ -102,7 +102,7 @@
     <hr class="m-0">
     <div class="d-flex justify-content-sm-between flex-column flex-sm-row flex-sm-nowrap  align-items-center">
         <h6 class="mt-3" style="font-size: 12px;">
-            &copy; 2024. GH-LINKS . All Rights Reserved.
+            &copy; {{ Date('Y') }}. GH-LINKS . All Rights Reserved.
         </h6>
         <style>
             ul>li>a.link-light>i {

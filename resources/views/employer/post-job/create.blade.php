@@ -20,7 +20,7 @@
             </ul>
         </div>
     @endif
-    <form id="post-job" method="POST" action="{{ route('job.store') }}">
+    <form id="post-job" method="POST" action="{{ route('my-jobs.store') }}">
         @csrf
         <input type="hidden" name="company_id" value="{{ $company_id }}">
         {{-- name, email adress, location --}}

@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('candidate_profiles', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->timestamps();
-        // });
+        Schema::table('candidate_profile', function (Blueprint $table) {
+            $table->string('location')->after('nationality');
+        });
     }
 
     /**
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('candidate_profiles');
+        Schema::table('candidate_profile', function (Blueprint $table) {
+            //
+        });
     }
 };

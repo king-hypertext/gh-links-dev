@@ -27,8 +27,18 @@
                             </h6>
                         </div>
                     </div>
-
                 </div>
+            </div>
+            <div
+                class="col-lg-6 col-sm-6 d-flex flex-row align-items-center justify-content-start justify-content-sm-end g-3">
+                <button type="button" data-is_login="{{ auth('candidate')->check() ? 1 : 0 }}" id="apply-job"
+                    class="btn btn-primary rounded-0" title="view all open jobs by {{ $company->company_name }}">
+                    <span>
+                        view open positions
+                    </span>
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </button>
+                {{-- </div> --}}
             </div>
         </div>
     </div>
@@ -112,7 +122,8 @@
                                     website:
                                 </span>
                                 <h6 class="h6 mb-0 text-black">
-                                    <a href="{{ $company->company_website }}" class="nav-link" target="_blank"
+                                    <a href="{{ $company->company_website }}"
+                                        class="nav-link link-primary link-underline-primary" target="_blank"
                                         rel="noopener noreferrer">
                                         {{ $company->company_website }}
                                     </a>

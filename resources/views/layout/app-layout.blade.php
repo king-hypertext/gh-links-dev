@@ -26,10 +26,10 @@
     <script src="{{ asset('app/plugins/jquery/jquery.js') }}"></script>
 </head>
 
-<body class="bg-white animate__animated animate__fadeIn">
+<body class="animate__animated animate__fadeIn">
     <!-- Breathing in, I calm body and mind. Breathing out, I smile. - Thich Nhat Hanh -->
     @include('layout.header')
-    <main class="container-fluid app-container">
+    <main class="container-fluid app-container bg-white shadow-2">
         @yield('content')
         @include('modals.logout')
     </main>

@@ -29,6 +29,13 @@ class EmployerProfile extends Model
     {
         return $this->belongsTo(Employer::class, 'employer_id', 'id');
     }
+    public function isProfileActive(): bool
+    {
+        if ($this->whereNotnull($this->employer_id, $this->company_name, $this->phoneNumbers())) {
+            return true;
+        };
+        return false;
+    }
     public function image()
     {
         return $this->hasOne(CompanyImage::class, 'employer_profile_id', 'id');

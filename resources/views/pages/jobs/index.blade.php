@@ -18,8 +18,8 @@
             outline: 0 !important;
         }
     </style>
-    <div class="row shadow-2 my-4 rounded-0 bg-secondary body-picture-bg bg:transparent-dark">
-        <form class="form-search" >
+    <div class="row shadow-2 mb-4 rounded-0 bg-secondary body-picture-bg bg:transparent-dark">
+        <form class="form-search">
             <div class="card-body p-1">
                 <div class="row  search-row">
                     <div class="col-sm-3 gy-2 gy-md-0 col-lg-3">
@@ -135,13 +135,15 @@
         <div class="row my-4">
             <div class="col-12 text-center">
                 @if ($jobs->currentPage() > 1)
-                    <a href="{{ url('jobs?page=' . ($jobs->currentPage() - 1)) }}" title="previous page">
+                    <a class="btn-floating btn btn-sm btn-secondary rounded"
+                        href="{{ url('companies?page=' . ($jobs->currentPage() - 1)) }}" title="previous page">
                         <i class="fas fa-angle-left"></i>
                     </a>
                 @endif
-                <span class="mx-2">Page {{ $jobs->currentPage() }} of {{ $jobs->lastPage() }}</span>
+                <span class="mx-2">Page <span class="px-2 py-1 text-bg-primary rounded-1">{{ $jobs->currentPage() }}</span> of {{ $jobs->lastPage() }}</span>
                 @if ($jobs->currentPage() < $jobs->lastPage())
-                    <a href="{{ url('jobs?page=' . ($jobs->currentPage() + 1)) }}" title="next page">
+                    <a class="btn-floating btn btn-sm btn-secondary rounded"
+                        href="{{ url('companies?page=' . ($jobs->currentPage() + 1)) }}" title="next page">
                         <i class="fas fa-angle-right"></i>
                     </a>
                 @endif

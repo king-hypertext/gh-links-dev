@@ -59,6 +59,14 @@ class JobsController extends Controller
             compact('jobs', 'search', 'page_title',  'related_jobs')
         );
     }
+    public function showByCompany($company, Request $request)
+    {
+        $company = EmployerProfile::where('company_name', $company)->first();
+        $page_title = 'OPEN VACANCIES BY ' . strtoupper($company->company_name);
+        $jobs = Job::query()->where('company_id', $company->id)->paginate(6);
+        $search = null;
+        return view('pages.jobs.index', compact('company', 'jobs','search',  'page_title'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -110,17 +118,7 @@ class JobsController extends Controller
     {
         //
     }
-    public function company_details(Request $request)
-    {
-        $id = $request->company;
-        $company = EmployerProfile::query()->where('employer_id', $id)->first();
-        $page_title = strtoupper($company->company_name);
-        return view('pages.company.details', compact('company', 'page_title'));
-    }
-    public function company(Request $request)
-    {
-        return view('pages.company.index');
-    }
+    // public function 
     public function getDistricts(Request $request)
     {
         $cityId = $request->input('city_id');

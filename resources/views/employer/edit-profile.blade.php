@@ -261,122 +261,122 @@
                 </div>
             </div>
         </div>
-
-        <!-- Tabs content -->
-        <script type="text/javascript">
-            $(document).ready(function() {
-                const $error = $('#error');
-                const $success = $('#success');
-                $('input[name="logo"]').change(function() {
-                    // alert('file uploaded');
-                    var file = this.files[0];
-                    var formData = new FormData();
-                    formData.append('logo', file);
-                    console.log(formData, file);
-                    formData.append('_token', '{{ csrf_token() }}');
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route('employer.profile.upload-images') }}',
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        xhr: function() {
-                            var xhr = new window.XMLHttpRequest();
-                            xhr.upload.addEventListener('progress', function(event) {
-                                var percent = (event.loaded / event.total * 100).toFixed(2);
-                                $('.progress#f-logo').show();
-                                $('.progress-bar').css('width', percent + '%').html(
-                                    percent + '%');
-                            }, false);
-                            return xhr;
-                        },
-                        success: function(data) {
-                            $('.uploaded-file.f-logo').show();
-                            $('#img-logo').attr('src', data.file);
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(xhr.responseText);
-                        }
-                    });
+    </div>
+    <!-- Tabs content -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            const $error = $('#error');
+            const $success = $('#success');
+            $('input[name="logo"]').change(function() {
+                // alert('file uploaded');
+                var file = this.files[0];
+                var formData = new FormData();
+                formData.append('logo', file);
+                console.log(formData, file);
+                formData.append('_token', '{{ csrf_token() }}');
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('employer.profile.upload-images') }}',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    xhr: function() {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function(event) {
+                            var percent = (event.loaded / event.total * 100).toFixed(2);
+                            $('.progress#f-logo').show();
+                            $('.progress-bar').css('width', percent + '%').html(
+                                percent + '%');
+                        }, false);
+                        return xhr;
+                    },
+                    success: function(data) {
+                        $('.uploaded-file.f-logo').show();
+                        $('#img-logo').attr('src', data.file);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
                 });
-                $('input[name="banner"]').change(function() {
-                    // alert('file uploaded');
-                    var file = this.files[0];
-                    var formData = new FormData();
-                    formData.append('banner', file);
-                    formData.append('_token', '{{ csrf_token() }}');
-                    console.log(formData, file);
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route('employer.profile.upload-images') }}',
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        xhr: function() {
-                            var xhr = new window.XMLHttpRequest();
-                            xhr.upload.addEventListener('progress', function(event) {
-                                var percent = (event.loaded / event.total * 100).toFixed(2);
-                                $('.progress#banner').show();
-                                $('.progress-bar').show().css('width', percent + '%').html(
-                                    percent + '%');
-                            }, false);
-                            return xhr;
-                        },
-                        success: function(data) {
-                            $('.uploaded-file.banner').append('<p>File uploaded successfully</p>');
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(xhr.responseText);
-                        }
-                    });
+            });
+            $('input[name="banner"]').change(function() {
+                // alert('file uploaded');
+                var file = this.files[0];
+                var formData = new FormData();
+                formData.append('banner', file);
+                formData.append('_token', '{{ csrf_token() }}');
+                console.log(formData, file);
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('employer.profile.upload-images') }}',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    xhr: function() {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function(event) {
+                            var percent = (event.loaded / event.total * 100).toFixed(2);
+                            $('.progress#banner').show();
+                            $('.progress-bar').show().css('width', percent + '%').html(
+                                percent + '%');
+                        }, false);
+                        return xhr;
+                    },
+                    success: function(data) {
+                        $('.uploaded-file.banner').append('<p>File uploaded successfully</p>');
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
                 });
-                // Submit form
-                const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin me-2"></span>';
+            });
+            // Submit form
+            const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin me-2"></span>';
 
-                $('form#comp_info').on('submit', function(e) {
-                    // alert('form data loaded');
-                    $('form#comp_info :submit').addClass('disabled').html($loader + 'processing...');
-                    e.preventDefault();
-                    var formData = $(this).serialize();
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route('employer.company-profile.save') }}',
-                        data: formData,
-                        // cache: false,
-                        // contentType: false,
-                        // processData: false,
-                        success: function(data) {
-                            if (data.success) {
-                                window.location.href = data.next_tab;
-                            }
-                        },
-                        error: function(error) {
-                            $("html, body").animate({
-                                scrollTop: 0
-                            }, 10);
-                            console.log('Error:', error);
-                            if (error.status === 422) {
-                                const response = error.responseJSON.errors;
-                                var ErrorList = '';
-                                Object.keys(response).map(error => {
-                                    ErrorList += `<li>${response[error][0]}</li>`;
-                                });
-                                const errorMessage = `
+            $('form#comp_info').on('submit', function(e) {
+                // alert('form data loaded');
+                $('form#comp_info :submit').addClass('disabled').html($loader + 'processing...');
+                e.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('employer.company-profile.save') }}',
+                    data: formData,
+                    // cache: false,
+                    // contentType: false,
+                    // processData: false,
+                    success: function(data) {
+                        if (data.success) {
+                            window.location.href = data.next_tab;
+                        }
+                    },
+                    error: function(error) {
+                        $("html, body").animate({
+                            scrollTop: 0
+                        }, 10);
+                        console.log('Error:', error);
+                        if (error.status === 422) {
+                            const response = error.responseJSON.errors;
+                            var ErrorList = '';
+                            Object.keys(response).map(error => {
+                                ErrorList += `<li>${response[error][0]}</li>`;
+                            });
+                            const errorMessage = `
                                 <ul class="list-unstyled mb-0">
                                     ${ErrorList}
                                 </ul>`;
-                                $error.show().html(errorMessage);
-                            } else if (error.status === 403) {
-                                $error.show().text(error.responseText);
-                            } else if (error.status === 500) {
-                                $error.show().text(error.statusText);
-                            }
-                            $('form#comp_info :submit').removeClass('disabled').text('Save');
+                            $error.show().html(errorMessage);
+                        } else if (error.status === 403) {
+                            $error.show().text(error.responseText);
+                        } else if (error.status === 500) {
+                            $error.show().text(error.statusText);
                         }
-                    });
+                        $('form#comp_info :submit').removeClass('disabled').text('Save');
+                    }
                 });
             });
-        </script>
-    @endsection
+        });
+    </script>
+@endsection

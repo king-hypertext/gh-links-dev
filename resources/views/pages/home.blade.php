@@ -176,7 +176,6 @@
         <div class="d-flex justify-content-center justify-content-sm-start">
             <h5 class="h5 text-uppercase fw-bold fs-3 text-info">featured jobs</h5>
         </div>
-        {{ $jobs }}
         @forelse ($jobs as $job)
             <div class="col-sm-6 col-lg-4">
                 <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card" data-target-id="1"

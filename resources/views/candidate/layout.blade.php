@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>GH-LINKS DASHBOARD</title>
+    <title>GH-LINKS Profile </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="" name="author">
 
@@ -13,7 +13,13 @@
 
     <!-- Theme Config Js -->
     <link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.theme.css') }}" />
+    <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.css') }}" />
+    <link rel="stylesheet" href="{{ asset('app/plugins/alert/sweetalert2.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('app/plugins/select2/css/select2.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/mdb/mdb.min.css') }}">
+    <script src="{{ asset('app/plugins/alert/sweetalert2.all.min.js') }}"></script>
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css">
     <script src="{{ asset('app/plugins/jquery/external/jquery.js') }}"></script>
     <style>
@@ -21,7 +27,7 @@
             background-color: #fbfbfb;
         }
 
-        @media (min-width: 991.98px) {
+        @media (min-width: 789.98px) {
             main {
                 padding-left: 240px;
             }
@@ -41,11 +47,11 @@
             z-index: 600;
         }
 
-        @media (max-width: 991.98px) {
+        /* @media (max-width: 100.98px) {
             .sidebar {
                 width: 100%;
             }
-        }
+        } */
 
         .sidebar .active {
             border-radius: 5px;
@@ -65,6 +71,14 @@
         #main-navbar {
             z-index: 606;
         }
+
+        .tox-statusbar__branding {
+            display: none !important;
+        }
+
+        .tox-promotion {
+            visibility: hidden !important;
+        }
     </style>
 </head>
 
@@ -72,17 +86,21 @@
     <!--Main Navigation-->
     <header>
         <!-- Sidebar -->
-        <nav id="sidebarMenu" class="  sidebar bg-white">
+        <nav id="sidebarMenu" class="sidebar bg-white">
             <div class="position-sticky fixed-top">
                 <div class="list-group list-group-flush mx-3 mt-4">
                     <h6 class="h6 text-uppercase fw-semibold">candidate dashboard</h6>
-                    <a href="#" class="list-group-item list-group-item-action text-capitalize py-2 ripple active">
+                    <a href="{{ route('profile.show') }}" class="list-group-item list-group-item-action text-capitalize py-2 ripple">
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>overview</span>
+                    </a>
+                    <a href="{{ route('candidate.profile.create') }}"
+                        class="list-group-item list-group-item-action text-capitalize py-2 ripple">
+                        <i class="far fa-user fa-fw me-3"></i><span>Profile Setup</span>
                     </a>
                     <a href="#" class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
                             class="fas fa-suitcase fa-fw me-3"></i><span>applied jobs</span></a>
-                    <a href="#" class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
-                            class="fas fa-bookmark fa-fw me-3"></i><span>saved jobs</span></a>
+                    <a href="{{ route('candidate.saved-jobs') }}" class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
+                            class="far fa-bookmark fa-fw me-3"></i><span>saved jobs</span></a>
                     <a href="#" class="list-group-item list-group-item-action text-capitalize py-2 ripple">
                         <i class="fas fa-gear fa-fw me-3"></i><span>settings</span>
                     </a>
@@ -149,15 +167,82 @@
     <!--Main Navigation-->
 
     <!--Main layout-->
-    <main style="margin-top: 58px;">
-        <div class="container pt-4">
+    <main>
+        <div class="container pt-2">
             @yield('content')
-
         </div>
     </main>
+    @include('modals.logout')
+    <script type="text/javascript">
+        const showSuccessAlert = Swal.mixin({
+            position: 'top-right',
+            toast: true,
+            timer: 6500,
+            showCloseButton: true,
+            showConfirmButton: false,
+            timerProgressBar: false,
+            onOpen: () => {
+                setInterval(() => {
+                    Swal.close()
+                }, 6500);
+            },
+            showClass: {
+                popup: `
+                    animate__animated
+                    animate__fadeInDown
+                    animate__faster
+                    `
+            },
+        });
+    </script>
+    @if (session('success'))
+        <script type="text/javascript">
+            showSuccessAlert.fire({
+                icon: 'success',
+                text: '{{ session('success') }}',
+                padding: '15px',
+                width: 'auto'
+            });
+        </script>
+    @endif
+    @if (session('error'))
+        <script type="text/javascript">
+            showSuccessAlert.fire({
+                icon: 'error',
+                text: '{{ session('error') }}',
+                padding: '15px',
+                width: 'auto'
+            });
+        </script>
+    @endif
+    @if (session('warning'))
+        <script type="text/javascript">
+            showSuccessAlert.fire({
+                icon: 'warning',
+                text: '{{ session('warning') }}',
+                padding: '15px',
+                width: 'auto'
+            });
+        </script>
+    @endif
+    @if (session('info'))
+        <script type="text/javascript">
+            showSuccessAlert.fire({
+                icon: 'info',
+                text: '{{ session('info') }}',
+                padding: '15px',
+                width: 'auto'
+            });
+        </script>
+    @endif
     <!--Main layout-->
     <script src="{{ asset('app/plugins/bootstrap/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('app/plugins/mdb/mdb.umd.min.js') }}"></script>
+    <script src="{{ asset('app/plugins/selectize/selectize.min.js') }}"></script>
+    <script src="{{ asset('app/plugins/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('app/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('app/plugins/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('app/app.js') }}"></script>
 </body>
 
 </html>

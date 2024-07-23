@@ -1,5 +1,5 @@
     <!-- If you do not have a consistent goal in life, you can not live it in a consistent way. - Marcus Aurelius -->
-    <header class="d-flex w-100 justify-content-center bg-white animate__animated" style="z-index: 1040;">
+    <header class="d-flex w-100 justify-content-center shadow animate__animated" style="z-index: 1040;">
         <div style="z-index: 1045;"
             class="app-container bg-secondary py-2 d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center justify-content-sm-between justify-content-start">
@@ -54,13 +54,13 @@
                         @endauth
                         <li>
                             <a class="dropdown-item" href="{{ route('home') }}">
-                                <i class="fa-solid fa-house"></i>
+                                <i class="fa fa-house"></i>
                                 <span>Home</span>
                             </a>
                         </li>
                         <li class="d-md-none">
                             <a id="app-search" class="dropdown-item text-capitalize">
-                                <i class="fas fa-search"></i>
+                                <i class="fa fa-search"></i>
                                 <span>
                                     search
                                 </span>
@@ -68,19 +68,25 @@
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('jobs.index') }}">
-                                <i class="fa-solid fa-suitcase"></i>
+                                <i class="fa fa-suitcase"></i>
                                 <span>Find Jobs</span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('company.index') }}">
-                                <i class="fa-solid fa-suitcase"></i>
+                                <i class="far fa-address-book"></i>
                                 <span>Find Employers</span>
                             </a>
                         </li>
                         <li>
+                            <a class="dropdown-item" href="{{ route('candidates.index') }}">
+                                <i class="fa fa-user-group"></i>
+                                <span>Find Candidates</span>
+                            </a>
+                        </li>
+                        <li>
                             <a class="dropdown-item" href="#">
-                                <i class="fa-solid fa-phone"></i>
+                                <i class="fa fa-phone"></i>
                                 <span>Customer Support</span>
                             </a>
                         </li>
