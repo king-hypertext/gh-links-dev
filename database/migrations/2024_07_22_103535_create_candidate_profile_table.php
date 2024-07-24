@@ -18,12 +18,14 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('full_name')->virtualAs('CONCAT(first_name, " ", last_name)');
             $table->enum('gender', ['male', 'female']);
-            $table->string('website_url');
+            $table->string('website_url')->nullable();
             $table->enum('marital_status', ['single', 'married', 'divorced']);
-            $table->string('nationality')->default('ghanaain');
+            $table->string('nationality')->default('ghanaian');
             $table->date('date_of_birth');
             $table->string('experience');
-            $table->longText('biography');
+            $table->string('profile_picture');
+            $table->longText('biography')->nullable();
+            // $table->string('cv')->nullable();
             $table->timestamps();
         });
     }

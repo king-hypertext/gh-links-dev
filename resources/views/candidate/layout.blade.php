@@ -56,6 +56,8 @@
         .sidebar .active {
             border-radius: 5px;
             box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+            /* left: 0 !important;
+            transition: all 0.5s ease-in-out; */
         }
 
         .sidebar-sticky {
@@ -66,6 +68,22 @@
             overflow-x: hidden;
             overflow-y: auto;
             /* Scrollable contents if viewport is shorter than content. */
+        }
+
+        @media(max-width: 768px) {
+            .sidebar {
+                left: -240px;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .sidebar.active {
+                left: 0 !important;
+                transition: all 0.3s ease-in-out;
+            }
+
+            main {
+                padding-left: 0 !important;
+            }
         }
 
         #main-navbar {
@@ -90,7 +108,8 @@
             <div class="position-sticky fixed-top">
                 <div class="list-group list-group-flush mx-3 mt-4">
                     <h6 class="h6 text-uppercase fw-semibold">candidate dashboard</h6>
-                    <a href="{{ route('profile.show') }}" class="list-group-item list-group-item-action text-capitalize py-2 ripple">
+                    <a href="{{ route('profile.show') }}"
+                        class="list-group-item list-group-item-action text-capitalize py-2 ripple">
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>overview</span>
                     </a>
                     <a href="{{ route('candidate.profile.create') }}"
@@ -99,7 +118,8 @@
                     </a>
                     <a href="#" class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
                             class="fas fa-suitcase fa-fw me-3"></i><span>applied jobs</span></a>
-                    <a href="{{ route('candidate.saved-jobs') }}" class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
+                    <a href="{{ route('candidate.saved-jobs') }}"
+                        class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
                             class="far fa-bookmark fa-fw me-3"></i><span>saved jobs</span></a>
                     <a href="#" class="list-group-item list-group-item-action text-capitalize py-2 ripple">
                         <i class="fas fa-gear fa-fw me-3"></i><span>settings</span>
@@ -112,19 +132,21 @@
         <!-- Navbar -->
         <nav id="main-navbar" class="navbar  navbar-light bg-white position-sticky top-0">
             <!-- Container wrapper -->
-            <div class="container-fluid mx-3">
+            <div class="container-fluid mx-md-3 mx-0">
                 <!-- Toggle button -->
-                {{-- <button data-mdb-button-init class="navbar-toggler" type="button" data-mdb-collapse-init
-                    data-mdb-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <i class="fas fa-bars"></i>
-                </button> --}}
+                <div class="d-flex flex-row align-items-center">
+                    <button data-mdb-button-init onclick="document.querySelector('.sidebar').classList.toggle('active')"
+                        class="navbar-toggler d-md-none" type="button" aria-controls="sidebarMenu"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                    </button>
 
-                <!-- Brand -->
-                <a class="navbar-brand text-uppercase" href="#">
-                    <img src="{{ asset('icon.svg') }}" height="25" alt="MDB Logo" loading="lazy" />
-                    gh-links
-                </a>
+                    <!-- Brand -->
+                    <a class="navbar-brand text-uppercase" href="{{ route('home') }}">
+                        <img src="{{ asset('icon.svg') }}" height="25" alt="MDB Logo" loading="lazy" />
+                        gh-links
+                    </a>
+                </div>
 
                 <!-- Right links -->
                 <ul class="d-flex flex-row me-0 me-sm-3 mb-0">
@@ -132,7 +154,7 @@
                         <a href="#"
                             class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ /* auth('candidate')->user()->profile->profile_image */ asset('icons/svgs/solid/user.svg') }}"
+                            <img src="{{ auth('candidate')->user()->profile->profile_picture ?? asset('icons/svgs/solid/user.svg') }}"
                                 alt="" width="32" height="32" class="shadow-2 rounded-circle me-2">
                             <strong>{{ auth('candidate')->user()?->username }}</strong>
                         </a>
@@ -168,7 +190,7 @@
 
     <!--Main layout-->
     <main>
-        <div class="container pt-2">
+        <div class="container-fluid pt-2">
             @yield('content')
         </div>
     </main>

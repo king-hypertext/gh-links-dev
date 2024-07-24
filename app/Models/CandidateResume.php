@@ -10,10 +10,11 @@ class CandidateResume extends Model
     use HasFactory;
     protected $table = 'candidate_resume';
     protected $fillable =[
-        'candidate_id',
-        'resume_name',
+        'candidate_profile_id',
+        'name',
+        'file'
     ];
-    public function candidate(){
-        return $this->belongsTo(CandidateProfile::class, 'candidate_id', 'id');
+    public function profile(){
+        return $this->belongsTo(CandidateProfile::class, 'candidate_profile_id', 'id');
     }
 }

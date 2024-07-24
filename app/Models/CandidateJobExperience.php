@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CandidateJobExperience extends Model
 {
     use HasFactory;
-    protected $table = 'job_experience';
+    protected $table = 'candidate_job_experience';
     protected $fillable =[
         'candidate_profile_id',
         'is_current',
@@ -17,10 +17,10 @@ class CandidateJobExperience extends Model
         'position',
         'job_description',
         'company_name',
-        'location',
+        'job_location',
     ];
 
-    public function candidate()
+    public function profile()
     {
         return $this->belongsTo(Candidate::class, 'candidate_profile_id', 'id');
     }

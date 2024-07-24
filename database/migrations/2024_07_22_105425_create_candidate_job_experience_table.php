@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('position')->nullable();
             $table->text('job_description')->nullable();
             $table->string('company_name')->nullable();
-            $table->string('location')->nullable();
+            $table->string('job_location')->nullable();
             $table->timestamps();
         });
     }

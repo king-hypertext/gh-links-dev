@@ -26,7 +26,7 @@ class CandidateProfile extends Model
     ];
     public function isProfileCompleted(): bool
     {
-        if ($this->whereNotnull($this->first_name, $this->last_name, $this->profile_picture, $this->profile(), $this->resume(), $this->education())) {
+        if ($this->whereNotnull($this->first_name, $this->last_name, $this->profile_picture, $this->resume(), $this->education())) {
             return false;
         }
         return true;
@@ -37,7 +37,7 @@ class CandidateProfile extends Model
     // }
     public function resume()
     {
-        return $this->belongsTo(CandidateResume::class, 'id', 'candidate_profile_id');
+        return $this->hasOne(CandidateResume::class,  'candidate_profile_id', 'id');
     }
     public function candidate()
     {
@@ -49,7 +49,7 @@ class CandidateProfile extends Model
     // }
     public function education()
     {
-        return $this->belongsTo(CandidateEducationDetail::class, 'candidate_profile_id', 'id');
+        return $this->hasOne(CandidateEducationDetail::class, 'candidate_profile_id', 'id');
     }
     public function job_applications()
     {
@@ -57,6 +57,6 @@ class CandidateProfile extends Model
     }
     public function job_experience()
     {
-        return $this->hasOne(JobExperience::class, 'candidate_profile_id', 'id');
+        return $this->hasOne(CandidateJobExperience::class, 'candidate_profile_id', 'id');
     }
 }
