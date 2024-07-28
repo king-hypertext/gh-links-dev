@@ -15,23 +15,26 @@ class CandidateController extends Controller
     public function index(Request $request)
     {
         $candidate = new CandidateProfile();
+        $search = false;
         if ($request->anyFilled(['position', 'location'])) {
             $location = $request->location;
             $position = $request->position;
+            $search = true;
             $candidates = $candidate->query()->when($request->filled('position'), function ($q) use ($position) {
-                return $q->orWhere('position', 'LIKE', '%{' . $position . '}%');
+                return $q->orWhere('job_role', 'LIKE', '%{' . $position . '}%');
             })->when($request->filled('location'), function ($q) use ($location) {
-                return $q->orWhereHas('city', function ($q) use ($location) {
-                    $q->orWhere('name', 'LIKE', "%{$location}%")
-                        ->orWhere('capital', 'LIKE', "%{$location}%");
-                });
-            })->paginate(6);
+                return
+                    // $q->orWhereHas('city', function ($q) use ($location) {
+                    $q->orWhere('location', 'LIKE', "%{$location}%");
+                // ->orWhere('capital', 'LIKE', "%{$location}%");
+                // });
+            })->paginate(6, ['candidate_id', 'profile_picture', 'id', 'full_name', 'job_role', 'gender', 'location', 'experience']);
         } else {
-            $candidates = $candidate->newInstance(['full_name', 'gender', 'location', 'experience'])->paginate(12);
+            $candidates = $candidate->select(['candidate_id', 'profile_picture', 'id', 'full_name', 'job_role', 'gender', 'location', 'experience'])->paginate(12);
         }
         $page_title = 'ALL CANDIDATES';
-
-        return view('pages.candidate.index', compact('page_title', 'candidates'));
+        // dd($candidates);
+        return view('pages.candidate.index', compact('page_title', 'candidates', 'search'));
     }
 
     /**
@@ -87,14 +90,16 @@ class CandidateController extends Controller
      */
     public function show(Candidate $candidate/* , $username */)
     {
-        return view('pages.candidate.details', compact('candidate'));
+        $page_title = strtoupper($candidate->username);
+        return view('pages.candidate.details', compact('candidate', 'page_title'));
     }
 
     public function showByUsername($username, Candidate $candidate)
     {
         $candidate = $candidate->whereUsername($username)->first();
         abort_unless($candidate !== null, 404);
-        return view('pages.candidate.details', compact('candidate'));
+        $page_title = strtoupper($candidate->username);
+        return view('pages.candidate.details', compact('candidate', 'page_title'));
     }
     /**
      * Show the form for editing the specified resource.

@@ -120,31 +120,44 @@
             }
         });
         const token = $('[name="_token"]').attr('content');
-        var cards = $('.job-card'), bookmarks = $(cards).find('.bookmark');
+        var cards = $('.job-card'), bookmarks = $('button.bookmark');
         $.each(cards, (i, card) => {
             const targetUrl = $(card).data('target-url');
             card.addEventListener('click', () => {
                 window.open(targetUrl);
             });
         });
-        $.each(bookmarks, (i, bookmark) => {
-            const targetId = $(bookmark).closest('.job-card').data('target-id');
-            bookmark.addEventListener('click', (e) => {
-                e.stopPropagation();
+        $.each(bookmarks, (index, bookmark) => {
+            const job_id = $(bookmark).closest('.job-card').data('job-id');
+            const user_id = $(bookmark).closest('.job-card').data('user-id');
+            $(bookmark).on('click', (event) => {
+                event.stopPropagation();
+                let btn_icon = event.currentTarget.firstElementChild;
+                console.log(btn_icon.classList);
+                btn_icon.classList.toggle('far');
+                btn_icon.classList.toggle('fa');
+                const tooltip = new bootstrap.Tooltip(event.currentTarget);
+
                 // perform http request to bookmark job
-                // $.ajax('', {
-                //     type: 'POST',
-                //     data: {
-                //         _token: token,
-                //         job_id: targetId,
-                //     },
-                //     succes: res => {
-                //         console.log(res);
-                //     },
-                //     error: err => {
-                //         console.log(err);
-                //     }
-                // });
+                $.ajax('/candidate/save_job', {
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        job_id: job_id,
+                        user_id: user_id,
+                    },
+                    succes: res => {
+                        console.log(res);
+                        event.attribute('title', res.message);
+                        tooltip.show();
+                        setTimeout(() => {
+                            tooltip.hide();
+                        }, 2000);
+                    },
+                    error: err => {
+                        console.log(err);
+                    }
+                });
             });
         });
         $.each($('button.copy-url'), (i, button) => {

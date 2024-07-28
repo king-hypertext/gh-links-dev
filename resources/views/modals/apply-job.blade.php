@@ -25,7 +25,7 @@
                         <label for="subject" class="form-label text-black">Application Cover Letter</label>
                         <textarea required class="form-control" name="subject" id="subject" rows="3">
                             <p class="text-muted">
-                                write down your biography here, let the employer know who you are, and what you can do....
+                                write down your cover letter here, let the employee know who you are, and what you can do....
                             </p>
                     </textarea>
                     </div>
@@ -72,6 +72,9 @@
                             
                             btn.html('send <i class="fas fa-arrow-right fa-send ms-2"></i>')
                                 .removeClass('disabled');
+                                if (response.statusCode == 422) {
+                                    alert(response.message);
+                                }
                         }
                     });
                 }

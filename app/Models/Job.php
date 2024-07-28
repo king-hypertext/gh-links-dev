@@ -39,7 +39,7 @@ class Job extends Model
     }
     public function salary()
     {
-        return $this->hasOne(Salary::class, 'id','salary_id');
+        return $this->hasOne(Salary::class, 'id', 'salary_id');
     }
     public function job_experience()
     {
@@ -54,5 +54,16 @@ class Job extends Model
     // public function companyProfile(){
     //     return $this->belongsTo(CompanyProfile::class);
     // }
-
+    public function candidate()
+    {
+        return $this->belongsTo(CandidateProfile::class,  'candidate_profile_id','id');
+    }
+    // public function is_saved(): bool
+    // {
+    //     if (auth('candidate')->check() && auth('candidate')->user()->profile->is_job_saved()) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
+    // public function 
 }

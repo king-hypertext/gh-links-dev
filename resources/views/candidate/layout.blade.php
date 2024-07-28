@@ -116,7 +116,7 @@
                         class="list-group-item list-group-item-action text-capitalize py-2 ripple">
                         <i class="far fa-user fa-fw me-3"></i><span>Profile Setup</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
+                    <a href="{{ route('candidate.application.index') }}" class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
                             class="fas fa-suitcase fa-fw me-3"></i><span>applied jobs</span></a>
                     <a href="{{ route('candidate.saved-jobs') }}"
                         class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i

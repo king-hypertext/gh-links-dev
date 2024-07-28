@@ -6,6 +6,8 @@ use App\Models\Candidate;
 use App\Models\CandidateEducationDetail;
 use App\Models\CandidateJobExperience;
 use App\Models\CandidateProfile;
+use App\Models\CandidateResume;
+use App\Models\SavedJob;
 use Illuminate\Http\Request;
 
 class CandidateProfileController extends Controller
@@ -37,7 +39,7 @@ class CandidateProfileController extends Controller
         $request->whenHas('basic_info', function () use ($candidate, $request, $id) {
             $request->validate([
                 'gender' => 'required|in:male,female',
-                'profile_picture' => 'required|image|mimes:png,jpg,jpeg,webp',
+                'profile_picture' => 'nullable|image|mimes:png,jpg,jpeg,webp',
                 'first_name' => 'required|string',
                 'last_name' => 'required|string',
                 'website_url' => 'nullable|active_url',
@@ -45,15 +47,13 @@ class CandidateProfileController extends Controller
                 'location' => 'required|string',
                 'date_of_birth' => 'required|date',
                 'experience' => 'required|string',
-                'biography' => 'nullable|string',
+                'job_role' => 'required|string',
             ]);
-            $url = redirect()->back()->with('success', 'Profile updated successfully')->getTargetUrl();
-            $profile_picture = url('/storage/' . $request->file('profile_picture')->store('candidates/image', 'public'));
+            $profile_picture = $request->file('profile_picture') ? url('/storage/' . $request->file('profile_picture')->store('candidates/image', 'public')) : null;
             if ($candidate->exists()) {
                 $candidate->first()->update(
                     [
                         'gender' => $request->gender,
-                        'profile_picture' => $profile_picture,
                         'first_name' => $request->first_name,
                         'last_name' => $request->last_name,
                         'website_url' => $request->website_url,
@@ -61,10 +61,15 @@ class CandidateProfileController extends Controller
                         'location' => $request->location,
                         'date_of_birth' => $request->date_of_birth,
                         'experience' => $request->experience,
-                        'biography' => null,
+                        'job_role' => $request->job_role,
+                        // 'biography' => null,
                     ]
                 );
-                return response(['success' => true, 'url' => $url]);
+                $request->file('profile_picture') ?
+                    $candidate->first()->update([
+                        'profile_picture' => $profile_picture,
+                    ]) : null;
+                // return response(['success' => true, 'url' => $url]);
             } else {
                 CandidateProfile::create([
                     'candidate_id' => $id,
@@ -77,13 +82,22 @@ class CandidateProfileController extends Controller
                     'location' => $request->location,
                     'date_of_birth' => $request->date_of_birth,
                     'experience' => $request->experience,
-                    'biography' => 'not filled',
+                    'job_role' => $request->job_role,
+                    // 'biography' => 'not filled',
                 ]);
             }
-            return response(['success' => true, 'url' => $url]);
         });
+
         $request->whenHas('edu_info', function () use ($request, $candidate) {
             if ($candidate->exists()) {
+                $request->validate([
+                    'candidate_profile_id',
+                    'institution_name',
+                    'institution_location',
+                    'level',
+                    'started_at',
+                    'ended_at',
+                ]);
                 CandidateEducationDetail::updateOrCreate([
                     'candidate_profile_id' => $candidate->first()->id,
                 ], [
@@ -94,8 +108,9 @@ class CandidateProfileController extends Controller
                     'started_at' => $request->started_at,
                     'ended_at' => $request->ended_at,
                 ]);
-            }
-            return back()->with('success', 'Profile updated successfully');
+                return back()->with('success', 'Profile updated successfully');
+            } else
+                return back()->with('incomplete', 'Please update your basic information section before updating your Educational information');
         });
         $request->whenHas('job_exp', function () use ($request, $candidate) {
             $request->validate([
@@ -120,7 +135,8 @@ class CandidateProfileController extends Controller
                     'job_location' => $request->job_location,
                 ]);
                 return back()->with('success', 'Profile updated successfully');
-            }
+            } else
+                return back()->with('incomplete', 'Please update your basic information section before updating your Job Experience information');
         });
         $request->whenHas('biography', function () use ($request, $candidate) {
             $request->validate([
@@ -128,33 +144,33 @@ class CandidateProfileController extends Controller
             ]);
             if ($candidate->exists()) {
                 $candidate->first()->update(['biography' => $request->biography]);
-            } else {
-                CandidateProfile::create([
-                    'candidate_profile_id' => $candidate->first()->id,
-                ], [
-                    'candidate_profile_id' => $candidate->first()->id,
-                    'biography' => $request->biography,
-                ]);
-            }
+            } else
+                return back()->with('incomplete', 'Please update your basic information section before updating your Biography');
         });
-        $request->whenHas('cv', function () use ($request, $candidate) {
+        $request->whenHas('cv_upload', function () use ($request, $candidate) {
             $request->validate([
                 'cv' => 'required|file|mimes:pdf',
             ]);
             $cv = $request->file('cv');
-            $cv_path = url('/storage/' . $cv->storeAs('candidates/cv', $candidate->first()->full_name . '.' . now()->format('Y.m.d.H.i') . '.pdf', 'public'));
             if ($candidate->exists()) {
-                $candidate->first()->update(['cv' => $cv_path]);
-            } else {
-                CandidateProfile::updateOrCreate([
+                if ($candidate->first()->resume->file) {
+                    // dd(public_path(str_ireplace(url(''), '', $candidate->first()->resume->file)));
+                    unlink(public_path(str_ireplace(url(''), '', $candidate->first()->resume->file)));
+                }
+                $cv_path = url('/storage/' . $cv->storeAs('candidates/cv', $request->name . '.' . $candidate->first()->id . '.' . now()->format('Y.m.d.H.i') . '.pdf', 'public'));
+                CandidateResume::updateOrCreate([
                     'candidate_profile_id' => $candidate->first()->id,
                 ], [
                     'candidate_profile_id' => $candidate->first()->id,
-                    'cv' => $cv_path,
+                    'name' => $request->name . '.' . $candidate->first()->id . '.' . now()->format('Y.m.d.H.i'),
+                    'file' => $cv_path
                 ]);
-            }
+            } else
+                return back()->with('incomplete', 'Please update your basic information section before uploading your CV file.');
         });
-        return back()->with('success', 'Profile updated successfully');
+        $url = redirect()->route('candidate.profile.create')->with('success', 'Profile updated successfully')->getTargetUrl();
+        return $request->ajax() ? response(['success' => true, 'url' => $url]) :
+            back()->with('success', 'Profile updated successfully');
     }
 
     /**
@@ -191,6 +207,23 @@ class CandidateProfileController extends Controller
     public function save_jobs(CandidateProfile $candidate)
     {
         $page_title = 'SAVED JOBS';
-        return view('candidate.saved-jobs', compact('page_title', 'candidate'));
+        $candidate = $candidate->where('candidate_id', auth('candidate')->id())->first();
+        $saved_jobs = $candidate->saved_jobs;
+        return view('candidate.saved-jobs', compact('page_title', 'candidate', 'saved_jobs'));
+    }
+    public function save_job(Request $request)
+    {
+        auth('candidate')->user()->profile->saved_jobs()->create([
+            'job_id' => $request->job_id,
+            'candidate_profile_id' => $request->user_id
+        ]);
+        return response(['success' => true, 'message' => 'job saved successfully']);
+    }
+    public function applied_jobs(CandidateProfile $candidate)
+    {
+        $page_title = 'APPLIED JOBS';
+        $candidate = auth('candidate')->user()->profile;
+        $applied_jobs = $candidate->applied_jobs;
+        return view('candidate.applied-jobs', compact('page_title', 'candidate', 'applied_jobs'));
     }
 }

@@ -61,7 +61,7 @@ class AuthController extends Controller
         }
         if (Auth::guard('candidate')->attempt($credentials)) {
             $request->session()->regenerate();
-            $redirect_url = $request->to ?
+            $redirect_url = $request->filled('to') ?
                 redirect()->to($url)->with('success', 'You have successfully log in')->getTargetUrl() :
                 redirect()->intended()->with('success', 'You have successfully log in')->getTargetUrl();
             return

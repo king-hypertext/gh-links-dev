@@ -4,18 +4,22 @@
         $candidate = auth('candidate')->user();
     @endphp
     <div class="container">
-        @session('success')
+        <h5 class="h5 text-uppercase fw-semibold">
+            my profile
+        </h5>
+        {{-- @session('success')
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <strong>Congratulations!</strong> {{ session('success') }}
         </div>
-        @endif
+        @endif --}}
         @session('incomplete')
         <div class="alert alert-info alert-dismissible fade show" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <strong>Profile: </strong> {{ session('incomplete') }}
         </div>
         @endif
+
         @if ($errors->any())
             <div class="alert alert-danger text-start" role="alert">
                 <ul class="list-unstyled mb-0">
@@ -86,6 +90,11 @@
                     name="website_url" id="website_url" />
             </div>
             <div class="col-sm-4">
+                <label for="job_role">Your Role / Position <span class="text-danger fw-bold">*</span></label>
+                <input required type="text" class="form-control" name="job_role" placeholder="e.g. graphic designer"
+                    value="{{ $candidate->profile?->job_role }}" id="job_role" />
+            </div>
+            <div class="col-sm-4">
                 <label for="started_at">Work Experience <span class="text-danger fw-bold">*</span></label>
                 <select required name="experience" id="experience" class="form-select">
                     <option value="">work experience</option>
@@ -102,9 +111,11 @@
                 </select>
             </div>
             <div class="col-sm-6">
-                <label for="profile_picture">Upload your profile picture <span class="text-danger fw-bold">*</span></label>
-                <input required type="file" class="form-control form-file-input" name="profile_picture"
-                    id="profile_picture" accept=".png,.jpeg,.jpg,.webp" />
+                <label for="profile_picture">Upload your profile picture <span
+                        class="text-danger fw-bold">*</span></label>
+                <input {{ $candidate->profile?->profile_picture == null ? 'required' : '' }} type="file"
+                    class="form-control form-file-input" name="profile_picture" id="profile_picture"
+                    accept=".png,.jpeg,.jpg,.webp" />
             </div>
             <div class="col-sm-6">
                 <img src="{{ $candidate->profile?->profile_picture }}" alt="dp" width="100" height="100"
@@ -122,7 +133,7 @@
             <h6 class="h6 text-capitalize fw-bold">education infomation</h6>
             <div class="col-sm-4">
                 <label for="institution_name">Institution Name <span class="text-danger fw-bold">*</span></label>
-                <input required type="text" value="{{ $candidate->profile->education?->institution_name }}"
+                <input required type="text" value="{{ $candidate->profile?->education?->institution_name }}"
                     class="form-control" name="institution_name" id="institution_name" />
             </div>
             <div class="col-sm-4">
@@ -135,7 +146,8 @@
                 <label for="first_name">Institution Type <span class="text-danger fw-bold">*</span></label>
                 <select required name="level" id="level" class="form-select">
                     <option value="">select type</option>
-                    <option {{ $candidate->profile?->education?->level == 'university' ? 'selected' : '' }} value="university">
+                    <option {{ $candidate->profile?->education?->level == 'university' ? 'selected' : '' }}
+                        value="university">
                         University</option>
                     <option {{ $candidate->profile?->education?->level == 'college' ? 'selected' : '' }} value="college">
                         College</option>
@@ -162,7 +174,7 @@
     </form>
     <form id="job_exp" action="{{ route('candidate.profile.store') }}" method="post">
         @csrf
-        <input type="hidden" name="job_exp" value="job_exp"/>
+        <input type="hidden" name="job_exp" value="job_exp" />
         <div class="row mt-3">
             <h6 class="h6 text-capitalize fw-bold">job experience</h6>
             <div class="col-sm-4">
@@ -206,7 +218,7 @@
     </form>
     <form id="biography" action="{{ route('candidate.profile.store') }}" method="post">
         @csrf
-        <input type="hidden" name="biography" value="biography"/>
+        <input type="hidden" name="biography" value="biography" />
         <div class="row mt-3">
             <div class="col-sm-12">
                 <h6 class="h6 text-capitalize fw-bold">biography <span class="text-danger fw-bold">*</span></h6>
@@ -221,12 +233,27 @@
     </form>
     <form id="cv_upload" action="{{ route('candidate.profile.store') }}" enctype="multipart/form-data" method="post">
         @csrf
-        <input type="hidden" name="cv" value="cv">
+        <input type="hidden" name="cv_upload" value="cv_upload">
         <div class="row my-5">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <label for="cv">Upload your cv/resume <span class="text-danger fw-bold">*</span></label>
                 <input required type="file" class="form-control form-file-input" name="cv" id="cv"
                     accept=".pdf" />
+            </div>
+            <div class="col-sm-4">
+                <label for="name">CV Name <span class="text-danger fw-bold">*</span></label>
+                <input required type="text" class="form-control" name="name" id="name"
+                    placeholder="the name of the CV e.g. web developer" />
+            </div>
+            <div class="col-sm-4">
+                <label for="">Uploaded CV</label>
+                <br />
+                @if ($candidate->profile?->resume)
+                    {{-- @foreach ($candidate->profile?->resume as $cv) --}}
+                    <a download="false" href="{{ $candidate->profile?->resume->file }}" target="_blank"
+                        rel="noopener noreferrer">{{ $candidate->profile?->resume->name }}</a>
+                    {{-- @endforeach --}}
+                @endif
             </div>
             <div class="col-sm-6">
                 <div class="form-group mt-4">
@@ -252,7 +279,7 @@
                     success: (response) => {
                         console.log(response);
                         if (response.success) {
-                            // window.location.reload();
+                            window.location.reload();
                             window.open(response.url, '_self');
                         }
                     },
@@ -277,6 +304,23 @@
                     }
                 });
             });
+            $('form#edu_info').on('submit', function(e) {
+                $('form#edu_info :submit').addClass('disabled').html(`${$loader} saving data...`);
+                return 1;
+            });
+            $('form#job_exp').on('submit', function(e) {
+                $('form#job_exp :submit').addClass('disabled').html(`${$loader} saving data...`);
+                return 1;
+            });
+            $('form#biography').on('submit', function(e) {
+                $('form#biography :submit').addClass('disabled').html(`${$loader} saving data...`);
+                return 1;
+            });
+            $('form#cv_upload').on('submit', function(e) {
+                $('form#cv_upload :submit').addClass('disabled').html(`${$loader} saving data...`);
+                return 1;
+            });
+            // $('form').on('submit',function(e){});
             tinymce.init({
                 selector: 'textarea[name="biography"]',
                 height: 300,

@@ -1,5 +1,6 @@
 @extends('candidate.layout')
 @section('content')
+    <!-- Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less. - Marie Curie -->
     @php
         $user = auth('candidate')->user();
     @endphp
@@ -11,7 +12,8 @@
     @endif
     <div class="container">
         <h5 class="h5 text-uppercase fw-semibold">
-            overview - dashboard
+            applied jobs
         </h5>
     </div>
 @endsection
+</div>

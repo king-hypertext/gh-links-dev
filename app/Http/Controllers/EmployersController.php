@@ -54,13 +54,13 @@ class EmployersController extends Controller
     public function logout()
     {
         if (!Auth::guard('employer')->check()) {
-            return redirect()->route('login');
+            return redirect()->route('login')->with('warning', 'You must be logged in');;
         }
         session()->regenerate();
         session()->invalidate();
         session()->flush();
         Auth::guard('employer')->logout();
-        return redirect()->route('login', ['tab' => 'employer'])->with('info', 'You have been logged out successfully');
+        return redirect()->intended(route('login', ['tab' => 'employer']))->with('info', 'You have been logged out successfully');
     }
     /**
      * Store a newly created resource in storage.

@@ -40,8 +40,8 @@
                             <span class="input-group-icon-left-align">
                                 <i class="fa-solid fa-location-crosshairs"></i>
                             </span>
-                            <input autocomplete="off" placeholder="Capital, district, town..." style="padding-left: 40px;" type="text"
-                                name="location" class="form-control" id="search-job-location">
+                            <input autocomplete="off" placeholder="Capital, district, town..." style="padding-left: 40px;"
+                                type="text" name="location" class="form-control" id="search-job-location">
                         </div>
                     </div>
                     <div class="col-sm-12 gy-2 gy-md-0 col-lg-2">
@@ -178,7 +178,9 @@
         </div>
         @forelse ($jobs as $job)
             <div class="col-sm-6 col-lg-4">
-                <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card" data-target-id="1"
+                <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card"
+                    data-job-id="{{ auth('candidate')->check() ? $job->id : null }}"
+                    data-user-id={{ auth('candidate')->check() ? auth('candidate')->id() : null }}
                     data-target-url="{{ route('jobs.show', [$job->id]) }}">
                     <div class="card-body">
                         <div class="flex justify-start align-items-center">
@@ -215,10 +217,13 @@
                                 </div>
                             </div>
                             <div class="col-1 d-flex flex-row justify-content-center align-items-center">
-                                <button {{ auth('candidate')->check() ? '' : 'disabled' }}
-                                    class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark" title="bookmark">
-                                    <i class="far fa-bookmark"></i>
-                                </button>
+                                @auth('candidate')
+                                    <button {{ auth('candidate')->check() ? '' : 'disabled' }} data-bs-toggle="tooltip"
+                                        data-bs-placement="top" class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark"
+                                        title="bookmark">
+                                        <i class="far fa-bookmark"></i>
+                                    </button>
+                                @endauth
                             </div>
                         </div>
                     </div>

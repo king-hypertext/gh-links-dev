@@ -51,32 +51,47 @@
         </form>
     </div>
     <div class="container mt-3">
+        @if ($search)
+            <h6 class="h6 fw-bold text-capitalize">
+                Search results <span class="text-lowercase fw-normal">(found {{ $candidates->count() }}
+                    candidate{{ $candidates->count() > 1 ? 's' : '' }} )</span>
+            </h6>
+        @endif
         @forelse ($candidates as $candidate)
-            {{-- {{ $candidate->profile->isProfileCompleted()}} --}}
-            @if ($candidate->profile?->isProfileCompleted())
+            @if ($candidate->isProfileCompleted())
                 <div class="row shadow-2 p-2 rounded-2 mt-2">
                     <div class="d-flex flex-row justify-content-between">
-                        <div class="d-flex flex-wrap">
-                            <img src="{{ asset('icons/avatar-png.png') }}" width="55" height="55" alt="">
+                        <div class="d-flex flex-wrap align-items-center">
+                            <img src="{{ $candidate->profile_picture ?? asset('icons/avatar-png.png') }}" width="55"
+                                height="55" alt="">
                             <div class="d-flex flex-column ms-sm-3">
                                 <ul class="list-unstyled mb-0">
                                     <li class="py-0 text-capitalize" style="line-height: 1;">
-                                        <strong>candidate name</strong>
+                                        <strong>
+                                            {{ $candidate->full_name }}
+                                        </strong>
                                     </li>
-                                    <li class="py-0 text-capitalize" style="line-height: 1.2;">developer</li>
-                                    <li class="py-0 text-truncate" style="line-height: 1;">
+                                    <li class="py-0 text-capitalize" style="line-height: 1.2;">
+                                        {{ $candidate->job_role }}
+                                    </li>
+                                    <li class="py-0 text-truncate">
                                         <i class="fas fa-map-marker-alt"></i>
-                                        location, experience
+                                        <span class="text-capitalize">
+                                            {{ $candidate->location }},
+                                            {{ $candidate->experience == '0' ? 'No Experience' : $candidate->experience . ' years Experience' }}
+                                        </span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="d-flex flex-wrap align-items-center justify-content-end">
-                            <button type="button" {{ !auth('employer')->check() ? 'disabled' : '' }}
-                                title="add to favorites" class="btn btn-secondary px-3">
-                                <i class="far fa-bookmark"></i>
-                            </button>
-                            <a href="{{ route('candidate.profile-info', $candidate->username) }}" type="button"
+                            @auth('employer')
+                                <button type="button" {{ !auth('employer')->check() ? 'disabled' : '' }}
+                                    title="add to favorites" class="btn btn-secondary px-3">
+                                    <i class="far fa-bookmark"></i>
+                                </button>
+                            @endauth
+                            <a href="{{ route('candidate.profile-info', $candidate->candidate->username) }}" type="button"
                                 class="btn btn-primary ms-2 px-3 text-truncate text-capitalize">
                                 view profile
                             </a>
@@ -85,9 +100,11 @@
                 </div>
             @endif
         @empty
-            <div class="d-flex flex-row justify-content-center">
-                NO DATA FOUND.
-            </div>
+            @if (!$search)
+                <div class="d-flex flex-row justify-content-center">
+                    NO DATA FOUND.
+                </div>
+            @endif
         @endforelse
     </div>
     <div class="row">

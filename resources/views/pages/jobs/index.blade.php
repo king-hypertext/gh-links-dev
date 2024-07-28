@@ -79,7 +79,9 @@
         @endif
         @forelse ($jobs as $i => $job)
             <div class="col-sm-6 col-lg-4">
-                <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card" data-target-id="1"
+                <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card"
+                    data-job-id="{{ auth('candidate')->check() ? $job->id : null }}"
+                    data-user-id={{ auth('candidate')->check() ? auth('candidate')->id() : null }}
                     data-target-url="{{ route('jobs.show', [$job->id]) }}">
                     <div class="card-body">
                         <div class="flex justify-start align-items-center">
@@ -116,10 +118,12 @@
                                 </div>
                             </div>
                             <div class="col-1 d-flex flex-row justify-content-center align-items-center">
-                                <button {{ auth('candidate')->check() ? '' : 'disabled' }}
-                                    class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark" title="bookmark">
-                                    <i class="far fa-bookmark"></i>
-                                </button>
+                                @auth('candidate')
+                                    <button class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark user-select-none"
+                                        title="bookmark">
+                                        <i class="far fa-bookmark user-select-none"></i>
+                                    </button>
+                                @endauth
                             </div>
                         </div>
                     </div>
@@ -140,7 +144,9 @@
                         <i class="fas fa-angle-left"></i>
                     </a>
                 @endif
-                <span class="mx-2">Page <span class="px-2 py-1 text-bg-primary rounded-1">{{ $jobs->currentPage() }}</span> of {{ $jobs->lastPage() }}</span>
+                <span class="mx-2">Page <span
+                        class="px-2 py-1 text-bg-primary rounded-1">{{ $jobs->currentPage() }}</span> of
+                    {{ $jobs->lastPage() }}</span>
                 @if ($jobs->currentPage() < $jobs->lastPage())
                     <a class="btn-floating btn btn-sm btn-secondary rounded"
                         href="{{ url('companies?page=' . ($jobs->currentPage() + 1)) }}" title="next page">

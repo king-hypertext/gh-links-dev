@@ -23,25 +23,22 @@ class CandidateProfile extends Model
         'date_of_birth',
         'experience',
         'biography',
+        'job_role'
     ];
     public function isProfileCompleted(): bool
     {
-        if ($this->whereNotnull($this->first_name, $this->last_name, $this->profile_picture, $this->resume(), $this->education())) {
-            return false;
+        if ($this->whereNotnull($this->first_name,  $this->last_name, $this->experience, $this->profile_picture, $this->resume())) {
+            return true;
         }
-        return true;
+        return false;
     }
-    // public function profile()
-    // {
-    //     return $this->hasOne(CandidateProfile::class, 'candidate_profile_id', 'id');
-    // }
     public function resume()
     {
         return $this->hasOne(CandidateResume::class,  'candidate_profile_id', 'id');
     }
     public function candidate()
     {
-        return $this->belongsTo(Candidate::class, 'candidate_profile_id', 'id');
+        return $this->belongsTo(Candidate::class, 'candidate_id', 'id');
     }
     // public function address()
     // {
@@ -58,5 +55,21 @@ class CandidateProfile extends Model
     public function job_experience()
     {
         return $this->hasOne(CandidateJobExperience::class, 'candidate_profile_id', 'id');
+    }
+    public function saved_jobs()
+    {
+        return $this->hasMany(SavedJob::class, 'candidate_profile_id', 'id');
+    }
+    public function is_job_saved():bool
+    {
+        // if ($this->saved_jobs->isNotEmpty()) {
+        //     // foreach ($this->saved_jobs as $J){
+        //         $ids = $this->job_saved->pluck('id');
+        //     // if (in_array()) {
+        //     //     # code...
+        //     // }
+        //     // }
+        // }
+        return false;
     }
 }

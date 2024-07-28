@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('candidate_resume', function (Blueprint $table) {
+        Schema::create('saved_jobs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('candidate_profile_id')->constrained('candidate_profile')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('name');
-            $table->string('file');
+            $table->foreignId('job_id')->constrained('gh_jobs');
+            $table->foreignId('candidate_profile_id')->constrained('candidate_profile');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('candidate_resume');
+        Schema::dropIfExists('saved_jobs');
     }
 };
