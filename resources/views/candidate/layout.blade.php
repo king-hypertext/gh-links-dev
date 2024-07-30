@@ -7,13 +7,13 @@
     <title>GH-LINKS Profile </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="" name="author">
-
+    <meta name="_token" content="{{ csrf_token() }}"/>
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('icon.svg') }}" />
 
     <!-- Theme Config Js -->
     <link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('app/plugins/bootstrap/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/alert/sweetalert2.min.css') }}" />

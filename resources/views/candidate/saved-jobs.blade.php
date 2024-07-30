@@ -6,6 +6,12 @@
         </h5>
         <h6 class="h6 text-capitalize">My Jobs ({{ $saved_jobs->count() }})</h6>
         <!-- It is quality rather than quantity that matters. - Lucius Annaeus Seneca -->
+        @session('success')
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <strong>Success!</strong> Job has been removed from favourites list
+        </div>
+        @endif
         @foreach ($saved_jobs as $saved_job)
             <div class="row shadow-2 p-2 rounded-2 mt-2">
                 <div class="d-flex flex-row justify-content-between">
@@ -14,14 +20,14 @@
                             width="55" height="55" alt="">
                         <div class="d-flex flex-column ms-sm-3">
                             <ul class="list-unstyled mb-0">
-                                <li class="py-0 text-capitalize d-flex align-items-center" style="line-height: 0.8;">
+                                <li class="py-0 text-uppercase d-flex align-items-center">
                                     <strong>
                                         {{ $saved_job->job->title }}
                                     </strong>
                                     <span
                                         class="btn btn-secondary text-nowrap px-2 py-1 ms-2">{{ $saved_job->job->type }}</span>
                                 </li>
-                                <li class="py-0 text-capitalize fw-semibold" style="line-height: 0.8;">
+                                <li class="py-0 text-capitalize fw-semibold text-primary">
                                     @ {{ $saved_job->job->company->company_name }}
                                     <i class="fas fa-map-marker-alt ms-1"></i>
                                     {{ $saved_job->job->company->company_location }}
@@ -35,13 +41,13 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="d-flex flex-wrap align-items-center justify-content-end">
-                        <button type="button" {{ !auth('employer')->check() ? 'disabled' : '' }} title="add to favorites"
-                            class="btn btn-secondary px-3">
-                            <i class="far fa-bookmark"></i>
+                    <div class="d-flex flex-row flex-wrap align-items-center justify-content-end">
+                        <button data-job-id="{{ $saved_job->job_id }}" type="button" title="Remove from favorites"
+                            class="btn btn-secondary px-3 unsave-job me-0 me-md-2">
+                            <i class="fas fa-heart user-select-none"></i>
                         </button>
                         <a href="{{ route('jobs.show', $saved_job->job->id) }}" type="button"
-                            class="btn btn-primary ms-2 px-3 text-truncate text-capitalize">
+                            class="btn btn-primary px-3 text-truncate text-capitalize">
                             view job
                         </a>
                     </div>

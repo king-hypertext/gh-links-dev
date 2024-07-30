@@ -179,8 +179,6 @@
         @forelse ($jobs as $job)
             <div class="col-sm-6 col-lg-4">
                 <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card"
-                    data-job-id="{{ auth('candidate')->check() ? $job->id : null }}"
-                    data-user-id={{ auth('candidate')->check() ? auth('candidate')->id() : null }}
                     data-target-url="{{ route('jobs.show', [$job->id]) }}">
                     <div class="card-body">
                         <div class="flex justify-start align-items-center">
@@ -218,10 +216,9 @@
                             </div>
                             <div class="col-1 d-flex flex-row justify-content-center align-items-center">
                                 @auth('candidate')
-                                    <button {{ auth('candidate')->check() ? '' : 'disabled' }} data-bs-toggle="tooltip"
-                                        data-bs-placement="top" class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark"
-                                        title="bookmark">
-                                        <i class="far fa-bookmark"></i>
+                                    <button class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark user-select-none"
+                                        data-job-id="{{ $job->id }}" title="bookmark">
+                                        <i class="{{ $job->isSavedByUser() ? 'fas' : 'far' }} fa-heart user-select-none"></i>
                                     </button>
                                 @endauth
                             </div>

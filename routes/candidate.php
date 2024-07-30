@@ -14,6 +14,7 @@ Route::middleware(['candidate'])->group(function () {
         Route::any('/logout', [CandidateController::class, 'logout'])->name('candidate.logout');
         Route::singleton('/profile', CandidateProfileController::class);
         Route::post('/save_job', [CandidateProfileController::class, 'save_job'])->name('candidate.save_job');
+        Route::post('/unsave_job', [CandidateProfileController::class, 'unsave_job'])->name('candidate.unsave_job');
     });
     // });
 });

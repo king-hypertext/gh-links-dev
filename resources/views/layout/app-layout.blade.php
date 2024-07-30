@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="_token" content="{{ csrf_token() }}">
+    <meta name="_token" content="{{ csrf_token() }}"/>
     <link rel="shortcut icon" href="{{ asset('icon.svg') }}" type="image/x-icon" />
     <link rel="apple-touch-icon" href="{{ asset('icon.svg') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/selectize/selectize.css') }}" />

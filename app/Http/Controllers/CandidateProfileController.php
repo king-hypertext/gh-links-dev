@@ -213,11 +213,25 @@ class CandidateProfileController extends Controller
     }
     public function save_job(Request $request)
     {
+        $savedJob = auth('candidate')->user()->profile->saved_jobs()->where('job_id', $request->job_id);
+        $isJobSaved = auth('candidate')->user()->profile->saved_jobs->contains('job_id', $request->job_id);
+        if ($isJobSaved) {
+            $savedJob->delete();
+            return response(['success' => true, 'message' => 'job removed from favourites']);
+        }
+        // Save the job
         auth('candidate')->user()->profile->saved_jobs()->create([
             'job_id' => $request->job_id,
             'candidate_profile_id' => $request->user_id
         ]);
-        return response(['success' => true, 'message' => 'job saved successfully']);
+        return response(['success' => true, 'message' => 'job added to favourites']);
+    }
+    public function unsave_job(Request $request)
+    {
+        $savedJob = auth('candidate')->user()->profile->saved_jobs()->where('job_id', $request->job_id);
+        $savedJob->delete();
+        $redirect_url = redirect()->back()->with('success', 'job removed from favourites')->getTargetUrl();
+        return response(['success' => true, 'url' => $redirect_url, 'message' => 'job removed from favourites']);
     }
     public function applied_jobs(CandidateProfile $candidate)
     {

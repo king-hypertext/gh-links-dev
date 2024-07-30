@@ -33,11 +33,13 @@
             </div>
             <div
                 class="col-lg-6 col-sm-6 d-flex flex-row align-items-center justify-content-start justify-content-sm-end g-3">
-                {{-- <div class="d-grid text-sm-end gap-2"> --}}
-                <button {{ auth('candidate')->check() ? '' : 'disabled' }}
-                    class="btn btn-secondary me-1 px-3 rounded-1 bookmark" title="add to favourite job lists">
-                    <i class="far fa-bookmark"></i>
-                </button>
+                @auth('candidate')
+                    <button class="btn btn-secondary px-3 py-2 me-2 rounded-1 btn-lg bookmark user-select-none"
+                        data-job-id="{{ $job->id }}"
+                        title="{{ $job->isSavedByUser() ? 'Remove from favourites' : 'Add to favourites' }}">
+                        <i class="{{ $job->isSavedByUser() ? 'fas' : 'far' }} fa-heart user-select-none"></i>
+                    </button>
+                @endauth
                 <button type="button" data-is_login="{{ auth('candidate')->check() ? 1 : 0 }}" id="apply-job"
                     class="btn btn-primary rounded-0" title="click to apply for this job">
                     <span>

@@ -120,45 +120,63 @@
             }
         });
         const token = $('[name="_token"]').attr('content');
-        var cards = $('.job-card'), bookmarks = $('button.bookmark');
-        $.each(cards, (i, card) => {
-            const targetUrl = $(card).data('target-url');
-            card.addEventListener('click', () => {
-                window.open(targetUrl);
-            });
+        $('.job-card').on('click', function (e) {
+            e.preventDefault();
+            const targetUrl = $(this).data('target-url');
+            window.open(targetUrl, '_self');
         });
-        $.each(bookmarks, (index, bookmark) => {
-            const job_id = $(bookmark).closest('.job-card').data('job-id');
-            const user_id = $(bookmark).closest('.job-card').data('user-id');
-            $(bookmark).on('click', (event) => {
-                event.stopPropagation();
-                let btn_icon = event.currentTarget.firstElementChild;
-                console.log(btn_icon.classList);
-                btn_icon.classList.toggle('far');
-                btn_icon.classList.toggle('fa');
-                const tooltip = new bootstrap.Tooltip(event.currentTarget);
-
-                // perform http request to bookmark job
-                $.ajax('/candidate/save_job', {
+        $('button.bookmark').on('click', async function (e) {
+            e.stopPropagation();
+            var jobId = $(this).data('job-id');
+            var icon = $(this).find('i');
+            try {
+                await $.ajax({
                     type: 'POST',
+                    url: '/candidate/save_job',
                     data: {
                         _token: token,
-                        job_id: job_id,
-                        user_id: user_id,
+                        job_id: jobId,
                     },
-                    succes: res => {
-                        console.log(res);
-                        event.attribute('title', res.message);
-                        tooltip.show();
-                        setTimeout(() => {
-                            tooltip.hide();
-                        }, 2000);
+                    success: function (data) {
+                        if (data.success) {
+                            icon.toggleClass('fas far'); // toggle the icon
+                            console.log($(e));
+                            $(e).attr('data-mdb-content', data.message).popover();
+                        }
                     },
-                    error: err => {
+                    error: function (err) {
                         console.log(err);
-                    }
+                    },
                 });
-            });
+            } catch (err) {
+                alert('Error: ', err);
+            }
+        });
+        $('button.unsave-job').on('click', async function (e) {
+            e.stopPropagation();
+            var jobId = $(this).data('job-id');
+            // var icon = $(this).find('i');
+
+            try {
+                await $.ajax({
+                    type: 'POST',
+                    url: '/candidate/unsave_job',
+                    data: {
+                        _token: token,
+                        job_id: jobId,
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            window.location.href = data.url; // toggle the icon
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    },
+                });
+            } catch (err) {
+                alert('Error: ', err);
+            }
         });
         $.each($('button.copy-url'), (i, button) => {
             var url = $(button).data('url');

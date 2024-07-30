@@ -56,7 +56,15 @@ class Job extends Model
     // }
     public function candidate()
     {
-        return $this->belongsTo(CandidateProfile::class,  'candidate_profile_id','id');
+        return $this->belongsTo(CandidateProfile::class,  'candidate_profile_id', 'id');
+    }
+    public function isSavedByUser(string $job_id = null): bool
+    {
+        $id = auth('candidate')->id();
+        // return auth('candidate')->check() &&
+        //     auth('candidate')->user()->profile->saved_jobs()->contains('candidate_profile_id', $id);
+        return auth('candidate')->check() && auth('candidate')->user()->profile->saved_jobs()->where('job_id', $this->id)->exists();
+        // ->where('candidate_profile_id', $id)->exists();
     }
     // public function is_saved(): bool
     // {
