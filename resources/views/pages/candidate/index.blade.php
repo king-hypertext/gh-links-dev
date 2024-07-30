@@ -63,7 +63,7 @@
                     <div class="d-flex flex-row justify-content-between">
                         <div class="d-flex flex-wrap align-items-center">
                             <img src="{{ $candidate->profile_picture ?? asset('icons/avatar-png.png') }}" width="55"
-                                height="55" alt="">
+                                height="55" alt="" class="img-thumbnail">
                             <div class="d-flex flex-column ms-sm-3">
                                 <ul class="list-unstyled mb-0">
                                     <li class="py-0 text-capitalize" style="line-height: 1;">
@@ -85,10 +85,12 @@
                             </div>
                         </div>
                         <div class="d-flex flex-wrap align-items-center justify-content-end">
+                            {{-- @dd($candidate->isCandidateSaved()) --}}
                             @auth('employer')
-                                <button type="button" {{ !auth('employer')->check() ? 'disabled' : '' }}
-                                    title="add to favorites" class="btn btn-secondary px-3">
-                                    <i class="far fa-bookmark"></i>
+                                <button type="button" data-candidate-id="{{ $candidate->id }}"
+                                    title="{{ $candidate->isCandidateSaved() ? 'remove from favorites' : 'add to favorites' }}"
+                                    class="btn btn-secondary px-3 bookmark-candidate">
+                                    <i class="{{ $candidate->isCandidateSaved() ? 'fa' : 'far' }} fa-bookmark"></i>
                                 </button>
                             @endauth
                             <a href="{{ route('candidate.profile-info', $candidate->candidate->username) }}" type="button"

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidate;
+use App\Models\CandidateApplication;
 use App\Models\CandidateEducationDetail;
 use App\Models\CandidateJobExperience;
 use App\Models\CandidateProfile;
@@ -19,7 +20,11 @@ class CandidateProfileController extends Controller
     {
         return 'n';
     }
-
+    public function settings()
+    {
+        $page_title = 'SEETINGS';
+        return view('candidate.settings', compact('page_title'));
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -222,7 +227,7 @@ class CandidateProfileController extends Controller
         // Save the job
         auth('candidate')->user()->profile->saved_jobs()->create([
             'job_id' => $request->job_id,
-            'candidate_profile_id' => $request->user_id
+            'candidate_profile_id' => auth('candidate')->user()->profile->id
         ]);
         return response(['success' => true, 'message' => 'job added to favourites']);
     }
@@ -233,11 +238,23 @@ class CandidateProfileController extends Controller
         $redirect_url = redirect()->back()->with('success', 'job removed from favourites')->getTargetUrl();
         return response(['success' => true, 'url' => $redirect_url, 'message' => 'job removed from favourites']);
     }
+    public function apply_job(Request $request)
+    {
+        $request->validate([
+            'cover_letter' => 'required|string',
+        ]);
+        CandidateApplication::create([
+            'candidate_profile_id' => auth('candidate')->user()->profile->id,
+            'job_id' => $request->job_id,
+            'cover_letter' => $request->cover_letter,
+        ]);
+        return response(['success' => true, 'message' => 'application sent successfully', 'statusText' => 'sent']);
+    }
     public function applied_jobs(CandidateProfile $candidate)
     {
         $page_title = 'APPLIED JOBS';
         $candidate = auth('candidate')->user()->profile;
-        $applied_jobs = $candidate->applied_jobs;
+        $applied_jobs = $candidate->job_applications;
         return view('candidate.applied-jobs', compact('page_title', 'candidate', 'applied_jobs'));
     }
 }

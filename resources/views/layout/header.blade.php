@@ -149,18 +149,26 @@
                 </div>
             </div>
 
-            @auth('candidate', 'employer')
+            {{-- @auth('candidate', 'employer') --}}
+            @if (auth('candidate')->check() or auth('employer')->check())
                 <div class="dropdown pe-2">
                     <a href="#"
                         class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="{{ auth('candidate')->user()->profile->profile_picture ?? (auth('employer')->user()->profile->profile_picture ?? asset('icons/svgs/solid/user.svg')) }}"
                             alt="" width="32" height="32" class="shadow-2 rounded-circle me-2">
-                        <strong>{{ auth('candidate')->user()?->username }}</strong>
+                        <strong>{{ auth('candidate')->user()->username ?? auth('employer')->user()->username }}</strong>
                     </a>
                     <ul class="dropdown-menu text-small shadow">
                         @auth('employer')
-                            <li><a class="dropdown-item" href="{{ route('employer.dashboard') }}">Dashboard</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('employer.dashboard') }}">
+                                    <i class="fa-solid fa-user-circle"></i>
+                                    <span>
+                                        Dashboard
+                                    </span>
+                                </a>
+                            </li>
                         @endauth
                         {{-- <li><a class="dropdown-item" href="#">New project...</a></li> --}}
                         <li>
@@ -169,12 +177,14 @@
                                 <span> Settings </span>
                             </a>
                         </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ route('profile.show') }}">
-                                <i class="fa-solid fa-user-circle"></i>
-                                <span> Profile </span>
-                            </a>
-                        </li>
+                        @auth('candidate')
+                            <li>
+                                <a class="dropdown-item" href="{{ route('profile.show') }}">
+                                    <i class="fa-solid fa-user-circle"></i>
+                                    <span> Profile </span>
+                                </a>
+                            </li>
+                        @endauth
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -193,8 +203,8 @@
                 <div class="text-end d-none d-sm-block mx-2">
                     <button data-mdb-ripple-init onclick="window.open('{{ route('login') }}','_self')" type="button"
                         class="btn btn-outline-secondary me-2" title="login to your account">Login</button>
-                    <button data-mdb-ripple-init onclick="window.open('{{ route('register') }}','_self')" type="button"
-                        class="btn btn-primary" title="create an account">Sign-up</button>
+                    <button data-mdb-ripple-init onclick="window.open('{{ route('register') }}','_self')"
+                        type="button" class="btn btn-primary" title="create an account">Sign-up</button>
                 </div>
                 <div class="d-flex flex-row align-middle pe-2 d-sm-none">
                     <a href="{{ route('home') }}"
@@ -209,4 +219,4 @@
             @endauth
 
             {{-- </div> --}}
-    </header>
+</header>

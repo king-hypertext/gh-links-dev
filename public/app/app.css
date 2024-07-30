@@ -206,3 +206,9 @@ footer {
     width: min-content;
     /* padding: 0 auto !important; */
 }
+@media(min-width:768px) {
+    .overview-container{
+        width: 100%;
+        max-width: 1024px !important;
+    }
+}

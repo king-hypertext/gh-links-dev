@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($employer?->profile?->jobs as $job)
+                @forelse ($employer?->profile?->jobs as $job)
                     <tr class="">
                         <td scope="row">{{ strtoupper($job->title) }}</td>
                         <td>
@@ -36,14 +36,17 @@
                         <td>
                             <div class="d-flex flex-row">
                                 <i class="fa fa-user-group me-1"></i>
-                                <span>44 applications</span>
+                                <span>
+                                    {{ $job->applications->count() }}
+                                </span>
                             </div>
                         </td>
                         <td>
                             <a href="#" class="btn btn-sm btn-secondary">view applications</a>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                @endforelse
             </tbody>
         </table>
     </div>

@@ -4,9 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>GH-LINKS DASHBOARD</title>
+    <title>GH-LINKS EMPLOYER - {{ $page_title ?? '' }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Kingsley Osei Opoku" name="author">
+    <meta content="Kingsley Osei Opoku" name="author"/>
+    <meta name="_token" content="{{ csrf_token() }}"/>
     <link rel="shortcut icon" href="{{ asset('icon.svg') }}" type="image/x-icon" />
     <link rel="stylesheet" href="{{ asset('app/dashboard/css/icons.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.theme.css') }}" />
@@ -29,6 +30,12 @@
         .tox-promotion {
             visibility: hidden !important;
         }
+        @media(min-width:768px) {
+    .overview-container{
+        width: 100%;
+        max-width: 1024px !important;
+    }
+}
     </style>
 </head>
 
@@ -249,7 +256,7 @@
                                             </a>
                                         </li>
                                         <li class="side-nav-item">
-                                            <a href="#" class="side-nav-link py-1">
+                                            <a href="{{ route('employer.candidates') }}" class="side-nav-link py-1">
                                                 <i class="fa-solid fa-bookmark"></i>
                                                 <span> Saved Candidates </span>
                                             </a>

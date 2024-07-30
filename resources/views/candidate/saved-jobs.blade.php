@@ -46,13 +46,28 @@
                             class="btn btn-secondary px-3 unsave-job me-0 me-md-2">
                             <i class="fas fa-heart user-select-none"></i>
                         </button>
-                        <a href="{{ route('jobs.show', $saved_job->job->id) }}" type="button"
-                            class="btn btn-primary px-3 text-truncate text-capitalize">
-                            view job
-                        </a>
+                        @if ($saved_job->job->isAppliedByUser())
+                            <button type="button" disabled class="btn btn-primary rounded-0 text-nowrap px-2 px-md-4"
+                                title="click to apply for this job">
+                                <span>
+                                    applied
+                                </span>
+                                <i class="fas fa-check-double ms-2"></i>
+                            </button>
+                        @else
+                            <button type="button" data-is_login="{{ auth('candidate')->check() ? 1 : 0 }}" id="apply-job"
+                                class="btn btn-primary rounded-0 apply-job text-nowrap px-2 px-md-4"
+                                title="click to apply for this job" data-job-id="{{ $saved_job->job_id }}">
+                                <span>
+                                    apply
+                                </span>
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
+    @include('modals.apply-job')
 @endsection

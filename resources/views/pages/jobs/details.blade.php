@@ -40,14 +40,23 @@
                         <i class="{{ $job->isSavedByUser() ? 'fas' : 'far' }} fa-heart user-select-none"></i>
                     </button>
                 @endauth
-                <button type="button" data-is_login="{{ auth('candidate')->check() ? 1 : 0 }}" id="apply-job"
-                    class="btn btn-primary rounded-0" title="click to apply for this job">
-                    <span>
-                        apply
-                    </span>
-                    <i class="fas fa-arrow-right ms-2"></i>
-                </button>
-                {{-- </div> --}}
+                @if ($job->isAppliedByUser())
+                    <button type="button" disabled class="btn btn-primary rounded-0" title="click to apply for this job">
+                        <span>
+                            applied
+                        </span>
+                        <i class="fas fa-check-double ms-2"></i>
+                    </button>
+                @else
+                    <button type="button" data-is_login="{{ auth('candidate')->check() ? 1 : 0 }}" id="apply-job"
+                        class="btn btn-primary rounded-0 apply-job" title="click to apply for this job"
+                        data-job-id="{{ $job->id }}">
+                        <span>
+                            apply
+                        </span>
+                        <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                @endif
             </div>
         </div>
     </div>

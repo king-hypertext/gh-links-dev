@@ -19,6 +19,9 @@ Route::middleware(['employer'])->group(function () {
         Route::resource('/my-jobs', PostJobController::class)->name('index', 'job.index');
         Route::get('/job-applications', [JobApplicationController::class, 'index'])->name('job-applications.index');
         Route::get('/job-applications/{job_id}/{candidate_id}', [JobApplicationController::class, 'show'])->name('job-applications.show');
+        Route::get('/my-candidates', [EmployerProfileController::class, 'candidates'])->name('employer.candidates');
+        Route::post('/save-candidate', [EmployerProfileController::class, 'save_candidate'])->name('employer.save_candidate');
+        Route::post('/unsave-candidate', [EmployerProfileController::class, 'unsave_candidate'])->name('employer.unsave_candidate');
         Route::any('/logout', [EmployersController::class, 'logout'])->name('employer.logout');
     });
 });

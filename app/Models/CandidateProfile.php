@@ -60,16 +60,9 @@ class CandidateProfile extends Model
     {
         return $this->hasMany(SavedJob::class, 'candidate_profile_id', 'id');
     }
-    public function is_job_saved():bool
+    public function isCandidateSaved(): bool
     {
-        // if ($this->saved_jobs->isNotEmpty()) {
-        //     // foreach ($this->saved_jobs as $J){
-        //         $ids = $this->job_saved->pluck('id');
-        //     // if (in_array()) {
-        //     //     # code...
-        //     // }
-        //     // }
-        // }
-        return false;
+        // dd(auth('employer')->user()->profile->saved_candidates()->where('candidate_profile_id', $this->id)->exists());
+        return auth('employer')->check() && auth('employer')->user()->profile->saved_candidates()->where('candidate_profile_id', $this->id)->exists();
     }
 }

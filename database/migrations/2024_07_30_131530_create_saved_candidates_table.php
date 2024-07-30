@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('job_applications', function (Blueprint $table) {
+        Schema::create('saved_candidates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('candidate_profile_id')->constrained('candidate_profile')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('job_id')->constrained('gh_jobs')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->longText('cover_letter');
-            $table->boolean('approved')->default(0);
+            $table->foreignId('employer_profile_id')->constrained('employer_profiles')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_applications');
+        Schema::dropIfExists('saved_candidates');
     }
 };

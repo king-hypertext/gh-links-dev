@@ -10,11 +10,13 @@ Route::middleware(['candidate'])->group(function () {
         Route::get('/applied-jobs', [CandidateProfileController::class, 'applied_jobs'])->name('candidate.application.index');
         Route::get('/profile/setup', [CandidateProfileController::class, 'create'])->name('candidate.profile.create');
         Route::post('/profile/setup', [CandidateProfileController::class, 'store'])->name('candidate.profile.store');
+        Route::get('/profile/settings', [CandidateProfileController::class, 'settings'])->name('candidate.profile.settings');
         Route::get('profile/saved-jobs', [CandidateProfileController::class, 'save_jobs'])->name('candidate.saved-jobs');
         Route::any('/logout', [CandidateController::class, 'logout'])->name('candidate.logout');
         Route::singleton('/profile', CandidateProfileController::class);
         Route::post('/save_job', [CandidateProfileController::class, 'save_job'])->name('candidate.save_job');
         Route::post('/unsave_job', [CandidateProfileController::class, 'unsave_job'])->name('candidate.unsave_job');
+        Route::post('/apply_job', [CandidateProfileController::class, 'apply_job'])->name('candidate.apply_job');
     });
     // });
 });

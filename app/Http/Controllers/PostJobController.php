@@ -17,7 +17,7 @@ class PostJobController extends Controller
     public function index()
     {
         $employer = Employer::find(auth('employer')->id());
-        return view('employer.post-job.index', ['page_title' => 'Create', 'employer' => $employer]);
+        return view('employer.post-job.index', ['page_title' => 'POST JOB', 'employer' => $employer]);
     }
 
     /**

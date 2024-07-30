@@ -17,7 +17,11 @@ class EmployerProfileController extends Controller
     {
         //
     }
-
+    public function candidates()
+    {
+        $page_title = 'MY CANDIDATES';
+        return view('employer.candidates', compact('page_title'));
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -136,5 +140,27 @@ class EmployerProfileController extends Controller
     public function destroy(EmployerProfile $employerProfile)
     {
         //
+    }
+    public function save_candidate(Request $request)
+    {
+        $savedCandidate = auth('employer')->user()->profile->saved_candidates()->where('candidate_profile_id', $request->candidate_id);
+        $isCandidateSaved = auth('employer')->user()->profile->saved_candidates->contains('candidate_profile_id', $request->candidate_id);
+        if ($isCandidateSaved) {
+            $savedCandidate->delete();
+            return response(['success' => true, 'message' => 'candidate removed from favourites']);
+        }
+        // Save the candidate
+        auth('employer')->user()->profile->saved_candidates()->create([
+            'candidate_profile_id' => $request->candidate_id,
+            'employer_profile_id' => auth('employer')->user()->profile->id,
+        ]);
+        return response(['success' => true, 'message' => 'candidate added to favourites']);
+    }
+    public function unsave_candidate(Request $request)
+    {
+        $savedCandidate = auth('employer')->user()->profile->saved_candidates()->where('candidate_profile_id', $request->candidate_id);
+        $savedCandidate->delete();
+        $redirect_url = redirect()->back()->with('success', 'candidate removed from favourites')->getTargetUrl();
+        return response(['success' => true, 'url' => $redirect_url, 'message' => 'candidate removed from favourites']);
     }
 }

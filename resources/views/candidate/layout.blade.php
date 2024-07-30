@@ -7,7 +7,7 @@
     <title>GH-LINKS Profile </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="" name="author">
-    <meta name="_token" content="{{ csrf_token() }}"/>
+    <meta name="_token" content="{{ csrf_token() }}" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('icon.svg') }}" />
 
@@ -20,7 +20,6 @@
     <link rel="stylesheet" href="{{ asset('app/plugins/select2/css/select2.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/mdb/mdb.min.css') }}">
     <script src="{{ asset('app/plugins/alert/sweetalert2.all.min.js') }}"></script>
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css">
     <script src="{{ asset('app/plugins/jquery/external/jquery.js') }}"></script>
     <style>
         body {
@@ -30,6 +29,11 @@
         @media (min-width: 789.98px) {
             main {
                 padding-left: 240px;
+            }
+
+            .overview-container {
+                width: 100%;
+                max-width: 1024px !important;
             }
         }
 
@@ -116,12 +120,13 @@
                         class="list-group-item list-group-item-action text-capitalize py-2 ripple">
                         <i class="far fa-user fa-fw me-3"></i><span>Profile Setup</span>
                     </a>
-                    <a href="{{ route('candidate.application.index') }}" class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
+                    <a href="{{ route('candidate.application.index') }}"
+                        class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
                             class="fas fa-suitcase fa-fw me-3"></i><span>applied jobs</span></a>
                     <a href="{{ route('candidate.saved-jobs') }}"
                         class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
                             class="far fa-bookmark fa-fw me-3"></i><span>saved jobs</span></a>
-                    <a href="#" class="list-group-item list-group-item-action text-capitalize py-2 ripple">
+                    <a href="{{ route('candidate.profile.settings') }}" class="list-group-item list-group-item-action text-capitalize py-2 ripple">
                         <i class="fas fa-gear fa-fw me-3"></i><span>settings</span>
                     </a>
                 </div>
@@ -161,7 +166,7 @@
                         <ul class="dropdown-menu text-small shadow">
                             {{-- <li><a class="dropdown-item" href="#">New project...</a></li> --}}
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('candidate.profile.settings') }}">
                                     <i class="fa-solid fa-gear"></i>
                                     <span> Settings </span>
                                 </a>
@@ -265,6 +270,7 @@
     <script src="{{ asset('app/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('app/plugins/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('app/app.js') }}"></script>
+    @yield('script')
 </body>
 
 </html>

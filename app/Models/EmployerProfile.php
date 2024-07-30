@@ -60,4 +60,8 @@ class EmployerProfile extends Model
     {
         return $this->hasMany(Job::class, 'company_id', 'id');
     }
+    public function saved_candidates()
+    {
+        return $this->hasMany(SavedCandidate::class, 'employer_profile_id', 'id');
+    }
 }

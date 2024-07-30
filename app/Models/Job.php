@@ -45,33 +45,20 @@ class Job extends Model
     {
         return $this->belongsTo(JobExperience::class, 'entry_id', 'id');
     }
-    // public function company(){
-    //     return $this->belongsTo(Company::class);
-    // }
-    // public function candidateApplications(){
-    //     return $this->hasMany(CandidateApplication::class);
-    // }
-    // public function companyProfile(){
-    //     return $this->belongsTo(CompanyProfile::class);
-    // }
     public function candidate()
     {
         return $this->belongsTo(CandidateProfile::class,  'candidate_profile_id', 'id');
     }
     public function isSavedByUser(string $job_id = null): bool
     {
-        $id = auth('candidate')->id();
-        // return auth('candidate')->check() &&
-        //     auth('candidate')->user()->profile->saved_jobs()->contains('candidate_profile_id', $id);
         return auth('candidate')->check() && auth('candidate')->user()->profile->saved_jobs()->where('job_id', $this->id)->exists();
-        // ->where('candidate_profile_id', $id)->exists();
     }
-    // public function is_saved(): bool
-    // {
-    //     if (auth('candidate')->check() && auth('candidate')->user()->profile->is_job_saved()) {
-    //         return true;
-    //     }
-    //     return false;
-    // }
-    // public function 
+    public function isAppliedByUser(): bool
+    {
+        return auth('candidate')->check() && auth('candidate')->user()->profile->job_applications()->where('job_id', $this->id)->exists();
+    }
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class, 'job_id', 'id');
+    }
 }

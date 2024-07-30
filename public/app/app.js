@@ -43,6 +43,7 @@
             minLength: 0,
             source: job_locations,
         });
+        // autocomplete initalization
         $('input[name="job_type"').autocomplete({
             minLength: 0,
             source: [
@@ -54,6 +55,7 @@
                 'internship',
             ],
         });
+        // handles autocomplete on job search input
         $('input[name="job_title"]').autocomplete({
             minLength: 3,
             source: function (request, response) {
@@ -104,10 +106,11 @@
                 $('.search-dropdown').hide().removeClass('show');
             }
         });
-
+        // handles back to top button click
         $('#btn-back-to-top').on('click', () => {
             $("html, body").animate({ scrollTop: 0 }, 100);
         });
+        // scroll event for header animation
         $(window).scroll(function () {
             if ($(this).scrollTop() >= 100) {
                 $('#btn-back-to-top').fadeIn();
@@ -119,12 +122,15 @@
                 $('header > div.app-container').removeClass('bg-white').addClass('bg-secondary');
             }
         });
+        // token
         const token = $('[name="_token"]').attr('content');
+        // an event handler for the job page redirect
         $('.job-card').on('click', function (e) {
             e.preventDefault();
             const targetUrl = $(this).data('target-url');
             window.open(targetUrl, '_self');
         });
+        // add or remove job from favorites
         $('button.bookmark').on('click', async function (e) {
             e.stopPropagation();
             var jobId = $(this).data('job-id');
@@ -152,31 +158,71 @@
                 alert('Error: ', err);
             }
         });
+        // add or remove candidate from wish list
+        $('button.bookmark-candidate').on('click', async function (e) {
+            e.stopPropagation();
+            var candidateId = $(this).data('candidate-id');
+            var icon = $(this).find('i');
+            await $.ajax({
+                type: 'POST',
+                url: '/employer/save-candidate',
+                data: {
+                    _token: token,
+                    candidate_id: candidateId,
+                },
+                success: function (data) {
+                    if (data.success) {
+                        icon.toggleClass('fa far'); // toggle the icon
+                        console.log($(e));
+                        $(e).attr('data-mdb-content', data.message).popover();
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                },
+            });
+        });
+        // remove job from favorites
         $('button.unsave-job').on('click', async function (e) {
             e.stopPropagation();
             var jobId = $(this).data('job-id');
-            // var icon = $(this).find('i');
-
-            try {
-                await $.ajax({
-                    type: 'POST',
-                    url: '/candidate/unsave_job',
-                    data: {
-                        _token: token,
-                        job_id: jobId,
-                    },
-                    success: function (data) {
-                        if (data.success) {
-                            window.location.href = data.url; // toggle the icon
-                        }
-                    },
-                    error: function (err) {
-                        console.log(err);
-                    },
-                });
-            } catch (err) {
-                alert('Error: ', err);
-            }
+            await $.ajax({
+                type: 'POST',
+                url: '/candidate/unsave_job',
+                data: {
+                    _token: token,
+                    job_id: jobId,
+                },
+                success: function (data) {
+                    if (data.success) {
+                        window.location.href = data.url; // toggle the icon
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                },
+            });
+        });
+        // remove candidates from the list
+        $('button.unsave-candidate').on('click', async function (e) {
+            e.stopPropagation();
+            var candidate_id = $(this).data('candidate-id');
+            await $.ajax({
+                type: 'POST',
+                url: '/candidate/unsave_job',
+                data: {
+                    _token: token,
+                    candidate_id: candidate_id,
+                },
+                success: function (data) {
+                    if (data.success) {
+                        window.location.href = data.url; // toggle the icon
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                },
+            });
         });
         $.each($('button.copy-url'), (i, button) => {
             var url = $(button).data('url');
@@ -205,14 +251,59 @@
                 $l = $('input#search-job-location').val();
             window.location.href = '/jobs?job_title=' + $t + '&location=' + $l;
         });
-        // $('.form-search').
-        $('button#apply-job').on('click', (e) => {
-            // alert('Apply')
+        // handle job application by candidates
+        $('button.apply-job').on('click', (e) => {
+            var job_id = e.currentTarget.dataset.jobId;
             const is_login = e.currentTarget.dataset.is_login;
             if (is_login == false) {
                 return window.location.href = '/app/login?to=' + window.location.pathname;
             }
             $('#modal-apply').modal('show');
+            const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin me-2"></span>';
+            const $response = $('#validate-res');
+            $('form#form-apply').on('submit', function (event) {
+                event.preventDefault();
+                var subject = $(this).find('textarea#cover_letter').val().toString();
+                const btn = $('form#form-apply :submit');
+                btn.html($loader + 'sending...').addClass('disabled');
+                if (confirm('By Applying For This Job, Your CV Are Shared With The Employer')) {
+                    $.ajax('/candidate/apply_job', {
+                        type: 'POST',
+                        data: {
+                            _token: token,
+                            cover_letter: subject,
+                            job_id: job_id,
+                        },
+                        success: (response) => {
+                            if (response.success) {
+                                btn.html('sent <i class="fa fa-check-double ms-2"></i>');
+                            }
+                            // btn.html('send <i class="fas fa-arrow-right fa-send ms-2"></i>')
+                            //     .removeClass('disabled');
+                        },
+                        error: (error) => {
+                            console.log('✅ response    ', error);
+                            if (error.status === 422) {
+                                const response = error.responseJSON.errors;
+                                var ErrorList = '';
+                                Object.keys(response).map(error => {
+                                    ErrorList += `<li>${response[error][0]}</li>`;
+                                });
+                                const errorMessage = `
+                                            <ul class="list-unstyled mb-0">
+                                            ${ErrorList}
+                                            </ul>
+                                        `;
+                                $response.show().html(errorMessage);
+                            } else if (error.status === 500) {
+                                $response.show().text('An unexpected error occurred');
+                            }
+                            btn.html('send <i class="fas fa-arrow-right fa-send ms-2"></i>')
+                                .removeClass('disabled');
+                        }
+                    });
+                }
+            });
         });
     });
 })();
