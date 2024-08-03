@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JobApplication;
+use App\Models\Job;
+use App\Models\Candidate;
+use App\Models\CandidateProfile;
 use Illuminate\Http\Request;
+use App\Models\JobApplication;
 
 class JobApplicationController extends Controller
 {
@@ -12,7 +15,8 @@ class JobApplicationController extends Controller
      */
     public function index()
     {
-        //
+        $page_title = 'JOB APPLICATIONS';
+        return view('employer.applications', compact('page_title'));
     }
 
     /**
@@ -34,9 +38,14 @@ class JobApplicationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(JobApplication $jobApplication)
+    public function show($job)
     {
-        //
+        abort_if($job == null, 403, 'No job or candidate specified');
+        $job = Job::find($job);
+        abort_unless($job !== null, 403, 'Application not found');
+        $path = 'my jobs / ' . $job->title;
+        $page_title = 'APPLICATION';
+        return view('employer.applications', compact('page_title',   'job', 'path'));
     }
 
     /**
@@ -61,5 +70,13 @@ class JobApplicationController extends Controller
     public function destroy(JobApplication $jobApplication)
     {
         //
+    }
+    public function approve_application($id)
+    {
+        dd($id);
+        JobApplication::find($id)->update([
+            'approved' => true
+        ]);
+        return response(['success' => true, 'message' => 'application approved successfully']);
     }
 }

@@ -211,4 +211,8 @@ footer {
         width: 100%;
         max-width: 1024px !important;
     }
+    .bg-md-no-picture{
+        background-color: var(--mdb-secondary) !important;
+        background-image: none !important;
+    }
 }

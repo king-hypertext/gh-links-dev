@@ -32,9 +32,10 @@
                 <div
                     class="col-lg-6 col-sm-6 d-flex flex-row align-items-center justify-content-start justify-content-sm-end g-3">
                     @auth('employer')
-                        <button type="button" data-is_login="{{ auth('employer')->check() ? 1 : 0 }}" id="add-to-favorite"
-                            class="btn btn-secondary" title="add to saved candidates">
-                            <i class="far fa-bookmark"></i>
+                        <button type="button" data-candidate-id="{{ $candidate->profile->id }}"
+                            title="{{ $candidate->profile->isCandidateSaved() ? 'remove from favorites' : 'add to favorites' }}"
+                            class="btn btn-secondary bookmark-candidate" title="add to saved candidates">
+                            <i class="{{ $candidate->profile->isCandidateSaved() ? 'fa' : 'far' }} fa-bookmark"></i>
                         </button>
                     @endauth
                 </div>

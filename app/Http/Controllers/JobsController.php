@@ -7,8 +7,6 @@ use App\Models\Job;
 use App\Models\District;
 use Illuminate\Http\Request;
 use App\Models\EmployerProfile;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use Illuminate\Support\Collection;
 
 class JobsController extends Controller
 {
@@ -47,25 +45,25 @@ class JobsController extends Controller
                     });
                 })
                 // ->dd();
-                ->paginate(6);
+                ->where('status', '=', 1)->paginate(6);
         } else {
-            $jobs =  $job->newInstance()->paginate(12);
+            $jobs =  $job->newInstance()->where('status', '=', 1)->paginate(12);
         }
         // dd($jobs->last()->company);
         $page_title = 'ALL JOBS';
-        $related_jobs = Job::paginate(6);
+        $related_jobs = Job::where('status', '=', 1)->paginate(6);
         return view(
             'pages.jobs.index',
             compact('jobs', 'search', 'page_title',  'related_jobs')
         );
     }
-    public function showByCompany($company, Request $request)
+    public function showByCompany($company)
     {
         $company = EmployerProfile::where('company_name', $company)->first();
         $page_title = 'OPEN VACANCIES BY ' . strtoupper($company->company_name);
-        $jobs = Job::query()->where('company_id', $company->id)->paginate(6);
+        $jobs = Job::query()->where('status', '=', 1)->where('company_id', $company->id)->paginate(6);
         $search = null;
-        return view('pages.jobs.index', compact('company', 'jobs','search',  'page_title'));
+        return view('pages.jobs.index', compact('company', 'jobs', 'search',  'page_title'));
     }
 
     /**
@@ -90,7 +88,7 @@ class JobsController extends Controller
     public function show(Job $job, $id)
     {
         // dd($id);
-        $job = Job::find($id);
+        $job = Job::where('status', '=', 1)->find($id);
         $page_title = 'JOBS (' . strtoupper($job->title) . ')';
         return view('pages.jobs.details', compact('job', 'page_title'));
     }

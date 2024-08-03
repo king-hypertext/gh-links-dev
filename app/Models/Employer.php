@@ -2,20 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Employer extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
     protected $fillable = [
-        'first_name',
-        'last_name',
+        // 'first_name',
+        // 'last_name',
         'username',
         'phone_number',
         'email',
-        'about',
+        // 'about',
         'accept_terms',
         'password',
         // 'job_id', // foreign key for Job model

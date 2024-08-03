@@ -82,51 +82,52 @@
                 <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card"
                     data-target-url="{{ route('jobs.show', [$job->id]) }}">
                     <div class="card-body">
-                        <div class="flex justify-start align-items-center">
-                            <h5 class="card-title fw-bold text-uppercase text-truncate">
-                                {{ $job->title }}
-                            </h5>
-                        </div>
-                        <div class="d-flex flex-row justify-start align-items-center">
-                            <div class="col-4">
-                                <span class="btn btn-outline-success text-nowrap px-2 py-1">{{ $job->type }}</span>
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="col-10 flex flex-row justify-start align-items-center">
+                                <h5 class="card-title h6 fw-bold text-uppercase text-truncate">
+                                    {{ $job->title }}
+                                </h5>
                             </div>
-                            <div class="col-8">
-                                <span class="fw-bold text-capitalize">minimum salary:</span>
-                                {{ 'GHS ' . number_format($job->min_salary, 2, '.', ',') }}
-                            </div>
-                        </div>
-
-                        <div class="d-flex flex-row justify-center align-items-center mt-3">
-                            <div class="col-3">
-                                <img src="{{ $job->company->image->logo_image }}" height="55" width="55"
-                                    alt="company-logo" class="img-thumbnail img-circle">
-                            </div>
-                            <div class="col-8  flex-column align-items-center justify-center">
-                                <div class="col-auto">
-                                    <h6 class="h6 fw-semibold text-capitalize text-truncate">
-                                        {{ $job->company->company_name }}
-                                    </h6>
-                                </div>
-                                <div class="col-auto d-flex justify-content-start align-items-center">
-                                    <i class="fas fa-map-marker-alt me-2"></i>
-                                    <span class="flex-nowrap text-nowrap text-truncate text-capitalize">
-                                        {{ $job->city?->name }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-1 d-flex flex-row justify-content-center align-items-center">
+                            <div class="col-2 d-flex flex-row justify-content-center align-items-center">
                                 @auth('candidate')
-                                    <button type="button" data-mdb-toggle="popover" data-mdb-container="body"
-                                        data-mdb-placement="top"
-                                        class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark user-select-none"
-                                        data-job-id="{{ $job->id }}"
-                                        title="{{ $job->isSavedByUser() ? 'Remove from favourites' : 'Add to favourites' }}">
+                                    <button class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark user-select-none"
+                                        data-job-id="{{ $job->id }}" title="bookmark">
                                         <i class="{{ $job->isSavedByUser() ? 'fas' : 'far' }} fa-heart user-select-none"></i>
                                     </button>
                                 @endauth
                             </div>
                         </div>
+                        <div class="d-flex flex-row justify-start align-items-center">
+                            <div class="col-4">
+                                <span class="btn btn-outline-success text-nowrap px-2 py-0">{{ $job->type }}</span>
+                            </div>
+                            <div class="col-8">
+                                {{ 'GHS ' . number_format($job->min_salary, 2) }} / {{ $job->salary->type }}
+                                <span class="fw-bold text-capitalize"></span>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row justify-center align-items-center ">
+                            <div class="col-auto d-flex justify-content-start align-items-center">
+                                <h6 class="h6 fw-semibold text-capitalize text-truncate mb-0">
+                                    @ {{ $job->company?->company_name }}
+                                </h6>
+                                <span class="flex-nowrap text-nowrap text-truncate text-capitalize ms-2">
+                                    <i class="fas fa-map-marker-alt me-2"></i>
+                                    {{ $job->city?->name }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center flex-wrap">
+                            @forelse ($job->tags as $tag)
+                                <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
+                                    {{ $tag->name }}
+                                </span>
+                            @empty
+                            @endforelse
+                        </div>
+                        <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
+                            {{ $job->job_experience->level }}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -164,49 +165,56 @@
             </h6>
             @foreach ($related_jobs as $job)
                 <div class="col-sm-6 col-lg-4">
-                    <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card" data-target-id="1"
+                    <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card"
                         data-target-url="{{ route('jobs.show', [$job->id]) }}">
                         <div class="card-body">
-                            <div class="flex justify-start align-items-center">
-                                <h5 class="card-title fw-bold text-uppercase text-truncate">
-                                    {{ $job->title }}
-                                </h5>
+                            <div class="d-flex flex-row align-items-center">
+                                <div class="col-10 flex flex-row justify-start align-items-center">
+                                    <h5 class="card-title h6 fw-bold text-uppercase text-truncate">
+                                        {{ $job->title }}
+                                    </h5>
+                                </div>
+                                <div class="col-2 d-flex flex-row justify-content-center align-items-center">
+                                    @auth('candidate')
+                                        <button class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark user-select-none"
+                                            data-job-id="{{ $job->id }}" title="bookmark">
+                                            <i
+                                                class="{{ $job->isSavedByUser() ? 'fas' : 'far' }} fa-heart user-select-none"></i>
+                                        </button>
+                                    @endauth
+                                </div>
                             </div>
                             <div class="d-flex flex-row justify-start align-items-center">
                                 <div class="col-4">
-                                    <span class="btn btn-outline-success text-nowrap px-2 py-1">{{ $job->type }}</span>
+                                    <span class="btn btn-outline-success text-nowrap px-2 py-0">{{ $job->type }}</span>
                                 </div>
                                 <div class="col-8">
-                                    <span class="fw-bold text-capitalize">minimum salary:</span>
-                                    {{ 'GHS ' . number_format($job->min_salary, 2, '.', ',') }}
+                                    {{ 'GHS ' . number_format($job->min_salary, 2) }} / {{ $job->salary->type }}
+                                    <span class="fw-bold text-capitalize"></span>
                                 </div>
                             </div>
-
-                            <div class="d-flex flex-row justify-center align-items-center mt-3">
-                                <div class="col-3">
-                                    <img src="{{ $job->company->image->logo_image }}" height="55" width="55"
-                                        alt="company-logo" class="img-thumbnail img-circle">
-                                </div>
-                                <div class="col-8  flex-column align-items-center justify-center">
-                                    <div class="col-auto">
-                                        <h6 class="h6 fw-semibold text-capitalize text-truncate">
-                                            {{ $job->company->company_name }}
-                                        </h6>
-                                    </div>
-                                    <div class="col-auto d-flex justify-content-start align-items-center">
+                            <div class="d-flex flex-row justify-center align-items-center ">
+                                <div class="col-auto d-flex justify-content-start align-items-center">
+                                    <h6 class="h6 fw-semibold text-capitalize text-truncate mb-0">
+                                        @ {{ $job->company?->company_name }}
+                                    </h6>
+                                    <span class="flex-nowrap text-nowrap text-truncate text-capitalize ms-2">
                                         <i class="fas fa-map-marker-alt me-2"></i>
-                                        <span class="flex-nowrap text-nowrap text-truncate text-capitalize">
-                                            {{ $job->city?->name }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-1 d-flex flex-row justify-content-center align-items-center">
-                                    <button {{ auth('candidate')->check() ? '' : 'disabled' }}
-                                        class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark" title="bookmark">
-                                        <i class="far fa-bookmark"></i>
-                                    </button>
+                                        {{ $job->city?->name }}
+                                    </span>
                                 </div>
                             </div>
+                            <div class="d-flex flex-row align-items-center flex-wrap">
+                                @forelse ($job->tags as $tag)
+                                    <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
+                                        {{ $tag->name }}
+                                    </span>
+                                @empty
+                                @endforelse
+                            </div>
+                            <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
+                                {{ $job->job_experience->level }}
+                            </span>
                         </div>
                     </div>
                 </div>

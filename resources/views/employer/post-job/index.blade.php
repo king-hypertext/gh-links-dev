@@ -1,5 +1,8 @@
 @extends('employer.layout')
 @section('content')
+    @php
+        $applications = \App\Models\CandidateApplication::all();
+    @endphp
     <!-- Simplicity is the essence of happiness. - Cedric Bledsoe -->
     <div class="table-responsive">
         <table class="table table-hover">
@@ -7,7 +10,7 @@
                 <div class="">
                     <h6 class="h6 text-capitalize">my jobs ({{ $employer?->profile?->jobs->count() }})</h6>
                 </div>
-                <div class="form-group d-flex" style="min-width: 250px!important;">
+                {{-- <div class="form-group d-flex" style="min-width: 250px!important;">
                     <label for="status" class="text-nowrap me-3">Job Status</label>
                     <select class="form-select form-select-sm" onchange="window.location.href = this.value">
                         <option {{ request()->status == 'all' ? 'selected' : '' }} value="?status=all">All jobs</option>
@@ -15,7 +18,7 @@
                         <option {{ request()->status == 'inactive' ? 'selected' : '' }} value="?status=inactive">Inactive
                         </option>
                     </select>
-                </div>
+                </div> --}}
             </div>
             {{-- {{ dd(request()->has('status') ? '' : 'selected') }} --}}
             <thead class="table-secondary">
@@ -27,11 +30,23 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($employer?->profile?->jobs as $job)
+                @forelse ($all_jobs as $job)
                     <tr class="">
-                        <td scope="row">{{ strtoupper($job->title) }}</td>
+                        <td scope="row">
+                            <a href="{{ route('my-jobs.edit', $job->id) }}" target="_blank" title="Edit Job"
+                                rel="noopener noreferrer">
+                                {{ strtoupper($job->title) }}
+                            </a>
+                        </td>
                         <td>
-                            <span class="text-success">✅active</span>
+                            @if ($job->status == 1)
+                                <span class="text-success">
+                                    ✅active
+                                </span>
+                            @else
+                                🔕inactive
+                            @endif
+                            </span>
                         </td>
                         <td>
                             <div class="d-flex flex-row">
@@ -42,7 +57,8 @@
                             </div>
                         </td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-secondary">view applications</a>
+                            <a href="{{ route('job-applications.show', $job->id) }}"
+                                class="btn btn-sm btn-secondary">view applications</a>
                         </td>
                     </tr>
                 @empty

@@ -13,9 +13,10 @@ class EmployerProfileController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // dd($request);
+        return $request->status;
     }
     public function candidates()
     {

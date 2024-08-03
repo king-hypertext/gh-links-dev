@@ -24,7 +24,7 @@ return new class extends Migration
             $table->date('date_of_birth');
             $table->string('experience');
             $table->string('profile_picture');
-            $table->longText('biography')->nullable();
+            // $table->longText('biography')->nullable();
             // $table->string('cv')->nullable();
             $table->timestamps();
         });

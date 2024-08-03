@@ -11,9 +11,13 @@
         <table class="table align-middle">
             <thead>
                 <tr>
-                    <th scope="col">candidates</th>
+                    <th scope="col">Candidates</th>
                     <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col">
+                        <a href="{{ route('candidates.index') }}" target="_blank" rel="noopener noreferrer" title="more candidates">More Candidates
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -47,10 +51,12 @@
                         <td>
                             <div class="d-flex flex-row flex-wrap align-items-center justify-content-end">
                                 <button data-candidate-id="{{ $candidate->candidate->id }}" type="button"
-                                    title="Remove from favorites" class="btn btn-secondary px-3 unsave-candidate me-0 me-md-2">
+                                    title="Remove from favorites"
+                                    class="btn btn-secondary px-3 unsave-candidate me-0 me-md-2">
                                     <i class="fas fa-bookmark user-select-none"></i>
                                 </button>
-                                <a href="{{ route('candidate.profile-info', $candidate->candidate->id) }}"
+                                <a href="{{ route('candidate.profile-info', $candidate->candidate->candidate->username) }}"
+                                    target="_blacnk" rel="noopener noreferrer"
                                     class="btn btn-primary">
                                     view profile
                                 </a>

@@ -25,6 +25,13 @@ class CandidateProfile extends Model
         'biography',
         'job_role'
     ];
+    // public function isEmailVerified(): bool
+    // {
+    //     if ($this->candidate->email_verified_at !== null) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
     public function isProfileCompleted(): bool
     {
         if ($this->whereNotnull($this->first_name,  $this->last_name, $this->experience, $this->profile_picture, $this->resume())) {

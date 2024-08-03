@@ -17,7 +17,7 @@ class JobApplication extends Model
     ];
     public function job()
     {
-        return $this->belongsTo(Job::class,  'job_id', 'id');
+        return $this->belongsTo(Job::class,  'job_id', 'id')->where('status', '=', 1);
     }
     public function candidate()
     {

@@ -52,8 +52,8 @@ class CandidateController extends Controller
     {
         $request->validate(
             [
-                'first_name' => 'required|string',
-                'last_name' => 'required|string',
+                // 'first_name' => 'required|string',
+                // 'last_name' => 'required|string',
                 'username' => 'required|string|unique:candidates,username',
                 'phone_number' => 'required|string',
                 'email' => 'required|email|unique:candidates,email',
@@ -80,6 +80,7 @@ class CandidateController extends Controller
         if (!Auth::guard('candidate')->check()) {
             return redirect()->route('login')->with('warning', 'You must be logged in');
         }
+       
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         Auth::guard('candidate')->logout();

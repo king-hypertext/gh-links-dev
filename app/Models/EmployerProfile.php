@@ -56,7 +56,14 @@ class EmployerProfile extends Model
     {
         return $this->belongsTo(Industry::class, 'industry_id', 'id');
     }
+    // public function job_apllocations(){
+    //     return $this->hasMany(CandidateApplication::class, );
+    // }
     public function jobs()
+    {
+        return $this->hasMany(Job::class, 'company_id', 'id')->where('status', 1);
+    }
+    public function all_jobs()
     {
         return $this->hasMany(Job::class, 'company_id', 'id');
     }

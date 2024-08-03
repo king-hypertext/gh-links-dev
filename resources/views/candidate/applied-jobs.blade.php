@@ -11,7 +11,6 @@
         </div>
     @endif
     @use(Carbon\Carbon)
-
     <div class="container">
         <h5 class="h5 text-uppercase fw-semibold">
             applied jobs <span class="fw-normal">({{ $applied_jobs->count() }})</span>

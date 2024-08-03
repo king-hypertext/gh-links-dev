@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <title>GH-LINKS EMPLOYER - {{ $page_title ?? '' }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Kingsley Osei Opoku" name="author"/>
-    <meta name="_token" content="{{ csrf_token() }}"/>
+    <meta content="Kingsley Osei Opoku" name="author" />
+    <meta name="_token" content="{{ csrf_token() }}" />
     <link rel="shortcut icon" href="{{ asset('icon.svg') }}" type="image/x-icon" />
     <link rel="stylesheet" href="{{ asset('app/dashboard/css/icons.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.theme.css') }}" />
@@ -30,12 +30,13 @@
         .tox-promotion {
             visibility: hidden !important;
         }
+
         @media(min-width:768px) {
-    .overview-container{
-        width: 100%;
-        max-width: 1024px !important;
-    }
-}
+            .overview-container {
+                width: 100%;
+                max-width: 1024px !important;
+            }
+        }
     </style>
 </head>
 
@@ -45,37 +46,9 @@
     @endphp
     <!-- Nothing worth having comes easy. - Theodore Roosevelt -->
     <div class="wrapper">
-
-
-        <!-- ========== Topbar Start ========== -->
         <div class="navbar-custom">
             <div class="topbar container-fluid">
                 <div class="d-flex align-items-center gap-lg-2 gap-1">
-
-                    <!-- Topbar Brand Logo -->
-                    {{-- <div class="logo-topbar">
-                        <!-- Logo light -->
-                        <a href="index.html" class="logo-light">
-                            <span class="logo-lg">
-                                <img src="assets/images/logo.png" alt="logo">
-                            </span>
-                            <span class="logo-sm">
-                                <img src="assets/images/logo-sm.png" alt="small logo">
-                            </span>
-                        </a>
-
-                        <!-- Logo Dark -->
-                        <a href="index.html" class="logo-dark">
-                            <span class="logo-lg">
-                                <img src="assets/images/logo-dark.png" alt="dark logo">
-                            </span>
-                            <span class="logo-sm">
-                                <img src="assets/images/logo-dark-sm.png" alt="small logo">
-                            </span>
-                        </a>
-                    </div> --}}
-
-                    <!-- Sidebar Menu Toggle Button -->
                     <button class="button-toggle-menu">
                         <i class="fa-solid fa-bars-staggered fa-sm"></i>
                     </button>
@@ -127,7 +100,7 @@
                                 </svg> --}}
                             </span>
                             <span class="d-lg-flex flex-column gap-1 d-none">
-                                <h5 class="my-0 h6">{{ $user?->full_name }}</h5>
+                                <h5 class="my-0 h6">{{ strtoupper($user->profile?->company_name) }}</h5>
                                 <h6 class="my-0 h6 fw-normal" style="font-size: 10px;">{{ $user?->username }}</h6>
                             </span>
                         </a>
@@ -167,7 +140,6 @@
 
         <!-- ========== Left Sidebar Start ========== -->
         <div class="leftside-menu menuitem-active">
-
             <!-- Brand Logo Light -->
             {{-- <a href="index.html" class="logo logo-light">
                 <span class="logo-lg">
@@ -198,7 +170,6 @@
             <div class="button-close-fullsidebar">
                 <i class="fa-solid fa-compress-arrows-alt align-middle"></i>
             </div>
-
             <!-- Sidebar -->
             <div class="h-100 show simplebar-scrollable-y" id="leftside-menu-container" data-simplebar="init">
                 <div class="simplebar-wrapper" style="margin: 0px;">
@@ -213,13 +184,17 @@
                                     <!-- Leftbar User -->
                                     <div class="leftbar-user">
                                         <a href="{{ route('my-account.show') }}" title="Profile">
-                                            {{-- <img src="assets/images/users/avatar-1.jpg" alt="user-image"
-                                                height="45" class="rounded-circle shadow-sm d-none"> --}}
-                                            <svg class="rounded-circle shadow" style="height: 65px;width: 65px;"
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                                <path
-                                                    d="M96 128a128 128 0 1 0 256 0A128 128 0 1 0 96 128zm94.5 200.2l18.6 31L175.8 483.1l-36-146.9c-2-8.1-9.8-13.4-17.9-11.3C51.9 342.4 0 405.8 0 481.3c0 17 13.8 30.7 30.7 30.7H162.5c0 0 0 0 .1 0H168 280h5.5c0 0 0 0 .1 0H417.3c17 0 30.7-13.8 30.7-30.7c0-75.5-51.9-138.9-121.9-156.4c-8.1-2-15.9 3.3-17.9 11.3l-36 146.9L238.9 359.2l18.6-31c6.4-10.7-1.3-24.2-13.7-24.2H224 204.3c-12.4 0-20.1 13.6-13.7 24.2z" />
-                                            </svg>
+                                            @if ($user->profile?->image?->logo_image)
+                                                <img src="{{ $user->profile->image->logo_image }}" alt="user-image"
+                                                    style="height: 65px;width: 65px;" height="45"
+                                                    class="rounded-circle shadow-sm">
+                                            @else
+                                                <svg class="rounded-circle shadow" style="height: 65px;width: 65px;"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                    <path
+                                                        d="M96 128a128 128 0 1 0 256 0A128 128 0 1 0 96 128zm94.5 200.2l18.6 31L175.8 483.1l-36-146.9c-2-8.1-9.8-13.4-17.9-11.3C51.9 342.4 0 405.8 0 481.3c0 17 13.8 30.7 30.7 30.7H162.5c0 0 0 0 .1 0H168 280h5.5c0 0 0 0 .1 0H417.3c17 0 30.7-13.8 30.7-30.7c0-75.5-51.9-138.9-121.9-156.4c-8.1-2-15.9 3.3-17.9 11.3l-36 146.9L238.9 359.2l18.6-31c6.4-10.7-1.3-24.2-13.7-24.2H224 204.3c-12.4 0-20.1 13.6-13.7 24.2z" />
+                                                </svg>
+                                            @endif
                                             <span
                                                 class="leftbar-user-name mt-2">{{ $user?->username ?? 'username' }}</span>
                                         </a>
@@ -255,6 +230,12 @@
                                                 <span> My Jobs</span>
                                             </a>
                                         </li>
+                                        {{-- <li class="side-nav-item">
+                                            <a href="{{ route('job-applications.index') }}" class="side-nav-link py-1">
+                                                <i class="fas fa-user-friends"></i>
+                                                <span> Job Applications</span>
+                                            </a>
+                                        </li> --}}
                                         <li class="side-nav-item">
                                             <a href="{{ route('employer.candidates') }}" class="side-nav-link py-1">
                                                 <i class="fa-solid fa-bookmark"></i>
@@ -303,7 +284,7 @@
                                         <li class="breadcrumb-item"><a
                                                 href="{{ route('employer.dashboard') }}">dashboard</a></li>
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">employer</a></li>
-                                        <li class="breadcrumb-item active">{{ $path ?? '' }}</li>
+                                        {{-- <li class="breadcrumb-item active">{{ $path ?? '' }}</li> --}}
                                     </ol>
                                 </div>
                                 <h4 class="page-title text-uppercase">{{ $path ?? '' }}</h4>

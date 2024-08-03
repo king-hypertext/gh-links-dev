@@ -31,13 +31,13 @@
             </div>
             <div
                 class="col-lg-6 col-sm-6 d-flex flex-row align-items-center justify-content-start justify-content-sm-end g-3">
-                <button type="button" data-is_login="{{ auth('candidate')->check() ? 1 : 0 }}" id="apply-job"
+                <a href="{{ route('jobs.open-vacancy', $company->company_name) }}" type="button"
                     class="btn btn-primary rounded-0" title="view all open jobs by {{ $company->company_name }}">
                     <span>
                         view open positions
                     </span>
                     <i class="fas fa-arrow-right ms-2"></i>
-                </button>
+                </a>
                 {{-- </div> --}}
             </div>
         </div>

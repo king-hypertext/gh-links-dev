@@ -85,7 +85,6 @@
                             </div>
                         </div>
                         <div class="d-flex flex-wrap align-items-center justify-content-end">
-                            {{-- @dd($candidate->isCandidateSaved()) --}}
                             @auth('employer')
                                 <button type="button" data-candidate-id="{{ $candidate->id }}"
                                     title="{{ $candidate->isCandidateSaved() ? 'remove from favorites' : 'add to favorites' }}"

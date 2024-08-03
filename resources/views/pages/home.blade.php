@@ -55,6 +55,10 @@
             {{-- </form> --}}
         </div>
     </div>
+    @use(App\Models\Job)
+    @use(App\Models\EmployerProfile)
+    @use(App\Models\CandidateProfile)
+
     <div class="container-fluid my-4">
         <div class="row">
             <div class="col-sm-4 gy-4 gx-md-0">
@@ -65,7 +69,7 @@
                                 <i class="fa-solid fa-briefcase fa-2xl"></i>
                             </div>
                             <div class="col-8">
-                                <h3 class="card-title">2,367</h3>
+                                <h3 class="card-title">{{ Job::where('status', '=', 1)->count() }}</h3>
                                 <p class="card-text">Live Jobs</p>
                             </div>
                         </div>
@@ -80,7 +84,7 @@
                                 <i class="fa-solid fa-arrow-right-to-city fa-2xl"></i>
                             </div>
                             <div class="col-8">
-                                <h3 class="card-title">1,394</h3>
+                                <h3 class="card-title">{{ EmployerProfile::count() }}</h3>
                                 <p class="card-text text-capitalize">companies</p>
                             </div>
                         </div>
@@ -95,7 +99,7 @@
                                 <i class="fas fa-user-group fa-2xl"></i>
                             </div>
                             <div class="col-8">
-                                <h3 class="card-title">12,833</h3>
+                                <h3 class="card-title">{{ CandidateProfile::count() }}</h3>
                                 <p class="card-text text-capitalize">candidates</p>
                             </div>
                         </div>
@@ -108,7 +112,7 @@
     <div class="d-flex justify-content-center justify-content-sm-start">
         <h5 class="h5 text-uppercase fw-bold fs-3 text-info">how gh-links work</h5>
     </div>
-    <div class="row bg-secondary">
+    <div class="row body-picture-bg bg:tranparent-dark bg-md-no-picture">
         <div class="col-sm-3 gy-3">
             <div class="card shadow-2">
                 <div style="height: 225px;!important" class="card-body d-flex flex-column">
@@ -118,7 +122,7 @@
                     <div class="pt-3 text-center">
                         <h4 class="card-title fw-bold fs-6">Create an Account</h4>
                     </div>
-                    <p class="card-text text-monospace" title="">
+                    <p class="card-text text-monospace text-center text-md-start" title="">
                         Firstly, you need to create a new account.
                     </p>
                 </div>
@@ -133,7 +137,7 @@
                     <div class="pt-3 text-center">
                         <h4 class="card-title fw-bold fs-6">Upload CV/Resume</h4>
                     </div>
-                    <p class="card-text text-monospace" title="">
+                    <p class="card-text text-monospace text-center text-md-start" title="">
                         Then, prepare your CV or Resume and upload it
                     </p>
                 </div>
@@ -148,7 +152,7 @@
                     <div class="pt-3 text-center">
                         <h4 class="card-title fw-bold fs-6 text-primary-emphasis">Find Suitable Job</h4>
                     </div>
-                    <p class="card-text text-monospace" title="">
+                    <p class="card-text text-monospace text-center text-md-start" title="">
                         Search for your preferred job
                     </p>
                 </div>
@@ -163,7 +167,7 @@
                     <div class="pt-3 text-center">
                         <h4 class="card-title fw-bold fs-6">Apply for Job</h4>
                     </div>
-                    <p class="card-text">
+                    <p class="card-text text-monospace text-center text-md-start">
                         Gotten your prefferred job? Apply for it.
                     </p>
                 </div>
@@ -181,40 +185,13 @@
                 <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card"
                     data-target-url="{{ route('jobs.show', [$job->id]) }}">
                     <div class="card-body">
-                        <div class="flex justify-start align-items-center">
-                            <h5 class="card-title fw-bold text-uppercase text-truncate">
-                                {{ $job->title }}
-                            </h5>
-                        </div>
-                        <div class="d-flex flex-row justify-start align-items-center">
-                            <div class="col-4">
-                                <span class="btn btn-outline-success text-nowrap px-2 py-1">{{ $job->type }}</span>
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="col-10 flex flex-row justify-start align-items-center">
+                                <h5 class="card-title h6 fw-bold text-uppercase text-truncate">
+                                    {{ $job->title }}
+                                </h5>
                             </div>
-                            <div class="col-8">
-                                <span class="fw-bold text-capitalize">minimum salary:</span>
-                                {{ 'GHS ' . number_format($job->min_salary, 2, '.', ',') }}
-                            </div>
-                        </div>
-
-                        <div class="d-flex flex-row justify-center align-items-center mt-3">
-                            <div class="col-3">
-                                <img src="{{ $job->company?->image?->logo_image }}" height="55" width="55"
-                                    alt="company-logo" class="img-thumbnail img-circle">
-                            </div>
-                            <div class="col-8  flex-column align-items-center justify-center">
-                                <div class="col-auto">
-                                    <h6 class="h6 fw-semibold text-capitalize text-truncate">
-                                        {{ $job->company?->company_name }}
-                                    </h6>
-                                </div>
-                                <div class="col-auto d-flex justify-content-start align-items-center">
-                                    <i class="fas fa-map-marker-alt me-2"></i>
-                                    <span class="flex-nowrap text-nowrap text-truncate text-capitalize">
-                                        {{ $job->city?->name . ', Ghana' }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-1 d-flex flex-row justify-content-center align-items-center">
+                            <div class="col-2 d-flex flex-row justify-content-center align-items-center">
                                 @auth('candidate')
                                     <button class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark user-select-none"
                                         data-job-id="{{ $job->id }}" title="bookmark">
@@ -223,166 +200,62 @@
                                 @endauth
                             </div>
                         </div>
+                        <div class="d-flex flex-row justify-start align-items-center">
+                            <div class="col-4">
+                                <span class="btn btn-outline-success text-nowrap px-2 py-0">{{ $job->type }}</span>
+                            </div>
+                            <div class="col-8">
+                                {{ 'GHS ' . number_format($job->min_salary, 2) }} / {{ $job->salary->type }}
+                                <span class="fw-bold text-capitalize"></span>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row justify-center align-items-center ">
+                            <div class="col-auto d-flex justify-content-start align-items-center">
+                                <h6 class="h6 fw-semibold text-capitalize text-truncate mb-0">
+                                    @ {{ $job->company?->company_name }}
+                                </h6>
+                                <span class="flex-nowrap text-nowrap text-truncate text-capitalize ms-2">
+                                    <i class="fas fa-map-marker-alt me-2"></i>
+                                    {{ $job->city?->name }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center flex-wrap">
+                            @forelse ($job->tags as $tag)
+                                <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
+                                    {{ $tag->name }}
+                                </span>
+                            @empty
+                            @endforelse
+                        </div>
+                        <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
+                            {{ $job->job_experience->level }}
+                        </span>
                     </div>
                 </div>
             </div>
         @empty
         @endforelse
-        {{-- <div class="col-sm-6 col-lg-4">
-            <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card" data-target-id="1"
-                data-target-url="{{ route('jobs.show', [1]) }}">
-                <div class="card-body">
-                    <div class="flex justify-start align-items-center">
-                        <h5 class="card-title fw-bold text-capitalize text-truncate">
-                            google inc. job title
-                        </h5>
-                    </div>
-                    <div class="d-flex flex-row justify-start align-items-center">
-                        <div class="col-4">
-                            <span class="btn btn-outline-success text-nowrap px-2 py-1">full time</span>
-                        </div>
-                        <div class="col-8">
-                            <span class="fw-bold">salary:</span> GHS 100,000
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-row justify-center align-items-center mt-3">
-                        <div class="col-3">
-                            <img src="{{ asset('company-logo.svg') }}" height="55" width="55" alt="company-logo"
-                                class="img-thumbnail img-circle">
-                        </div>
-                        <div class="col-8  flex-column align-items-center justify-center">
-                            <div class="col-auto">
-                                <h6 class="h6 fw-semibold text-capitalize text-truncate">
-                                    Amali-Tech.
-                                </h6>
-                            </div>
-                            <div class="col-auto d-flex justify-content-start align-items-center">
-                                <i class="fas fa-map-marker-alt me-2"></i>
-                                <span class="flex-nowrap text-nowrap text-truncate text-capitalize">accra, ghana</span>
-                            </div>
-                        </div>
-                        <div class="col-1 d-flex flex-row justify-content-center align-items-center">
-                            <button {{ auth('candidate')->check() ? '' : 'disabled' }}
-                                class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark" title="bookmark">
-                                <i class="far fa-bookmark"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-lg-4">
-            <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card" data-job-id="1"
-                data-job-url="{{ route('jobs.show', [1]) }}">
-                <div class="card-body">
-                    <div class="flex justify-start align-items-center">
-                        <h5 class="card-title fw-bold text-capitalize text-truncate">
-                            google inc. job title
-                        </h5>
-                    </div>
-                    <div class="d-flex flex-row justify-start align-items-center">
-                        <div class="col-4">
-                            <span class="btn btn-outline-success text-nowrap px-2 py-1">full time</span>
-                        </div>
-                        <div class="col-8">
-                            <span class="fw-bold">salary:</span> GHS 100,000
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-row justify-center align-items-center mt-3">
-                        <div class="col-3">
-                            <img src="{{ asset('company-logo.svg') }}" height="55" width="55" alt="company-logo"
-                                class="img-thumbnail img-circle">
-                        </div>
-                        <div class="col-8  flex-column align-items-center justify-center">
-                            <div class="col-auto">
-                                <h6 class="h6 fw-semibold text-capitalize text-truncate">
-                                    Amali-Tech.
-                                </h6>
-                            </div>
-                            <div class="col-auto d-flex justify-content-start align-items-center">
-                                <i class="fas fa-map-marker-alt me-2"></i>
-                                <span class="flex-nowrap text-nowrap text-truncate text-capitalize">accra, ghana</span>
-                            </div>
-                        </div>
-                        <div class="col-1 d-flex flex-row justify-content-center align-items-center">
-                            <button {{ auth('candidate')->check() ? '' : 'disabled' }}
-                                class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark" title="bookmark">
-                                <i class="far fa-bookmark"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-lg-4">
-            <div class="card my-2 mx-md-0 user-select-none cursor-pointer job-card" data-target-id="1"
-                data-target-url="{{ route('jobs.show', [1]) }}">
-                <div class="card-body">
-                    <div class="flex justify-start align-items-center">
-                        <h5 class="card-title fw-bold text-capitalize text-truncate">
-                            google inc. job title
-                        </h5>
-                    </div>
-                    <div class="d-flex flex-row justify-start align-items-center">
-                        <div class="col-4">
-                            <span class="btn btn-outline-success text-nowrap px-2 py-1">full time</span>
-                        </div>
-                        <div class="col-8">
-                            <span class="fw-bold text-capitalize">minimum salary:</span> GHS 100,000
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-row justify-center align-items-center mt-3">
-                        <div class="col-3">
-                            <img src="{{ asset('company-logo.svg') }}" height="55" width="55" alt="company-logo"
-                                class="img-thumbnail img-circle">
-                        </div>
-                        <div class="col-8  flex-column align-items-center justify-center">
-                            <div class="col-auto">
-                                <h6 class="h6 fw-semibold text-capitalize text-truncate">
-                                    Amali-Tech.
-                                </h6>
-                            </div>
-                            <div class="col-auto d-flex justify-content-start align-items-center">
-                                <i class="fas fa-map-marker-alt me-2"></i>
-                                <span class="flex-nowrap text-nowrap text-truncate text-capitalize">accra, ghana</span>
-                            </div>
-                        </div>
-                        <div class="col-1 d-flex flex-row justify-content-center align-items-center">
-                            <button {{ auth('candidate')->check() ? '' : 'disabled' }}
-                                class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark" title="bookmark">
-                                <i class="far fa-bookmark"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
     </div>
     <div class="row my-4">
-
         <div class="d-flex justify-content-center justify-content-sm-start">
             <h5 class="h5 text-uppercase fw-bold fs-3 text-info">Top Companies</h5>
         </div>
-
         @forelse ($companies as $i => $item)
             <div class="col-sm-4">
                 <div class="card shadow-2 my-2 mx-md-0 user-select-none">
                     <div class="card-body">
                         <div class="d-flex flex-row justify-center align-items-center mt-3">
-                            <div class="col-3">
+                            <div class="col-auto">
                                 <img src="{{ $item->image->logo_image }}" height="55" width="55"
                                     alt="company-logo" class="img-thumbnail img-circle">
                             </div>
-                            <div class="col-8  flex-column align-items-center justify-center">
-                                <div class="col-auto">
-                                    <h6 class="h6 fw-semibold text-capitalize text-truncate">
-                                        {{ $item->company_name }}
-                                    </h6>
-                                </div>
-                                <div class="col-auto d-flex justify-content-start align-items-center">
+                            <div class="d-flex flex-column align-items-start justify-content-start ms-2">
+                                <a href="{{ route('company.profile-info', $item->company_name) }}"
+                                    class="h6 fw-semibold text-capitalize text-truncate mb-0 link-primary">
+                                    {{ $item->company_name }}
+                                </a>
+                                <div class="d-flex justify-content-start align-items-center">
                                     <i class="fas fa-map-marker-alt me-2"></i>
                                     <span class="flex-nowrap text-nowrap text-truncate text-capitalize">
                                         {{ $item->company_location }}
@@ -391,8 +264,9 @@
                             </div>
                         </div>
                         <div class="d-grid gap-2 mt-2">
-                            <button type="button" onclick="window.open(this.id, '_blank')"
-                                id="{{ route('company.show', [$item->id]) }}" class="btn btn-secondary text-capitalize">
+                            <button type="button" onclick="window.open(this.id, '_self')"
+                                id="{{ route('jobs.open-vacancy', [$item->company_name]) }}"
+                                class="btn btn-secondary text-capitalize">
                                 open positions {{ '(' . $item->jobs->count() . ')' ?? '(' . 0 . ')' }}
                             </button>
                         </div>

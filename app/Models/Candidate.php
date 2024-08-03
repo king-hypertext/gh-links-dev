@@ -10,10 +10,13 @@ use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 class Candidate extends Authenticatable
 {
     use HasFactory, Notifiable, HasRelationships;
-
+    public function __construct()
+    {
+        return $this->isEmailVerified();
+    }
     protected $fillable = [
-        'first_name',
-        'last_name',
+        // 'first_name',
+        // 'last_name',
         'username',
         'phone_number',
         'email',
@@ -35,7 +38,13 @@ class Candidate extends Authenticatable
             'accept_terms' => 'boolean'
         ];
     }
-
+    public function isEmailVerified(): bool
+    {
+        if ($this->email_verified_at !== null) {
+            return true;
+        }
+        return false;
+    }
     public function profile()
     {
         return $this->hasOne(CandidateProfile::class, 'candidate_id', 'id');

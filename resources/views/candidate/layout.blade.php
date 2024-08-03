@@ -160,7 +160,7 @@
                             class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ auth('candidate')->user()->profile->profile_picture ?? asset('icons/svgs/solid/user.svg') }}"
-                                alt="" width="32" height="32" class="shadow-2 rounded-circle me-2">
+                                alt="" width="32" height="32" class="shadow-2 rounded-circle me-2 user">
                             <strong>{{ auth('candidate')->user()?->username }}</strong>
                         </a>
                         <ul class="dropdown-menu text-small shadow">

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Candidate;
-use App\Models\CandidateApplication;
-use App\Models\CandidateEducationDetail;
-use App\Models\CandidateJobExperience;
-use App\Models\CandidateProfile;
-use App\Models\CandidateResume;
 use App\Models\SavedJob;
+use App\Models\Candidate;
 use Illuminate\Http\Request;
+use App\Models\CandidateResume;
+use App\Models\CandidateProfile;
+use App\Models\CandidateApplication;
+use Illuminate\Support\Facades\Hash;
+use App\Models\CandidateJobExperience;
+use App\Models\CandidateEducationDetail;
 
 class CandidateProfileController extends Controller
 {
@@ -24,6 +25,35 @@ class CandidateProfileController extends Controller
     {
         $page_title = 'SEETINGS';
         return view('candidate.settings', compact('page_title'));
+    }
+    public function upload_image(Request $request)
+    {
+        $profile = auth('candidate')->user()->profile;
+        if ($request->hasFile('image')) {
+            $request->validate(
+                [
+                    'image' => 'required|image|mimes:jpg,png,jpeg,webp,bmp|max:2048',
+                ],
+                [
+                    'image.max' => 'image size must be less than 2MB'
+                ]
+            );
+            $image = $request->file('image');
+
+            $path = url('/storage/' . $image->store('/candidates/image', 'public'));
+            if ($profile->profile_picture !== null) {
+                $picture = str_ireplace(url(''), '', $profile->profile_picture);
+                unlink(public_path('/') . $picture);
+                $profile->update([
+                    'profile_picture' => $path,
+                ]);
+            } else {
+                $profile->update([
+                    'profile_picture' => $path,
+                ]);
+            }
+            return response(['success' => true, 'file' => $path]);
+        }
     }
     /**
      * Show the form for creating a new resource.
@@ -197,9 +227,45 @@ class CandidateProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CandidateProfile $candidateProfile)
+    public function update(Request $request, Candidate $candidate)
     {
-        //
+        $user = $candidate->find(auth('candidate')->id());
+        if ($request->has('password')) {
+            $request->validate(
+                [
+                    'c_password' => ['required', 'string'],
+                    'password' => ['required', 'string', 'confirmed'],
+                ],
+                [
+                    'password.confirmed' => 'The confirmed new password does not match the new password'
+                ]
+            );
+            if (Hash::check($request->input('c_password'), $user->password)) {
+                $user->password = Hash::make($request->input('password'));
+                $user->save();
+                return response([
+                    'success' => true,
+                    'url' => redirect()->back()
+                        ->with('success', 'Password updated successfully')
+                        ->getTargetUrl()
+                ]);
+            }
+            return response()->json(
+                [
+                    'errors' =>
+                    ['The current password is incorrect']
+                ],
+                422,
+                ['content-type' => 'application/json']
+            );
+        }
+        $request->validate([
+            'username' => 'required|string|unique:candidates,username,' . $user->id,
+            'email' => 'required|email|unique:candidates,email,' . $user->id,
+            'phone_number' => 'required|string|unique:candidates,phone_number,' . $user->id,
+        ]);
+        $user->update(array_map('strtolower', $request->all()));
+        return back()->with('success', 'info uccessfully updated');
     }
 
     /**

@@ -29,12 +29,12 @@ self.addEventListener('DOMContentLoaded', () => {
     //handle employee signup 
     const $response = $('#response');
     const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin me-2"></span>';
-    $('form#reg-as-candidate').on('submit', function (e) {
+    $('form#reg').on('submit', function (e) {
         e.preventDefault();
         console.log(e);
-        $('form#reg-as-candidate :submit').html($loader + 'saving data ...').addClass('disabled');
+        $('form#reg :submit').html($loader + 'saving data ...').addClass('disabled');
         const candidate_data = $(this).serialize();
-        $.ajax('/app/candidate/create-account', {
+        $.ajax('/app/create-account', {
             type: 'POST',
             data: candidate_data,
             success: function (response) {
@@ -60,7 +60,7 @@ self.addEventListener('DOMContentLoaded', () => {
                 } else if (error.status === 500) {
                     $response.show().text('An unexpected error occurred');
                 }
-                $('form#reg-as-candidate :submit').text('register').removeClass('disabled');
+                $('form#reg :submit').text('register').removeClass('disabled');
             }
         });
     });
@@ -101,10 +101,10 @@ self.addEventListener('DOMContentLoaded', () => {
         });
     });
     // handle employee login
-    $('form#login-as-candidate').on('submit', function (e) {
-        $('form#login-as-candidate :submit').html($loader + 'authenticating...').addClass('disabled');
+    $('form#login').on('submit', function (e) {
+        $('form#login :submit').html($loader + 'authenticating...').addClass('disabled');
         e.preventDefault();
-        $.ajax('/app/login/candidate', {
+        $.ajax('/app/login', {
             type: 'POST',
             data: $(this).serialize(),
             success: function (response) {
@@ -130,7 +130,7 @@ self.addEventListener('DOMContentLoaded', () => {
                 } else if (error.status === 403) {
                     $response.show().text(error.responseText);
                 }
-                $('form#login-as-candidate :submit').html('secure login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
+                $('form#login :submit').html('secure login <i class="fas fa-arrow-right ms-2"></i>').removeClass('disabled');
             }
         });
     });

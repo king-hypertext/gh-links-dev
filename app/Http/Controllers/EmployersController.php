@@ -30,8 +30,8 @@ class EmployersController extends Controller
                 'first_name' => 'required|string',
                 'last_name' => 'required|string',
                 'username' => 'required|string|unique:employers,username',
-                'phone_number' => 'required|string',
                 'email' => 'required|email|unique:employers,email',
+                'phone_number' => 'required|string',
                 // 'gender' => 'required|in:male,female',
                 'password' => 'required|string|confirmed',
                 'accept_terms' => 'required|accepted'
@@ -60,7 +60,7 @@ class EmployersController extends Controller
         session()->invalidate();
         session()->flush();
         Auth::guard('employer')->logout();
-        return redirect()->intended(route('login', ['tab' => 'employer']))->with('info', 'You have been logged out successfully');
+        return redirect()->intended(route('home'))->with('info', 'You have been logged out successfully');
     }
     /**
      * Store a newly created resource in storage.
@@ -101,6 +101,12 @@ class EmployersController extends Controller
     {
         //
     }
+    public function email(Request $request){
+        $request->user('employer')->sendEmailVerificationNotification();
+ 
+        return redirect()->back()->with('success', 'Verification link sent!');
+        // $verificationUrl = URL::signedRoute('verification.verify', ['id' => $user->id, 'hash' => sha1($user->email)]);
+    }
     public function dashboard()
     {
         $user = Employer::find(auth('employer')->id());
@@ -113,10 +119,10 @@ class EmployersController extends Controller
         $companies = EmployerProfile::paginate(12);
         return view('pages.company.index', compact('companies', 'page_title'));
     }
-    public function company_details(Request $request)
+    public function company_details($id)
     {
-        $id = $request->company;
-        $company = EmployerProfile::query()->where('employer_id', $id)->first();
+        $company = EmployerProfile::query()->where('employer_id', '=', $id)->first();
+        abort_unless($company !== null, 404);
         $page_title = strtoupper($company->company_name);
         return view('pages.company.details', compact('company', 'page_title'));
     }

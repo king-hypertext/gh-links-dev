@@ -39,24 +39,34 @@
                         title="{{ $job->isSavedByUser() ? 'Remove from favourites' : 'Add to favourites' }}">
                         <i class="{{ $job->isSavedByUser() ? 'fas' : 'far' }} fa-heart user-select-none"></i>
                     </button>
+                    @if ($job->isAppliedByUser())
+                        <button type="button" disabled class="btn btn-primary rounded-0" title="click to apply for this job">
+                            <span>
+                                applied
+                            </span>
+                            <i class="fas fa-check-double ms-2"></i>
+                        </button>
+                    @else
+                        <button type="button" data-is_login="{{ auth('candidate')->check() ? 1 : 0 }}" id="apply-job"
+                            class="btn btn-primary rounded-0 apply-job" title="click to apply for this job"
+                            data-job-id="{{ $job->id }}">
+                            <span>
+                                apply
+                            </span>
+                            <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    @endif
                 @endauth
-                @if ($job->isAppliedByUser())
-                    <button type="button" disabled class="btn btn-primary rounded-0" title="click to apply for this job">
-                        <span>
-                            applied
+            </div>
+            <div class="container my-2">
+                <div class="d-flex flex-row align-items-center flex-wrap">
+                    @forelse ($job->tags as $tag)
+                        <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
+                            {{ $tag->name }}
                         </span>
-                        <i class="fas fa-check-double ms-2"></i>
-                    </button>
-                @else
-                    <button type="button" data-is_login="{{ auth('candidate')->check() ? 1 : 0 }}" id="apply-job"
-                        class="btn btn-primary rounded-0 apply-job" title="click to apply for this job"
-                        data-job-id="{{ $job->id }}">
-                        <span>
-                            apply
-                        </span>
-                        <i class="fas fa-arrow-right ms-2"></i>
-                    </button>
-                @endif
+                    @empty
+                    @endforelse
+                </div>
             </div>
         </div>
     </div>

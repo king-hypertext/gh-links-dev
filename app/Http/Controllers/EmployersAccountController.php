@@ -96,8 +96,8 @@ class EmployersAccountController extends Controller
             [
                 'first_name' => 'required|string',
                 'last_name' => 'required|string',
-                'username' => 'required|string|unique:employers,username,' . $employer->id,
                 'phone_number' => 'required|string',
+                'username' => 'required|string|unique:employers,username,' . $employer->id,
                 'email' => 'required|email|unique:employers,email,' . $employer->id,
                 'gender' => 'required|string|in:male,female',
                 // 'password' => 'required|string',
