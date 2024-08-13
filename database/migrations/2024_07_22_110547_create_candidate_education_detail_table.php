@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('candidate_education_detail', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('candidate_profile_id')->constrained('candidate_profile')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('candidate_id')->constrained('candidates')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('institution_name');
             $table->string('institution_location');
-            $table->string('level')->nullable();
             $table->date('started_at');
             $table->date('ended_at');
             $table->timestamps();

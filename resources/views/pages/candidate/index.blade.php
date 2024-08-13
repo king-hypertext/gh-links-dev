@@ -58,23 +58,24 @@
             </h6>
         @endif
         @forelse ($candidates as $candidate)
+            {{-- {{ $candidate->user }} --}}
             @if ($candidate->isProfileCompleted())
                 <div class="row shadow-2 p-2 rounded-2 mt-2">
                     <div class="d-flex flex-row justify-content-between">
                         <div class="d-flex flex-wrap align-items-center">
-                            <img src="{{ $candidate->profile_picture ?? asset('icons/avatar-png.png') }}" width="55"
+                            <img src="{{ url($candidate->dp) ?? asset('icons/avatar-png.png') }}" width="55"
                                 height="55" alt="" class="img-thumbnail">
                             <div class="d-flex flex-column ms-sm-3">
                                 <ul class="list-unstyled mb-0">
-                                    <li class="py-0 text-capitalize" style="line-height: 1;">
+                                    <li class="py-0 text-capitalize" style="line-height: 1.2;">
                                         <strong>
                                             {{ $candidate->full_name }}
                                         </strong>
                                     </li>
-                                    <li class="py-0 text-capitalize" style="line-height: 1.2;">
-                                        {{ $candidate->job_role }}
+                                    <li class="py-0 text-uppercase fw-semibold text-black-50" style="line-height: 1.2;">
+                                        {{ $candidate->profession }}
                                     </li>
-                                    <li class="py-0 text-truncate">
+                                    <li class="py-0 text-truncate" style="line-height: 1.2;">
                                         <i class="fas fa-map-marker-alt"></i>
                                         <span class="text-capitalize">
                                             {{ $candidate->location }},
@@ -92,7 +93,7 @@
                                     <i class="{{ $candidate->isCandidateSaved() ? 'fa' : 'far' }} fa-bookmark"></i>
                                 </button>
                             @endauth
-                            <a href="{{ route('candidate.profile-info', $candidate->candidate->username) }}" type="button"
+                            <a href="{{ route('candidate.profile-info', $candidate->user?->username) }}" type="button"
                                 class="btn btn-primary ms-2 px-3 text-truncate text-capitalize">
                                 view profile
                             </a>

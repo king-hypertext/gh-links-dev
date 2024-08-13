@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employer_images', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employer_profile_id')->constrained('employer_profiles')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->text('banner_image')->nullable();
-            $table->text('logo_image')->nullable();
+            $table->foreignId('employer_id')->constrained('employers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->text('banner')->nullable();
+            $table->text('logo')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employers_images');
+        Schema::dropIfExists('images');
     }
 };

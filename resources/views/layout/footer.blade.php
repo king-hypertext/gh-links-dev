@@ -94,7 +94,7 @@
                         Dashboard</a>
                 </li>
                 <li>
-                    <a class="link-light text-muted fw-lighter" href="{{ route('job-applications.index') }}">Applications</a>
+                    <a class="link-light text-muted fw-lighter" href="{{ route('my-jobs.index') }}">Applications</a>
                 </li>
             </ul>
         </div>

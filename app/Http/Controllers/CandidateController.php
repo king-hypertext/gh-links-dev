@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Candidate;
-use App\Models\CandidateProfile;
+use App\Models\CandidateEducationDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,9 +13,10 @@ class CandidateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Candidate $candidate, Request $request)
     {
-        $candidate = new CandidateProfile();
+        // $candidate = new Candidate();
+
         $search = false;
         if ($request->anyFilled(['position', 'location'])) {
             $location = $request->location;
@@ -24,16 +26,12 @@ class CandidateController extends Controller
                 return $q->orWhere('job_role', 'LIKE', '%{' . $position . '}%');
             })->when($request->filled('location'), function ($q) use ($location) {
                 return
-                    // $q->orWhereHas('city', function ($q) use ($location) {
                     $q->orWhere('location', 'LIKE', "%{$location}%");
-                // ->orWhere('capital', 'LIKE', "%{$location}%");
-                // });
-            })->paginate(6, ['candidate_id', 'profile_picture', 'id', 'full_name', 'job_role', 'gender', 'location', 'experience']);
+            })->with('user')->paginate(6);
         } else {
-            $candidates = $candidate->select(['candidate_id', 'profile_picture', 'id', 'full_name', 'job_role', 'gender', 'location', 'experience'])->paginate(12);
+            $candidates = $candidate->with('user')->paginate(12);
         }
         $page_title = 'ALL CANDIDATES';
-        // dd($candidates);
         return view('pages.candidate.index', compact('page_title', 'candidates', 'search'));
     }
 
@@ -75,31 +73,33 @@ class CandidateController extends Controller
             response(['success' => false, 'message' => 'Failed to create account']);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        if (!Auth::guard('candidate')->check()) {
+        if (!Auth::guard('candidate')) {
             return redirect()->route('login')->with('warning', 'You must be logged in');
         }
-       
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+
+        session()->invalidate();
+        session()->regenerateToken();
         Auth::guard('candidate')->logout();
         return redirect()->back()->with('info', 'You have been logged out successfully');
     }
     /**
      * Display the specified resource.
      */
-    public function show(Candidate $candidate/* , $username */)
-    {
-        $page_title = strtoupper($candidate->username);
-        return view('pages.candidate.details', compact('candidate', 'page_title'));
-    }
+    // public function show(Candidate $candidate/* , $username */)
+    // {
+    //     $page_title = strtoupper($candidate->username);
+    //     return view('pages.candidate.details', compact('candidate', 'page_title'));
+    // }
 
-    public function showByUsername($username, Candidate $candidate)
+    public function showByUsername(string $username)
     {
-        $candidate = $candidate->whereUsername($username)->first();
-        abort_unless($candidate !== null, 404);
-        $page_title = strtoupper($candidate->username);
+        $user = User::where('username', $username)->first('id');
+        abort_unless($user !== null, 404);
+        $candidate = $user->candidate;
+        abort_unless($candidate->isProfileCompleted(), 403, 'Profile is not activated');
+        $page_title = strtoupper($username);
         return view('pages.candidate.details', compact('candidate', 'page_title'));
     }
     /**
@@ -107,7 +107,7 @@ class CandidateController extends Controller
      */
     public function edit(Candidate $candidate)
     {
-        //
+        abort(403);
     }
 
     /**
@@ -115,7 +115,7 @@ class CandidateController extends Controller
      */
     public function update(Request $request, Candidate $candidate)
     {
-        //
+        abort(403);
     }
 
     /**
@@ -123,11 +123,12 @@ class CandidateController extends Controller
      */
     public function destroy(Candidate $candidate)
     {
-        //
+        abort(403);
     }
     public function profile(Request $request)
     {
         $candidate = Candidate::find(auth('candidate')->id());
+        $page_title = strtoupper($candidate->first_name);
         return view('candidate.profile', compact('candidate'));
     }
 }

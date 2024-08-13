@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('job_applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('candidate_profile_id')->constrained('candidate_profile')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('candidate_id')->constrained('candidates')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('job_id')->constrained('gh_jobs')->cascadeOnDelete()->cascadeOnUpdate();
             $table->longText('cover_letter');
             $table->boolean('approved')->default(0);

@@ -18,7 +18,7 @@ class PostJobController extends Controller
      */
     public function index(Request $request)
     {
-        $employer = Employer::query()->find(auth('employer')->id());
+        $employer = Employer::where('user_id', auth('employer')->id())->first();
         $applications = \App\Models\CandidateApplication::all();
 
         // if ($request->has('status')) {
@@ -30,9 +30,8 @@ class PostJobController extends Controller
         //         $employer = $employer->where('status', '=', false);
         //     }
         // }
-        // return $employer;
         $page_title = 'MY JOBS';
-        $all_jobs = $employer->profile->all_jobs->sortBy('status', 0);
+        $all_jobs = $employer->jobs->sortBy('status', 0);
         return view('employer.post-job.index', compact('all_jobs', 'page_title', 'employer'));
     }
 
@@ -41,23 +40,23 @@ class PostJobController extends Controller
      */
     public function create()
     {
-        $employer = EmployerProfile::query()->where('employer_id', auth('employer')->id())->first();
+        $employer = Employer::query()->where('user_id','=', auth('employer')->id())->first();
+        // dd($employer);
         if (!$employer) {
             return redirect(route('employer.company-profile'))->with('incomplete', 'Please complete your profile before you can post a new job');
         }
 
-        $path = 'POST JOB';
-        $page_title = 'Create Job';
+        $page_title = 'POST JOB';
         $education = DB::table('education')->get(['id', 'level']);
         $job_experiences = DB::table('job_experience')->get(['id', 'level']);
         $salaries = DB::table('salaries')->get(['id', 'type']);
         $cities = City::all(['id', 'name']);
-        $company_id =  $employer->id;
-        $tags = Tags::all();
+        // $company_id =  $employer->id;
+        $tags = Tags::orderBy('created_at','desc')->get();
         // dd($tags);
         return view(
             'employer.post-job.create',
-            compact('path', 'page_title', 'education', 'job_experiences', 'salaries', 'cities', 'company_id', 'tags')
+            compact( 'page_title', 'education', 'job_experiences', 'salaries', 'cities', 'tags')
         );
     }
 

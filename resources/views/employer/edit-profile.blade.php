@@ -1,201 +1,312 @@
 @extends('employer.layout')
 @section('content')
     @php
-        $employer = auth('employer')->user();
+        $user = auth('employer')->user();
     @endphp
-    <!-- Tabs navs -->
-    {{-- @dd($employer->profile->organization) --}}
-    @session('success')
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        <strong>Congratulations!</strong> {{ session('success') }}
-    </div>
-    @endif
-    @session('incomplete')
-    <div class="alert alert-info alert-dismissible fade show" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        <strong>Profile: </strong> {{ session('incomplete') }}
-    </div>
-    @endif
-    <div id="error" style="display: none;" class="alert alert-danger alert-dismissible fade show" role="alert">
-    </div>
+    <div class="container">
+        <div class="overview-container">
+            @session('success')
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>Congratulations!</strong> {{ session('success') }}
+            </div>
+            @endif
+            @session('incomplete')
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>Profile: </strong> {{ session('incomplete') }}
+            </div>
+            @endif
+            <div id="error" style="display: none;" class="alert alert-danger alert-dismissible fade show"
+                role="alert">
+            </div>
+            <!-- Tabs navs -->
+            <style>
+                .file-input {
+                    position: relative;
+                    display: inline-block;
+                    width: 100% !important;
+                }
 
-    <ul class="nav nav-tabs mb-3" id="account-setup" role="tablist">
-        <li class="nav-item" role="presentation">
-            <a data-mdb-tab-init class="nav-link active" id="account-setup-tab-1" href="#account-setup-tabs-1"
-                role="tab" aria-controls="account-setup-tabs-1" aria-selected="true">
-                <i class="fa-solid fa-address-card fa-fw me-2"></i> Company Info
-            </a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a data-mdb-tab-init class="nav-link" id="account-setup-tab-2" href="#account-image-upload" role="tab"
-                aria-controls="account-image-upload" aria-selected="false"><i
-                    class="fa-regular fa-circle-user fa-fw me-2"></i>Image uploads</a>
-        </li>
-    </ul>
-    <!-- Tabs navs -->
-    <style>
-        .file-input {
-            position: relative;
-            display: inline-block;
-            width: 100% !important;
-        }
+                .file-input input[type="file"] {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    margin: 0;
+                    padding: 0;
+                    font-size: 20px;
+                    cursor: pointer;
+                    opacity: 0;
+                }
 
-        .file-input input[type="file"] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-        }
+                .file-input label {
+                    display: flex;
+                    align-items: center;
+                    align-content: flex-start;
+                    justify-content: flex-start;
+                    flex-direction: column;
+                    /* margin: 0 auto; */
+                    width: fit-content;
+                    padding: 10px 5px 0 5px;
+                    background: #f9f9f9;
+                    border: 2px dashed #ababab;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
 
-        .file-input label {
-            display: flex;
-            align-items: center;
-            align-content: flex-start;
-            justify-content: flex-start;
-            flex-direction: column;
-            /* margin: 0 auto; */
-            width: fit-content;
-            padding: 10px 5px 0 5px;
-            background: #f9f9f9;
-            border: 2px dashed #ababab;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+                .file-icon {
+                    font-size: 24px;
+                    margin-right: 10px;
+                }
 
-        .file-icon {
-            font-size: 24px;
-            margin-right: 10px;
-        }
+                .file-label {
+                    font-size: 16px;
+                    color: #666;
+                }
 
-        .file-label {
-            font-size: 16px;
-            color: #666;
-        }
+                .file-input:hover label {
+                    background: #f2f2f2;
+                }
 
-        .file-input:hover label {
-            background: #f2f2f2;
-        }
-
-        .file-input:focus label {
-            box-shadow: 0 0 0 2px #333;
-        }
-    </style>
-    <!-- Tabs content -->
-    <div class="tab-content" id="account-setup-content">
-        <div class="tab-pane fade show active" id="account-setup-tabs-1" role="tabpanel"
-            aria-labelledby="account-setup-tab-1">
-            <form id="comp_info" method="POST">
-                @csrf
-                <input type="hidden" name="employer_id" value="{{ auth('employer')->id() }}">
-                {{-- name, email adress, location --}}
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="mb-3">
-                            <label for="company_name" class="form-label">Company Name</label>
-                            <input required type="text" name="company_name"
-                                value="{{ $employer->profile?->company_name }}" id="company_name" class="form-control"
-                                placeholder="" aria-describedby="helpId" />
+                .file-input:focus label {
+                    box-shadow: 0 0 0 2px #333;
+                }
+            </style>
+            <div class="row  my-3 shadow-3 py-2">
+                <form id="comp_info" method="POST">
+                    @csrf
+                    <input type="hidden" name="employer_id" value="{{ auth('employer')->id() }}">
+                    {{-- name, email adress, location --}}
+                    <h6 class="h4 text-capitalize fw-bold">profile setup</h6>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="company_name" class="form-label">Company Name
+                                    <span class="fw-bold text-danger">*</span>
+                                </label>
+                                <input required type="text" name="company_name"
+                                    value="{{ $user->employer?->company_name }}" id="company_name" class="form-control"
+                                    placeholder="" aria-describedby="helpId" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="company_location" class="form-label">Location
+                                    <span class="fw-bold text-danger">*</span>
+                                </label>
+                                <input required type="text" name="company_location"
+                                    value="{{ $user->employer?->company_location }}" id="company_location"
+                                    class="form-control" placeholder="" aria-describedby="helpId" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="company_email" class="form-label">Company Email Address
+                                    <span class="fw-bold text-danger">*</span>
+                                </label>
+                                <input required type="email" value="{{ $user->employer?->company_email }}"
+                                    name="company_email" id="company_email" class="form-control" placeholder="" />
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="mb-3">
-                            <label for="company_location" class="form-label">Location</label>
-                            <input required type="text" name="company_location"
-                                value="{{ $employer->profile?->company_location }}" id="company_location"
-                                class="form-control" placeholder="" aria-describedby="helpId" />
+                    {{--  --}}
+                    <div class="row my-2">
+                        {{-- <h5 class="h5 text-capitalize">Company Founding Info</h5> --}}
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="organization_id" class="form-label">Organization Type</label>
+                                <select required name="organization_id" id="organization_id" class="form-select select2">
+                                    <option
+                                        value="{{ $user->employer?->organization ? $user->employer?->organization?->id : '' }}">
+                                        {{ $user->employer?->organization ? $user->employer?->organization?->name : 'Select any' }}
+                                    </option>
+                                    @foreach ($organization_types as $ot)
+                                        <option value="{{ $ot->id }}">{{ $ot->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="industry_id" class="form-label">Industry Type</label>
+                                <select required name="industry_id" id="industry_id" class="form-select select2">
+                                    <option
+                                        value="{{ $user->employer?->industry ? $user->employer?->industry?->id : '' }}">
+                                        {{ $user->employer?->industry ? $user->employer?->industry?->name : 'Select any' }}
+                                    </option>
+                                    @foreach ($industry_types as $it)
+                                        <option value="{{ $it->id }}">{{ $it->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="company_size" class="form-label">Company Size</label>
+                                <input required type="number" value="{{ $user->employer?->company_size }}"
+                                    name="company_size" id="company_size" class="form-control" placeholder=""
+                                    aria-describedby="helpId" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="company_founding_year" class="form-label">Year of Establishment</label>
+                                <input required type="date" value="{{ $user->employer?->company_founding_year }}"
+                                    name="company_founding_year" id="company_founding_year" class="form-control"
+                                    placeholder="" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="company_website" class="form-label">Company Website</label>
+                                <input type="text" value="{{ $user->employer?->company_website }}"
+                                    name="company_website" id="company_website" class="form-control" placeholder="" />
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="mb-3">
                         <div class="mb-3">
-                            <label for="company_email" class="form-label">Email address</label>
-                            <input required type="email" value="{{ $employer->profile?->company_email }}"
-                                name="company_email" id="company_email" class="form-control" placeholder="" />
+                            <label for="about" class="form-label">About Us</label>
+                            <textarea required class="form-control" name="company_description" id="about" rows="3">
+                            {{ $user->employer?->company_description ? $user->employer?->company_description : '<p>Write down about your company, let the candidate know who you are...</p>' }}
+                        </textarea>
                         </div>
                     </div>
-                </div>
-                {{--  --}}
-                <div class="row my-2">
-                    <h5 class="h5 text-capitalize">Company Founding Info</h5>
-                    <div class="col-sm-4">
+                    <div class="mb-3">
                         <div class="mb-3">
-                            <label for="organization_id" class="form-label">Organization Type</label>
-                            <select required name="organization_id" id="organization_id" class="form-select select2">
-                                <option
-                                    value="{{ $employer->profile?->organization ? $employer->profile?->organization?->id : '' }}">
-                                    {{ $employer->profile?->organization ? $employer->profile?->organization?->name : 'Select any' }}
-                                </option>
-                                @foreach ($organization_types as $ot)
-                                    <option value="{{ $ot->id }}">{{ $ot->name }}</option>
-                                @endforeach
-                            </select>
+                            <label for="company_vision" class="form-label">Company Vision</label>
+                            <textarea required class="form-control" name="company_vision" id="company_vision" rows="3">
+                            {{ $user->employer?->company_vision ? $user->employer?->company_vision : '<p>Let people know your vision...</p>' }}
+                        </textarea>
                         </div>
                     </div>
+                    <button type="submit" class="btn btn-primary my-3">
+                        {{ $user->employer ? 'update' : 'save & next' }}
+                    </button>
+                </form>
+            </div>
+            @if ($user->employer)
+                <div class="row my-3 shadow-3 py-2">
+                    <h6 class="h4 text-capitalize fw-bold" id="verify-business">business registration credentials</h6>
                     <div class="col-sm-4">
-                        <div class="mb-3">
-                            <label for="industry_id" class="form-label">Industry Type</label>
-                            <select required name="industry_id" id="industry_id" class="form-select select2">
-                                <option
-                                    value="{{ $employer->profile?->industry ? $employer->profile?->industry?->id : '' }}">
-                                    {{ $employer->profile?->industry ? $employer->profile?->industry?->name : 'Select any' }}
-                                </option>
-                                @foreach ($industry_types as $it)
-                                    <option value="{{ $it->id }}">{{ $it->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="mb-3">
-                            <label for="company_size" class="form-label">Company Size</label>
-                            <input required type="number" value="{{ $employer->profile?->company_size }}"
-                                name="company_size" id="company_size" class="form-control" placeholder=""
-                                aria-describedby="helpId" />
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="mb-3">
-                            <label for="company_founding_year" class="form-label">Year of Establishment</label>
-                            <input required type="date" value="{{ $employer->profile?->company_founding_year }}"
-                                name="company_founding_year" id="company_founding_year" class="form-control"
+                        <div class="form-group">
+                            <label for="reg_certificate_number" class="form-label">Registeration Certificate
+                                Number</label>
+                            <input type="text" value="{{ $user->employer?->reg_certificate_number }}"
+                                name="reg_certificate_number" id="reg_certificate_number" class="form-control"
                                 placeholder="" />
                         </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="mb-3">
-                            <label for="company_website" class="form-label">Company Website</label>
-                            <input required type="url" value="{{ $employer->profile?->company_website }}"
-                                name="company_website" id="company_website" class="form-control" placeholder="" />
+                        <div class="form-group">
+                            <label for="" class="form-label">Registeration Certificate (pdf)</label>
+                            <input type="file" class="form-control" name="" id="" placeholder=""
+                                aria-describedby="fileHelpId" />
                         </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <div class="mb-3">
-                        <label for="about" class="form-label">About Us</label>
-                        <textarea required class="form-control" name="company_description" id="about" rows="3">
-                            {{ $employer->profile?->company_description ? $employer->profile?->company_description : '<p>Write down about your company, let the candidate know who you are...</p>' }}
-                        </textarea>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="reg_certificate_number" class="form-label">Registeration Certificate
+                                Number</label>
+                            <input type="text" value="{{ $user->employer?->reg_certificate_number }}"
+                                name="reg_certificate_number" id="reg_certificate_number" class="form-control"
+                                placeholder="" />
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="form-label">Registeration Certificate (pdf)</label>
+                            <input type="file" class="form-control" name="" id="" placeholder=""
+                                aria-describedby="fileHelpId" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="reg_certificate_number" class="form-label">Registeration Certificate
+                                Number</label>
+                            <input type="text" value="{{ $user->employer?->reg_certificate_number }}"
+                                name="reg_certificate_number" id="reg_certificate_number" class="form-control"
+                                placeholder="" />
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="form-label">Registeration Certificate (pdf)</label>
+                            <input type="file" class="form-control" name="" id="" placeholder=""
+                                aria-describedby="fileHelpId" />
+                        </div>
+                    </div>
+                    <div class="form-group my-3">
+                        <button type="button" class="btn btn-primary">
+                            save
+                        </button>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <div class="mb-3">
-                        <label for="company_vision" class="form-label">Company Vision</label>
-                        <textarea required class="form-control" name="company_vision" id="company_vision" rows="3">
-                            {{ $employer->profile?->company_vision ? $employer->profile?->company_vision : '<p>Let people know your vision...</p>' }}
-                        </textarea>
+                <div class="row my-3 shadow-3 py-2">
+                    <h6 class="h4 text-capitalize fw-bold" id="social-media-links">social media links</h6>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="" class="form-label">
+                                facebook
+                            </label>
+                            <input type="url" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="" class="form-label">
+                                linked in
+                            </label>
+                            <input type="url" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="" class="form-label">
+                                instagram
+                            </label>
+                            <input type="url" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="" class="form-label">
+                                x(twitter)
+                            </label>
+                            <input type="url" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group my-3">
+                        <button type="button" class="btn btn-primary">
+                            save
+                        </button>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">
-                    {{ $employer->profile ? 'update' : 'save' }}
-                </button>
-            </form>
-        </div>
-        <div class="tab-pane fade" id="account-image-upload" role="tabpanel" aria-labelledby="account-setup-tab-2">
-            <div class="row mb-3">
+                <div class="row my-3 shadow-3 py-2">
+                    <div id="alert-2" style="display: none;" class="alert" role="alert">
+                    </div>
+                    <div class="col-auto">
+                        <small>Logo Image</small>
+                        <label for="logo"
+                            class="form-label cursor-pointer d-flex align-items-center justify-content-center bg-secondary rounded-2 {{ $user->employer ? '' : 'd-none' }}"
+                            style="cursor: pointer;width: 120px; height: 120px;" title="Click to upload image">
+                            <img id="logo_img"
+                                src="{{ $user->employer?->image?->logo ? url($user->employer->image->logo) : asset('app/plugins/icons/svgs/solid/cloud-arrow-up.svg') }}"
+                                style="width: {{ $user->employer?->image?->logo ? 'auto' : '100px' }} !important;"
+                                class="img-fluid {{ $user->employer?->image?->logo ? '' : 'bg-secondary' }}" />
+                            <input type="file" class="form-control" name="logo" id="logo" accept="image/*"
+                                aria-describedby="fileHelpId" style="display: none;" />
+                        </label>
+                    </div>
+                    <div class="col-auto">
+                        <small>Banner Image</small>
+                        <label for="banner"
+                            class="form-label cursor-pointer d-flex align-items-center justify-content-center bg-secondary shadow rounded-2 {{ $user->employer ? '' : 'd-none' }}"
+                            style="cursor: pointer;width: 320px !important; height: 120px;" title="Click to upload image">
+                            <img id="banner_img"
+                                src="{{ $user->employer?->image?->banner ? url($user->employer->image->banner) : asset('app/plugins/icons/svgs/solid/cloud-arrow-up.svg') }}"
+                                style="width: auto!important; height: 120px;"
+                                class="img-fluid {{ $user->employer?->image?->banner ? '' : 'bg-secondary' }}" />
+                            <input type="file" class="form-control" name="banner" id="banner" accept="image/*"
+                                aria-describedby="fileHelpId" style="display: none;" />
+                        </label>
+                    </div>
+                </div>
+                {{-- <div class="row mb-3">
                 <div id="error" style="display: none;" class="alert alert-danger" role="alert">
                 </div>
 
@@ -227,6 +338,8 @@
                             <i class="fa fa-check"></i>
                         </div>
                     </div>
+                    <img class="mt-2" src="{{ $user->employer?->image?->logo_image }}" alt="" width="100"
+                        height="100">
                 </div>
                 <div class="col-sm-7">
                     <label for="banner" class="form-label">Upload Banner Image</label>
@@ -258,83 +371,20 @@
                             </div>
                         </div>
                     </div>
+                    <img class="mt-2" src="{{ $user->employer?->image?->banner_image }}" alt=""
+                        width="100" height="100">
                 </div>
-            </div>
+            </div> --}}
+            @endif
         </div>
     </div>
     <!-- Tabs content -->
     <script type="text/javascript">
         $(document).ready(function() {
-            const $error = $('#error');
+            const $error = $('#alert-2');
             const $success = $('#success');
-            $('input[name="logo"]').change(function() {
-                // alert('file uploaded');
-                var file = this.files[0];
-                var formData = new FormData();
-                formData.append('logo', file);
-                console.log(formData, file);
-                formData.append('_token', '{{ csrf_token() }}');
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('employer.profile.upload-images') }}',
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    xhr: function() {
-                        var xhr = new window.XMLHttpRequest();
-                        xhr.upload.addEventListener('progress', function(event) {
-                            var percent = (event.loaded / event.total * 100).toFixed(2);
-                            $('.progress#f-logo').show();
-                            $('.progress-bar').css('width', percent + '%').html(
-                                percent + '%');
-                        }, false);
-                        return xhr;
-                    },
-                    success: function(data) {
-                        $('.uploaded-file.f-logo').show();
-                        $('#img-logo').attr('src', data.file);
-                    },
-                    error: function(xhr, status, error) {
-                        console.log(xhr.responseText);
-                    }
-                });
-            });
-            $('input[name="banner"]').change(function() {
-                // alert('file uploaded');
-                var file = this.files[0];
-                var formData = new FormData();
-                formData.append('banner', file);
-                formData.append('_token', '{{ csrf_token() }}');
-                console.log(formData, file);
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('employer.profile.upload-images') }}',
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    xhr: function() {
-                        var xhr = new window.XMLHttpRequest();
-                        xhr.upload.addEventListener('progress', function(event) {
-                            var percent = (event.loaded / event.total * 100).toFixed(2);
-                            $('.progress#banner').show();
-                            $('.progress-bar').show().css('width', percent + '%').html(
-                                percent + '%');
-                        }, false);
-                        return xhr;
-                    },
-                    success: function(data) {
-                        $('.uploaded-file.banner').append('<p>File uploaded successfully</p>');
-                    },
-                    error: function(xhr, status, error) {
-                        console.log(xhr.responseText);
-                    }
-                });
-            });
             // Submit form
             const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin me-2"></span>';
-
             $('form#comp_info').on('submit', function(e) {
                 // alert('form data loaded');
                 $('form#comp_info :submit').addClass('disabled').html($loader + 'processing...');
@@ -374,6 +424,76 @@
                             $error.show().text(error.statusText);
                         }
                         $('form#comp_info :submit').removeClass('disabled').text('Save');
+                    }
+                });
+            });
+            $('input[name="logo"]').change(function() {
+                // alert('file uploaded');
+                var file = this.files[0];
+                var formData = new FormData();
+                formData.append('logo', file);
+                formData.append('_token', '{{ csrf_token() }}');
+                console.log(formData, file, $(this).closest('img'));
+                const allowedFileType = ['image/png', 'image/jpeg', 'image/jpg', 'image/webm', 'image/bmp'];
+                if (!allowedFileType.includes(file.type)) {
+                    $error.text('file type not allowed');
+                    return $error.addClass('alert-danger').show();
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('employer.profile.upload-images') }}',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $error.show().text('file uploaded successfully').addClass(
+                            'alert-success');
+                        $('img#logo_img').attr('src', data.file)
+                        // return $('#upload-msg').addClass('alert-success').show();
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        if (error.status == 500) {
+                            return $error.show().text('server error').addClass('alert-danger');
+                        }
+                        $error.show().text(error.responseJSON.message).addClass('alert-danger');
+                        // return $('#upload-msg').addClass('alert-danger').show();
+                    }
+                });
+            });
+            $('input[name="banner"]').change(function() {
+                // alert('file uploaded');
+                var file = this.files[0];
+                var formData = new FormData();
+                formData.append('banner', file);
+                formData.append('_token', '{{ csrf_token() }}');
+                console.log(formData, file, $(this).closest('img'));
+                const allowedFileType = ['image/png', 'image/jpeg', 'image/jpg', 'image/webm', 'image/bmp'];
+                if (!allowedFileType.includes(file.type)) {
+                    $error.text('file type not allowed');
+                    return $error.addClass('alert-danger').show();
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('employer.profile.upload-images') }}',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $error.show().text('file uploaded successfully').addClass(
+                            'alert-success');
+                        $('img#banner_img').attr('src', data.file)
+                        // return $('#upload-msg').addClass('alert-success').show();
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        if (error.status == 500) {
+                            return $error.show().text('server error').addClass('alert-danger');
+                        }
+                        $error.show().text(error.responseJSON.message).addClass('alert-danger');
+                        // return $('#upload-msg').addClass('alert-danger').show();
                     }
                 });
             });

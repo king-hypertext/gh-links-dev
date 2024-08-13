@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="{{ asset('icon.svg') }}" />
 
     <!-- Theme Config Js -->
-    <link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('app/plugins/icons/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('app/plugins/bootstrap/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/jquery-ui/jquery-ui.css') }}" />
@@ -116,25 +116,29 @@
                         class="list-group-item list-group-item-action text-capitalize py-2 ripple">
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>overview</span>
                     </a>
-                    <a href="{{ route('candidate.profile.create') }}"
-                        class="list-group-item list-group-item-action text-capitalize py-2 ripple">
-                        <i class="far fa-user fa-fw me-3"></i><span>Profile Setup</span>
-                    </a>
-                    <a href="{{ route('candidate.application.index') }}"
-                        class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
-                            class="fas fa-suitcase fa-fw me-3"></i><span>applied jobs</span></a>
-                    <a href="{{ route('candidate.saved-jobs') }}"
-                        class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
-                            class="far fa-bookmark fa-fw me-3"></i><span>saved jobs</span></a>
-                    <a href="{{ route('candidate.profile.settings') }}" class="list-group-item list-group-item-action text-capitalize py-2 ripple">
-                        <i class="fas fa-gear fa-fw me-3"></i><span>settings</span>
-                    </a>
+                    {{-- @if (auth('candidate')->user()->isEmailVerified()) --}}
+                        <a href="{{ route('candidate.profile.create') }}"
+                            class="list-group-item list-group-item-action text-capitalize py-2 ripple">
+                            <i class="far fa-user fa-fw me-3"></i><span>Profile Setup</span>
+                        </a>
+                        <a href="{{ route('candidate.application.index') }}"
+                            class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
+                                class="fas fa-suitcase fa-fw me-3"></i><span>applied jobs</span></a>
+                        <a href="{{ route('candidate.saved-jobs') }}"
+                            class="list-group-item list-group-item-action text-capitalize py-2 ripple"><i
+                                class="far fa-bookmark fa-fw me-3"></i><span>saved jobs</span></a>
+                        <a href="{{ route('candidate.profile.settings') }}"
+                            class="list-group-item list-group-item-action text-capitalize py-2 ripple">
+                            <i class="fas fa-gear fa-fw me-3"></i><span>settings</span>
+                        </a>
+                    {{-- @endif --}}
                 </div>
             </div>
         </nav>
         <!-- Sidebar -->
 
         <!-- Navbar -->
+
         <nav id="main-navbar" class="navbar  navbar-light bg-white position-sticky top-0">
             <!-- Container wrapper -->
             <div class="container-fluid mx-md-3 mx-0">
@@ -152,18 +156,17 @@
                         gh-links
                     </a>
                 </div>
-
                 <!-- Right links -->
                 <ul class="d-flex flex-row me-0 me-sm-3 mb-0">
                     <div class="dropdown ">
                         <a href="#"
-                            class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+                            class="d-flex align-items-center link-body-emphasis text-decoration-none bg-body-tertiary dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ auth('candidate')->user()->profile->profile_picture ?? asset('icons/svgs/solid/user.svg') }}"
+                            <img src="{{ auth('candidate')->user()->candidate?->dp ?? asset('app/plugins/icons/svgs/solid/user.svg') }}"
                                 alt="" width="32" height="32" class="shadow-2 rounded-circle me-2 user">
-                            <strong>{{ auth('candidate')->user()?->username }}</strong>
+                            <strong style="min-width: 65px;">{{ auth('candidate')->user()?->username }}</strong>
                         </a>
-                        <ul class="dropdown-menu text-small shadow">
+                        <ul class="dropdown-menu dropdown-menu-start shadow">
                             {{-- <li><a class="dropdown-item" href="#">New project...</a></li> --}}
                             <li>
                                 <a class="dropdown-item" href="{{ route('candidate.profile.settings') }}">
@@ -185,6 +188,21 @@
                             </li>
                         </ul>
                     </div>
+                    {{-- <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-start" aria-labelledby="triggerId">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item disabled" href="#">Disabled action</a>
+                            <h6 class="dropdown-header">Section header</h6>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">After divider action</a>
+                        </div>
+                    </div> --}}
+
                 </ul>
             </div>
             <!-- Container wrapper -->

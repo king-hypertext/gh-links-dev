@@ -8,20 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class JobExperience extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'candidate_profile_id',
-        'is_current',
-        'position',
-        'company',
-        'company_location',
-        'job_description',
-        'position',
-        'started_at',
-        'ended_at',
-    ];
     protected $table = 'job_experience';
-    public function candidate()
+    protected $fillable = [
+        'level'
+    ];
+    public function job()
     {
-        return $this->belongsTo(CandidateProfile::class, 'candidate_profile_id', 'id');
+        return $this->belongsTo(Job::class, 'entry_id', 'id');
     }
 }

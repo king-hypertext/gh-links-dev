@@ -15,9 +15,8 @@
                 {{-- <p class="mb-0">You can always login back to your account.</p> --}}
             </div>
             <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
-                <button
-                    onclick="window.open('{{ auth('candidate')->check() ? route('candidate.logout') : route('employer.logout') }}', '_self')"
-                    type="button" class="btn btn-lg btn-primary">Yes, Log me out</button>
+                <button data-url="{{ auth('candidate')->check() ? route('candidate.logout') : route('employer.logout') }}"
+                    type="button" class="btn btn-lg btn-primary btn-logout">Yes, Log me out</button>
                 <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">No, Not Now</button>
             </div>
         </div>

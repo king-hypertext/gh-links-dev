@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('type');
             $table->integer('min_salary');
-            $table->foreignId('company_id')->constrained('employer_profiles');
             $table->integer('max_salary');
+            $table->foreignId('employer_id')->constrained('employers')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('salary_id')->constrained('salaries');
             $table->foreignId('education_id')->constrained('education');
             $table->string('min_experience');
@@ -27,6 +27,7 @@ return new class extends Migration
             $table->longText('requirements');
             $table->longText('description');
             $table->longText('benefits');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

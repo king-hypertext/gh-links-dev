@@ -10,7 +10,7 @@ class CandidateJobExperience extends Model
     use HasFactory;
     protected $table = 'candidate_job_experience';
     protected $fillable =[
-        'candidate_profile_id',
+        'candidate_id',
         'is_current',
         'started_at',
         'ended_at',
@@ -20,8 +20,8 @@ class CandidateJobExperience extends Model
         'job_location',
     ];
 
-    public function profile()
+    public function candidate()
     {
-        return $this->belongsTo(Candidate::class, 'candidate_profile_id', 'id');
+        return $this->belongsTo(Candidate::class, 'candidate_id', 'id');
     }
 }

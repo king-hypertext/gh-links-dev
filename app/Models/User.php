@@ -3,14 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Concerns\HasRelationships;
+use Illuminate\Notifications\Notifiable;
+// use Laravel\Sanctum\Contracts\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\Contracts\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRelationships;
     // , HasApiTokens;
 
     /**
@@ -22,6 +24,9 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'accept_terms',
+        'phone_number',
+        'user_type'
     ];
 
     /**
@@ -44,6 +49,23 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'accept_terms' => 'boolean',
+            'user_type'=> 'integer',
         ];
+    }
+    public function isEmailVerified(): bool
+    {
+        if (!$this->email_verified_at) {
+            return false;
+        }
+        return true;
+    }
+    public function employer()
+    {
+        return $this->hasOne(Employer::class, 'user_id', 'id');
+    }
+    public function candidate()
+    {
+        return $this->hasOne(Candidate::class, 'user_id', 'id');
     }
 }

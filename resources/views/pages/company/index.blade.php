@@ -6,12 +6,12 @@
                 <div class="col-sm-4">
                     <div class="card shadow-2 my-2 mx-md-0 user-select-none">
                         <div class="card-body">
-                            <div class="d-flex flex-row  align-items-center mt-3">
-                                <div class="col-auto">
-                                    <img src="{{ $item->image->logo_image }}" height="55" width="55" alt="company-logo"
-                                        class="img-thumbnail">
+                            <div class="d-flex flex-row justify-center align-items-center mt-3">
+                                <div class="col-3">
+                                    <img src="{{ $item->image?->logo }}" height="55" width="55" alt="logo"
+                                        class="img-thumbnail img-circle">
                                 </div>
-                                <div class="d-flex flex-column align-items-start justify-content-start ms-2">   
+                                <div class="d-flex flex-column align-items-start justify-content-start ms-2">
                                     <a href="{{ route('company.profile-info', $item->company_name) }}"
                                         class="h6 fw-semibold text-capitalize text-truncate mb-0 link-primary">
                                         {{ $item->company_name }}
@@ -25,11 +25,13 @@
                                 </div>
                             </div>
                             <div class="d-grid gap-2 mt-2">
-                                <button type="button" onclick="window.open(this.id, '_blank')"
-                                    id="{{ route('jobs.open-vacancy', [$item->id]) }}" class="btn btn-secondary text-capitalize">
-                                    open positions {{ '(' . $item->jobs?->count() . ')' ?? '(' . 0 . ')' }}
+                                <button type="button" onclick="window.open(this.id, '_self')"
+                                    id="{{ route('jobs.open-vacancy', [$item->company_name]) }}"
+                                    class="btn btn-secondary text-capitalize">
+                                    open positions {{ '(' . $item->jobs->count() . ')' ?? '(' . 0 . ')' }}
                                 </button>
                             </div>
+
                         </div>
                     </div>
                 </div>

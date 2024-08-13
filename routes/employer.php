@@ -6,18 +6,17 @@ use App\Http\Controllers\EmployersController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\EmployerProfileController;
 use App\Http\Controllers\EmployersAccountController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::middleware(['employer'])->group(function () {
     Route::resource('/employers', EmployersController::class);
-    Route::prefix('employer')->group(function () {
-        Route::post('upload-images', [EmployerProfileController::class, 'storeImages'])->name('employer.profile.upload-images');
-        Route::get('/dashboard', [EmployersController::class, 'dashboard'])->name('employer.dashboard');
+    Route::prefix('dashboard')->group(function () {
+        Route::post('/upload-images', [EmployerProfileController::class, 'storeImages'])->name('employer.profile.upload-images');
+        Route::get('/', [EmployersController::class, 'dashboard'])->name('employer.dashboard');
         Route::get('/profile', [EmployerProfileController::class, 'show'])->name('employer.company-profile');
         Route::post('/profile', [EmployerProfileController::class, 'store'])->name('employer.company-profile.save');
         Route::singleton('my-account', EmployersAccountController::class);
         Route::put('/update-password', [EmployersAccountController::class, 'update_password'])->name('employer.reset_password');
-        Route::resource('/my-jobs', PostJobController::class)->name('index', 'job.index');
+        Route::resource('/my-jobs', PostJobController::class);
         Route::get('/job-applications', [JobApplicationController::class, 'index'])->name('job-applications.index');
         Route::get('/job-applications/{job_id}', [JobApplicationController::class, 'show'])->name('job-applications.show');
         Route::get('/my-candidates', [EmployerProfileController::class, 'candidates'])->name('employer.candidates');
@@ -26,6 +25,7 @@ Route::middleware(['employer'])->group(function () {
         Route::put('/approve-application/{id}', [JobApplicationController::class, 'approve_application'])->name('approve_application');
         Route::any('/logout', [EmployersController::class, 'logout'])->name('employer.logout');
     });
+    Route::post('/add-skill-set', [JobApplicationController::class, 'add_skill_set'])->name('employer.add_skill_set');
 });
 
 // Route::get('/employer/verify-email', function () {

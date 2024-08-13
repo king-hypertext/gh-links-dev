@@ -11,17 +11,18 @@
     </style>
     @use(Carbon\Carbon)
     <div class="container">
-        <div class="row shadow-1 my-3 pb-2">
-            <div class="col-lg-6 col-sm-6 flex flex-row g-3">
-                <div class="d-flex flex-row justify-content-start  mt-3">
-                    <img src="{{ $company->image?->logo_image }}" height="65" width="65" alt="company-logo"
+        <div class="row shadow-1 my-3 img-thumbnail {{ $company->image->banner ? 'py-2 py-sm-5' : 'py-2' }}"
+            style="background: url({{ url($company->image->banner) }});background-size: cover;background-color: rgba(0, 0, 0, 0.43);background-blend-mode: multiply;">
+            <div class="col-lg-6 col-sm-6 d-flex flex-row align-items-center justify-content-between">
+                <div class="d-flex flex-row align-items-center justify-content-start">
+                    <img src="{{ url($company->image?->logo) }}" height="65" width="65" alt="company-logo"
                         class="img-thumbnail flex-col me-2">
                     <div class="col-auto d-flex flex-column justify-content-end align-items-baseline">
-                        <h6 class="h5 fw-semibold text-capitalize text-truncate text-success">
+                        <h6 class="h5 fw-semibold text-capitalize text-truncate text-white">
                             {{ $company->company_name }}
                         </h6>
                         <div class="col-auto d-flex flex-row align-items-center align-middle">
-                            {{-- <i class="icon fas fa-map-marker-alt"></i> --}}
+                            <i class="fas fa-map-marker-alt me-1"></i>
                             <h6 class="text-truncate fw-semibold text-capitalize mb-0">
                                 {{ ucwords($company->company_location) }}
                             </h6>
@@ -30,9 +31,9 @@
                 </div>
             </div>
             <div
-                class="col-lg-6 col-sm-6 d-flex flex-row align-items-center justify-content-start justify-content-sm-end g-3">
+                class="col-lg-6 col-sm-6 d-flex flex-row align-items-center justify-content-start justify-content-sm-end g-3 g-sm-0">
                 <a href="{{ route('jobs.open-vacancy', $company->company_name) }}" type="button"
-                    class="btn btn-primary rounded-0" title="view all open jobs by {{ $company->company_name }}">
+                    class="btn btn-primary rounded-0 me-2" title="view all open jobs by {{ $company->company_name }}">
                     <span>
                         view open positions
                     </span>
@@ -69,7 +70,8 @@
                                 founded in:
                             </span>
                             <h6 class="h6 mb-0  text-black">
-                                {{ Carbon::parse($company->company_founding_year)->format('d M Y') }}
+                                {{ Carbon::parse($company->company_founding_year)->format('d M Y') }} <br>
+                                {{ '(' . Carbon::parse($company->company_founding_year)->longRelativeDiffForHumans() . ')' }}
                             </h6>
                         </div>
                     </div>

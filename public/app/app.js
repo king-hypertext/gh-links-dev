@@ -1,11 +1,12 @@
 (() => {
     self.addEventListener('DOMContentLoaded', () => {
         var urlParams = new URLSearchParams(window.location.search);
-        var activeTab = urlParams.get('tab');
+        const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin me-2"></span>';
         const currentUrl = window.location.href;
         var TargetLink = document.querySelectorAll('ul#nav li a, .list-group a');
+        const stripURL = currentUrl.replace(/(#.*|[\?].*)/g, '');        
         TargetLink.forEach(e => {
-            if (e.href == currentUrl) {
+            if (e.href == stripURL) {
                 e.classList.add('active');
             } else {
                 e.classList.remove('active');
@@ -17,9 +18,9 @@
         }, 1000);
         $('.selectize').selectize();
         $('.select2').select2({
-            placeholder: 'Select an option',
-            allowClear: true,
-            theme: 'bootstrap5',
+            placeholder: 'Select any',
+            // allowClear: true,
+            // theme: 'bootstrap5',
 
         });
         const job_locations = [
@@ -131,14 +132,16 @@
             window.open(targetUrl, '_self');
         });
         // add or remove job from favorites
+
         $('button.bookmark').on('click', async function (e) {
             e.stopPropagation();
             var jobId = $(this).data('job-id');
             var icon = $(this).find('i');
+            // var target = $(this);
             try {
                 await $.ajax({
                     type: 'POST',
-                    url: '/candidate/save_job',
+                    url: '/save_job',
                     data: {
                         _token: token,
                         job_id: jobId,
@@ -146,8 +149,7 @@
                     success: function (data) {
                         if (data.success) {
                             icon.toggleClass('fas far'); // toggle the icon
-                            console.log($(e));
-                            $(e).attr('data-mdb-content', data.message).popover();
+                            e.currentTarget.title = data.title;
                         }
                     },
                     error: function (err) {
@@ -155,7 +157,7 @@
                     },
                 });
             } catch (err) {
-                alert('Error: ', err);
+                alert('Sytem under maintenance, please try again later');
             }
         });
         // add or remove candidate from wish list
@@ -165,7 +167,7 @@
             var icon = $(this).find('i');
             await $.ajax({
                 type: 'POST',
-                url: '/employer/save-candidate',
+                url: '/dashboard/save-candidate',
                 data: {
                     _token: token,
                     candidate_id: candidateId,
@@ -259,7 +261,6 @@
                 return window.location.href = '/app/login?to=' + window.location.pathname;
             }
             $('#modal-apply').modal('show');
-            const $loader = '<span id="btn-icon" class="fas fa-spinner fa-spin me-2"></span>';
             const $response = $('#validate-res');
             $('form#form-apply').on('submit', function (event) {
                 event.preventDefault();
@@ -267,7 +268,7 @@
                 const btn = $('form#form-apply :submit');
                 btn.html($loader + 'sending...').addClass('disabled');
                 if (confirm('By Applying For This Job, Your CV Are Shared With The Employer')) {
-                    $.ajax('/candidate/apply_job', {
+                    $.ajax('/apply_job', {
                         type: 'POST',
                         data: {
                             _token: token,
@@ -278,8 +279,7 @@
                             if (response.success) {
                                 btn.html('sent <i class="fa fa-check-double ms-2"></i>');
                             }
-                            // btn.html('send <i class="fas fa-arrow-right fa-send ms-2"></i>')
-                            //     .removeClass('disabled');
+                            $response.removeClass('alert-danger').addClass('alert-success').text(response.message).show();
                         },
                         error: (error) => {
                             console.log('✅ response    ', error);
@@ -304,6 +304,11 @@
                     });
                 }
             });
+        });
+        // handle logout button
+        $('.btn-logout').on('click', function (b) {
+            $(this).addClass('disabled').html($loader + 'please wait...');
+            window.location.href = $(this).data('url');
         });
     });
 })();

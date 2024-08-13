@@ -9,4 +9,11 @@ class CompanyPhoneNumber extends Model
 {
     use HasFactory;
     protected $table = 'employer_phone_numbers';
+    protected $fillable = [
+        'phone'
+    ];
+    public function employer()
+    {
+        return $this->belongsTo(Employer::class, 'employer_id', 'id');
+    }
 }

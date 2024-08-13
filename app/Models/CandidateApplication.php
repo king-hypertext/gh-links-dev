@@ -11,13 +11,13 @@ class CandidateApplication extends Model
     protected $table = 'job_applications';
     protected $fillable = [
         'job_id',
-        'candidate_profile_id',
+        'candidate_id',
         'cover_letter',
         'approved'
     ];
     public function candidate()
     {
-        return $this->belongsTo(CandidateProfile::class, 'candidate_profile_id', 'id');
+        return $this->belongsTo(Candidate::class, 'candidate_id', 'id');
     }
     public function job()
     {

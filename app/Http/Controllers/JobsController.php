@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Job;
 use App\Models\District;
+use App\Models\Employer;
 use Illuminate\Http\Request;
 use App\Models\EmployerProfile;
 
@@ -59,9 +60,9 @@ class JobsController extends Controller
     }
     public function showByCompany($company)
     {
-        $company = EmployerProfile::where('company_name', $company)->first();
-        $page_title = 'OPEN VACANCIES BY ' . strtoupper($company->company_name);
-        $jobs = Job::query()->where('status', '=', 1)->where('company_id', $company->id)->paginate(6);
+        $company = Employer::where('company_name', $company)->first();
+        $page_title = 'OPEN VACANCIES (' . strtoupper($company->company_name) . ')';
+        $jobs = Job::query()->where('status', '=', 1)->where('employer_id', $company->id)->paginate(6);
         $search = null;
         return view('pages.jobs.index', compact('company', 'jobs', 'search',  'page_title'));
     }

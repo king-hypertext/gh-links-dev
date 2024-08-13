@@ -15,7 +15,7 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: var(--bd-bg-color);
+    /* background-color: var(--bd-bg-color); */
 }
 
 .body-picture-bg::before {
@@ -58,6 +58,22 @@ footer {
 .cursor-default {
     cursor: default !important;
     ;
+}
+
+.job-card {
+    /* min-height: 100px; */
+    max-height: 220px !important;
+}
+
+.tag-container {
+    max-height: 80px !important;
+    overflow-y: hidden !important;
+}
+
+.tag-container::after {
+    content: '...';
+    display: inline-block;
+    color: var(--mdb-secondary);
 }
 
 .app-container {
@@ -206,12 +222,14 @@ footer {
     width: min-content;
     /* padding: 0 auto !important; */
 }
+
 @media(min-width:768px) {
-    .overview-container{
+    .overview-container {
         width: 100%;
         max-width: 1024px !important;
     }
-    .bg-md-no-picture{
+
+    .bg-md-no-picture {
         background-color: var(--mdb-secondary) !important;
         background-image: none !important;
     }

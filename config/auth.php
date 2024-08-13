@@ -35,6 +35,20 @@ return [
     |
     */
 
+    // 'guards' => [
+    //     'web' => [
+    //         'driver' => 'session',
+    //         'provider' => 'users',
+    //     ],
+    //     'candidate' => [
+    //         'driver' => 'session',
+    //         'provider' => 'candidates',
+    //     ],
+    //     'employer' => [
+    //         'driver' => 'session',
+    //         'provider' => 'employers',
+    //     ],
+    // ],
     'guards' => [
         'web' => [
             'driver' => 'session',
@@ -42,14 +56,13 @@ return [
         ],
         'candidate' => [
             'driver' => 'session',
-            'provider' => 'candidates',
+            'provider' => 'users',
         ],
         'employer' => [
             'driver' => 'session',
-            'provider' => 'employers',
+            'provider' => 'users',
         ],
     ],
-
     /*
     |--------------------------------------------------------------------------
     | User Providers

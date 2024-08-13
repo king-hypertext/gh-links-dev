@@ -11,7 +11,7 @@
             settings
         </h5>
         {{-- {{ $user }}
-        {{ $user->profile }} --}}
+        {{ $user->candidate- }} --}}
         <div class="row">
             <div class="col-xl-4 col-lg-4">
                 <div class="card text-center">
@@ -21,17 +21,17 @@
                                 <strong>Upload Failed: </strong> <span id="text"></span>
                             </div>
 
-                            <label for="image" class="form-label cursor-pointer" style="cursor: pointer;"
-                                title="Click to upload image">
-                                <img id="user-image" src="{{ $user->profile->profile_picture }}" width="100"
-                                    height="50" class="img-thumbnail" alt="profile-image" />
+                            <label for="image" class="form-label cursor-pointer {{ $user->candidate ? '' : 'd-none' }}"
+                                style="cursor: pointer;" title="Click to upload image">
+                                <img id="user-image" src="{{ $user->candidate?->dp }}" width="100" height="100"
+                                    class="img-thumbnail" alt="profile-image" />
                             </label>
                             <input type="file" class="form-control" name="file" id="image" accept="image/*"
                                 aria-describedby="fileHelpId" style="display: none;" />
                         </div>
 
-                        <h4 class="mb-0 mt-2">{{ ucwords($user->profile->full_name) }}</h4>
-                        <p class="text-muted font-14">{{ $user->profile->username }}</p>
+                        <h4 class="mb-0 mt-2">{{ ucwords($user->candidate?->full_name) }}</h4>
+                        <p class="text-muted font-14">{{ $user->candidate?->username }}</p>
 
                         <div class="text-start mt-3">
                             <p class="text-muted mb-2 font-13"><strong>Username :</strong>
@@ -145,7 +145,7 @@
                                 </div>
                             </div>
                     </form>
-                    
+
                 </div>
             </div>
         </div>
@@ -204,7 +204,7 @@
                     processData: false,
                     success: function(data) {
                         $('#upload-msg span#text').text('file uploaded successfully');
-                        $('img, img.user').attr('src', data.file)
+                        $('img#user-image, img.user').attr('src', data.file)
                         return $('#upload-msg').addClass('alert-success').show();
                     },
                     error: function(error) {

@@ -42,11 +42,15 @@
                         </select>
                     </div>
                     <div class="row mb-3">
-                        <div class="form-group">
+                        <div class="d-flex form-group">
                             <button type="submit" class="btn btn-primary">secure login
                                 <i class="fas fa-arrow-right ms-2"></i>
                             </button>
+                            <div class="d-flex text-start align-items-center ms-auto">
+                                <a href="{{ route('reset-password') }}">Forgot Password?</a>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </form>

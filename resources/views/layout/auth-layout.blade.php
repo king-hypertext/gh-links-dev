@@ -9,7 +9,7 @@
     {{-- <link rel="stylesheet" href="{{ asset('app/plugins/bootstrap/bootstrap.min.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('app/plugins/alert/sweetalert2.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/mdb/mdb.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('icons/css/all.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('app/plugins/icons/css/all.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/plugins/animate-css/animate.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('app/app.css') }}" />
     <title>GH LINKS - {{ $page_title ?? '' }}</title>

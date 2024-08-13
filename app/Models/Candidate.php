@@ -2,51 +2,75 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Concerns\HasRelationships;
+use Illuminate\Database\Eloquent\Model;
 
-class Candidate extends Authenticatable
+class Candidate extends Model
 {
-    use HasFactory, Notifiable, HasRelationships;
-    public function __construct()
-    {
-        return $this->isEmailVerified();
-    }
+    use HasFactory;
+
     protected $fillable = [
-        // 'first_name',
-        // 'last_name',
-        'username',
-        'phone_number',
-        'email',
-        'password',
-        'accept_terms'
-        // 'job_id', // foreign key for Job model
+        'user_id',
+        'gender',
+        'dp',
+        'first_name',
+        'last_name',
+        'website_url',
+        'marital_status',
+        'location',
+        'date_of_birth',
+        'experience',
+        'profession',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected function casts(): array
+    public const CANDIDATE = 1;
+    public function isProfileCompleted(): bool
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'accept_terms' => 'boolean'
-        ];
+        return !is_null($this->user) && !is_null($this->education);
     }
-    public function isEmailVerified(): bool
+    public function profileCompletion(): string
     {
-        if ($this->email_verified_at !== null) {
-            return true;
+        if (!is_null($this->user) && !is_null($this->education) && !is_null($this->biography) && !is_null($this->resume) && !is_null($this->email_verified_at)) {
+            return "100%";
         }
-        return false;
+        if (!is_null($this->user) && !is_null($this->education) && !is_null($this->biography) && !is_null($this->resume)) {
+            return "95%";
+        }
+        if (!is_null($this->user) && !is_null($this->education) && !is_null($this->biography)) {
+            return "80%";
+        }
+        if (!is_null($this->user) && !is_null($this->education)) {
+            return "70%";
+        }
+        if (!is_null($this->user)) {
+            return "50%";
+        }
+        return "0%";
     }
-    public function profile()
+    public function education()
     {
-        return $this->hasOne(CandidateProfile::class, 'candidate_id', 'id');
+        return $this->hasOne(CandidateEducationDetail::class, 'candidate_id', 'id');
+    }
+    public function jobApplications()
+    {
+        return $this->hasMany(JobApplication::class, 'candidate_id', 'id');
+    }
+    public function resume()
+    {
+        return $this->hasOne(CandidateResume::class,  'candidate_id', 'id');
+    }
+    public function savedJobs()
+    {
+        return $this->hasMany(SavedJob::class, 'candidate_id', 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class,  'user_id', 'id');
+    }
+    public function isCandidateSaved(): bool
+    {
+        // dd(auth('employer')->user()->profile->saved_candidates()->where('candidate_profile_id', $this->id)->exists());
+        return auth('employer')->check() && auth('employer')->user()->employer->savedCandidates()->where('candidate_id', $this->id)->exists();
     }
 }

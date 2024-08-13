@@ -13,17 +13,17 @@
             <div class="row shadow-1 my-3 pb-2">
                 <div class="col-lg-6 col-sm-6 flex flex-row g-3">
                     <div class="d-flex flex-row justify-content-start align-items-center mt-3">
-                        <img src="{{ $candidate->profile->profile_picture }}" height="65" width="65" alt="company-logo"
+                        <img src="{{ $candidate->dp }}" height="65" width="65" alt="company-logo"
                             class="img-thumbnail flex-col me-2">
                         <div class="col-auto d-flex flex-column justify-content-end">
                             <h6 class="h5 fw-semibold text-capitalize text-truncate text-primary mb-0">
-                                {{ $candidate->profile->full_name }}
+                                {{ $candidate->full_name }}
                             </h6>
-                            <span class="text-uppercase">{{ $candidate->profile->job_role }}</span>
+                            <span class="text-uppercase">{{ $candidate->profession }}</span>
                             <div class="col-auto d-flex flex-row align-items-center align-middle">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <h6 class="text-truncate fw-semibold text-capitalize mb-0 ms-1">
-                                    {{ ucwords($candidate->profile->location) }}
+                                    {{ ucwords($candidate->location) }}
                                 </h6>
                             </div>
                         </div>
@@ -32,10 +32,10 @@
                 <div
                     class="col-lg-6 col-sm-6 d-flex flex-row align-items-center justify-content-start justify-content-sm-end g-3">
                     @auth('employer')
-                        <button type="button" data-candidate-id="{{ $candidate->profile->id }}"
-                            title="{{ $candidate->profile->isCandidateSaved() ? 'remove from favorites' : 'add to favorites' }}"
+                        <button type="button" data-candidate-id="{{ $candidate->id }}"
+                            title="{{ $candidate->isCandidateSaved() ? 'remove from favorites' : 'add to favorites' }}"
                             class="btn btn-secondary bookmark-candidate" title="add to saved candidates">
-                            <i class="{{ $candidate->profile->isCandidateSaved() ? 'fa' : 'far' }} fa-bookmark"></i>
+                            <i class="{{ $candidate->isCandidateSaved() ? 'fa' : 'far' }} fa-bookmark"></i>
                         </button>
                     @endauth
                 </div>
@@ -48,7 +48,7 @@
                 biography
             </h6>
             <div id="job-description">
-                {!! $candidate->profile->biography !!}
+                {!! $candidate->biography !!}
             </div>
             <div class="row shadow-1 p-3 mt-3">
                 <h6 class="h6 fw-bold">
@@ -88,7 +88,7 @@
                                 gender:
                             </span>
                             <h6 class="h6 mb-0  text-black">
-                                {{ $candidate->profile->gender }}
+                                {{ $candidate->gender }}
                             </h6>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                                 marital status:
                             </span>
                             <h6 class="h6 mb-0  text-black">
-                                {{ $candidate->profile->marital_status }}
+                                {{ $candidate->marital_status }}
                             </h6>
                         </div>
                     </div>
@@ -107,39 +107,40 @@
                         <i class="icon fas fa-suitcase"></i>
                         <div class="d-flex flex-column align-items-start align-middle">
                             <span class="fw-lighter text-uppercase" style="font-size: 12px;">
-                                experience:
+                                work experience:
                             </span>
                             <h6 class="h6 mb-0  text-black">
-                                {{ $candidate->profile->experience }}
+                                {{ $candidate->experience.'+ Years' }}
                             </h6>
                         </div>
                     </div>
-                    <div class="col-6 col-sm-6 gy-3">
+                    {{-- <div class="col-6 col-sm-6 gy-3">
                         <i class="icon fas fa-suitcase"></i>
                         <div class="d-flex flex-column align-items-start align-middle">
                             <span class="fw-lighter text-uppercase" style="font-size: 12px;">
-                                education:
+                                qualification:
                             </span>
                             <h6 class="h6 mb-0  text-black">
-                                {{ $candidate->profile->education->institution_name }}
+                                {{ $candidate->education->q '('.$candidate->education?->institution_name.')' }}
                             </h6>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="row shadow-1 p-3 mt-3">
                     <h6 class="h6 fw-bold text-capitalize">
                         download my CV
                     </h6>
+                    {{-- {{dd($candidate)}} --}}
                     <div class="col-12 d-flex align-items-center">
                         <img class="me-2 text-secondary" src="{{ asset('app/plugins/icons/svgs/solid/file-pdf.svg') }}"
                             width="40" height="55" alt="" />
-                        {{-- @foreach ($candidate->profile->resume as $cv) --}}
+                        {{-- @foreach ($candidate->resume as $cv) --}}
                         <div class="rounded-0 text-capitalize">
-                            {{ $candidate->profile->full_name }}
+                            {{ $candidate->full_name }}
                             <br />
                             <h6 class="h6 fw-bold">PDF</h6>
                         </div>
-                        <a download="{{ $candidate->profile->full_name }}" href="{{ $candidate->profile->resume->file }}"
+                        <a download="{{ $candidate->full_name }}" href="{{ url($candidate->resume?->cv) }}"
                             class="btn btn-secondary ms-2 px-3" title="Click to download CV" target="_blank"
                             rel="noopener noreferrer">
                             <i class="fa fa-cloud-download-alt"></i>
@@ -161,10 +162,10 @@
                                     website:
                                 </span>
                                 <h6 class="h6 mb-0 text-black">
-                                    <a href="{{ $candidate->profile->website_url }}"
+                                    <a href="{{ $candidate->website_url }}"
                                         class="nav-link link-primary link-underline-primary" target="_blank"
                                         rel="noopener noreferrer">
-                                        {{ $candidate->profile->website_url }}
+                                        {{ $candidate->website_url }}
                                     </a>
                                 </h6>
                             </div>
@@ -179,11 +180,11 @@
                                     phone:
                                 </span>
                                 <h6 class="h6 text-black">
-                                    {{-- @foreach ($candidate->profile->phoneNumbers as $phone) --}}
-                                    <a href="tel:+233{{ $candidate->phone_number }}"
+                                    {{-- @foreach ($candidate->phoneNumbers as $phone) --}}
+                                    <a href="tel:+233{{ $candidate->user?->phone_number }}"
                                         class="nav-link link-primary link-underline-primary" target="_blank"
                                         rel="noopener noreferrer">
-                                        {{ $candidate->phone_number }}
+                                        {{ $candidate->user?->phone_number }}
                                     </a>
                                     {{-- @endforeach --}}
                                 </h6>
@@ -199,10 +200,10 @@
                                     email:
                                 </span>
                                 <h6 class="h6 mb-0 text-black">
-                                    <a href="mailto:{{ $candidate->email }}"
+                                    <a href="mailto:{{ $candidate->user?->email }}"
                                         class="nav-link link-primary link-underline-primary" target="_blank"
                                         rel="noopener noreferrer">
-                                        {{ $candidate->email }}
+                                        {{ $candidate->user?->email }}
                                     </a>
                                 </h6>
                             </div>

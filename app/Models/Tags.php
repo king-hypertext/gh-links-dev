@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Tags extends Model
 {
     use HasFactory;
-    public function jobs(){
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+    ];
+    public function jobs()
+    {
         return $this->belongsToMany(Job::class);
     }
 }

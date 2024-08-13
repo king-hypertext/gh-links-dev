@@ -33,6 +33,9 @@
                                     Applied: {{ Carbon::parse($application->created_at)->format('M d, Y') }}
                                 </li>
                                 <li>
+                                    <strong>Application Approved: {{ $application->approved == 1 ? 'Yes' : 'No' }}</strong>
+                                </li>
+                                <li>
                                     <a title="Downloand CV" href="{{ $application->candidate->resume->file }}"
                                         target="_blank" rel="noopener noreferrer">
                                         <i class="fa fa-download me-1"></i>Download CV
@@ -41,12 +44,16 @@
                             </ul>
                             <hr class="hr">
                             <div class="d-flex">
-                                <div class="form-check form-check-inline align-items-center d-flex">
-                                    <input id="approved-letter" class="form-check-input" type="checkbox" id="check"
-                                        value="{{ $application->id }}" />
-                                    <label class="form-check-label" for="check">
-                                        Recieved</label>
-                                </div>
+                                @if (!$application->approved)
+                                    <div class="form-check form-check-inline align-items-center d-flex">
+                                        <input id="approved-letter" class="form-check-input" type="checkbox"
+                                            {{ $application->approved == 1 ? 'checked' : '' }}
+                                            value="{{ $application->id }}" />
+                                        <label class="form-check-label" for="approved-letter"
+                                            title="Click to marked as recieved">
+                                            Recieved</label>
+                                    </div>
+                                @endif
                                 <a class="btn btn-secondary" href="mailto:{{ $application->candidate->candidate->email }}"
                                     target="_blank" rel="noopener noreferrer">Send Email</a>
                             </div>
@@ -59,6 +66,7 @@
         <script>
             $('input#approved-letter').change(function() {
                 var input = $(this).val();
+                let alert = $('#alert-success');
                 $.ajax('/employer/approve-application/' + input, {
                     type: 'PUT',
                     data: {
@@ -66,6 +74,7 @@
                     },
                     success: function(data) {
                         console.log(data);
+
                     },
                     error: function(error) {
                         console.log(error);

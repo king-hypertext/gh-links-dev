@@ -56,9 +56,9 @@
         </div>
     </div>
     @use(App\Models\Job)
-    @use(App\Models\EmployerProfile)
-    @use(App\Models\CandidateProfile)
-
+    @use(App\Models\Employer)
+    @use(App\Models\Candidate)
+    @use(Carbon\Carbon)
     <div class="container-fluid my-4">
         <div class="row">
             <div class="col-sm-4 gy-4 gx-md-0">
@@ -84,7 +84,7 @@
                                 <i class="fa-solid fa-arrow-right-to-city fa-2xl"></i>
                             </div>
                             <div class="col-8">
-                                <h3 class="card-title">{{ EmployerProfile::count() }}</h3>
+                                <h3 class="card-title">{{ Employer::count() }}</h3>
                                 <p class="card-text text-capitalize">companies</p>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                                 <i class="fas fa-user-group fa-2xl"></i>
                             </div>
                             <div class="col-8">
-                                <h3 class="card-title">{{ CandidateProfile::count() }}</h3>
+                                <h3 class="card-title">{{ Candidate::count() }}</h3>
                                 <p class="card-text text-capitalize">candidates</p>
                             </div>
                         </div>
@@ -194,47 +194,62 @@
                             <div class="col-2 d-flex flex-row justify-content-center align-items-center">
                                 @auth('candidate')
                                     <button class="btn btn-secondary px-2 py-1 rounded-1 btn-lg bookmark user-select-none"
-                                        data-job-id="{{ $job->id }}" title="bookmark">
+                                        data-job-id="{{ $job->id }}"
+                                        title="{{ $job->isSavedByUser() ? 'remove from favourites' : 'add to favourites' }}">
                                         <i class="{{ $job->isSavedByUser() ? 'fas' : 'far' }} fa-heart user-select-none"></i>
                                     </button>
                                 @endauth
                             </div>
                         </div>
-                        <div class="d-flex flex-row justify-start align-items-center">
+                        <div class="d-flex flex-row justify-start align-items-center ">
                             <div class="col-4">
                                 <span class="btn btn-outline-success text-nowrap px-2 py-0">{{ $job->type }}</span>
                             </div>
-                            <div class="col-8">
+                            <span class="fw-normal text-truncate">
                                 {{ 'GHS ' . number_format($job->min_salary, 2) }} / {{ $job->salary->type }}
-                                <span class="fw-bold text-capitalize"></span>
-                            </div>
+                            </span>
                         </div>
-                        <div class="d-flex flex-row justify-center align-items-center ">
+                        <div class="d-flex flex-row justify-center align-items-center flex-wrap">
                             <div class="col-auto d-flex justify-content-start align-items-center">
                                 <h6 class="h6 fw-semibold text-capitalize text-truncate mb-0">
                                     @ {{ $job->company?->company_name }}
                                 </h6>
                                 <span class="flex-nowrap text-nowrap text-truncate text-capitalize ms-2">
-                                    <i class="fas fa-map-marker-alt me-2"></i>
+                                    <i class="fas fa-map-marker-alt"></i>
                                     {{ $job->city?->name }}
                                 </span>
                             </div>
                         </div>
-                        <div class="d-flex flex-row align-items-center flex-wrap">
-                            @forelse ($job->tags as $tag)
-                                <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
-                                    {{ $tag->name }}
-                                </span>
-                            @empty
-                            @endforelse
+                        <div class="tag-container pb-2">
+                            <div class="d-flex flex-row align-items-center flex-wrap overflow-hidden">
+                                @forelse ($job->tags as $tag)
+                                    <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
+                                        {{ $tag->name }}
+                                    </span>
+                                @empty
+                                @endforelse
+                            </div>
+                            <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
+                                {{ $job->job_experience->level }}
+                            </span>
                         </div>
-                        <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
-                            {{ $job->job_experience->level }}
-                        </span>
+                        <div class="d-flex flex-row align-items-center justify-content-between" style="font-size: 12px;">
+                            <div class="col-auto">
+                                <i class="far fa-calendar-alt me-2"></i>
+                                {{ Carbon::parse($job->created_at)->longRelativeDiffForHuman() }}
+                            </div>
+                            <div class="col-auto">
+                                Applications:
+                                {{ $job->applications->count() ?? 0 }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         @empty
+            <div class="col-12 text-center">
+                <h4>No job found at the moment.</h4>
+            </div>
         @endforelse
     </div>
     <div class="row my-4">
@@ -246,9 +261,9 @@
                 <div class="card shadow-2 my-2 mx-md-0 user-select-none">
                     <div class="card-body">
                         <div class="d-flex flex-row justify-center align-items-center mt-3">
-                            <div class="col-auto">
-                                <img src="{{ $item->image->logo_image }}" height="55" width="55"
-                                    alt="company-logo" class="img-thumbnail img-circle">
+                            <div class="col-3">
+                                <img src="{{ $item->image?->logo }}" height="55" width="55" alt="logo"
+                                    class="img-thumbnail img-circle">
                             </div>
                             <div class="d-flex flex-column align-items-start justify-content-start ms-2">
                                 <a href="{{ route('company.profile-info', $item->company_name) }}"
@@ -276,7 +291,7 @@
             </div>
         @empty
             <div class="col-sm-12 text-center">
-                <h5 class="h5 text-uppercase fw-bold fs-3 text-info">No companies found.</h5>
+                <h5 class="h6 text-uppercase fw-bold">No companies found.</h5>
             </div>
         @endforelse
         {{-- <div class="col-sm-4">

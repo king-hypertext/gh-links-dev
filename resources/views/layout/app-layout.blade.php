@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="gh-links, your easiest way to get your new job, find job, online job listing">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="_token" content="{{ csrf_token() }}"/>
     <link rel="shortcut icon" href="{{ asset('icon.svg') }}" type="image/x-icon" />
@@ -29,7 +30,7 @@
 <body class="">
     <!-- Breathing in, I calm body and mind. Breathing out, I smile. - Thich Nhat Hanh -->
     @include('layout.header')
-    <main class="container-fluid app-container bg-white shadow-2">
+    <main class="container-fluid app-container bg-white">
         @yield('content')
         @include('modals.logout')
     </main>

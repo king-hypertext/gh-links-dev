@@ -15,7 +15,7 @@ class EnsureIsCandidate
      */
     public function handle(Request $request, Closure $next,): Response
     {
-        if (auth('candidate')->check()/* ->is_candidate == true */) {
+        if (auth('candidate')->check() && auth('candidate')->user()->user_type === 1) {
             return $next($request);
         }
         return

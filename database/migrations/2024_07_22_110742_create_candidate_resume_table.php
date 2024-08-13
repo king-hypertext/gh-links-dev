@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('candidate_resume', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('candidate_profile_id')->constrained('candidate_profile')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('name');
-            $table->string('file');
+            $table->foreignId('candidate_id')->constrained('candidates')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('cv');
             $table->timestamps();
         });
     }

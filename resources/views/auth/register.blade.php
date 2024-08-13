@@ -13,10 +13,10 @@
             @csrf
             <div class="container-fluid mt-3">
                 <div class="form-group mb-3">
-                    <select name="account_type" required class="form-select" data-mdb-select-init>
+                    <select name="user_type" required class="form-select" data-mdb-select-init>
                         <option value="" selected>Select Account Type</option>
                         <option value="1">Candidate</option>
-                        <option value="2">Non-candidate(Company)</option>
+                        <option value="2">Employer</option>
                     </select>
                 </div>
                 <div class="form-group mb-3">

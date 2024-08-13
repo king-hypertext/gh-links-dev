@@ -13,7 +13,7 @@ class Job extends Model
     protected $fillable = [
         'title',
         'type',
-        'company_id',
+        'employer_id',
         'min_salary',
         'max_salary',
         'description',
@@ -24,7 +24,8 @@ class Job extends Model
         'min_experience',
         'education_id',
         'salary_id',
-        'requirements'
+        'requirements',
+        'status'
     ];
 
     public function city()
@@ -36,9 +37,9 @@ class Job extends Model
         // return $this->hasMany(JobTags::class, 'job_id', 'id');
         return $this->belongsToMany(Tags::class);
     }
-    public function company()
+    public function employer()
     {
-        return $this->belongsTo(EmployerProfile::class, 'company_id', 'id');
+        return $this->belongsTo(EmployerProfile::class, 'employer_id', 'id');
     }
     public function education()
     {
@@ -48,21 +49,18 @@ class Job extends Model
     {
         return $this->hasOne(Salary::class, 'id', 'salary_id');
     }
-    public function job_experience()
+    public function entry()
     {
         return $this->belongsTo(JobExperience::class, 'entry_id', 'id');
     }
-    public function candidate()
-    {
-        return $this->belongsTo(CandidateProfile::class,  'candidate_profile_id', 'id');
-    }
+
     public function isSavedByUser(string $job_id = null): bool
     {
-        return auth('candidate')->check() && auth('candidate')->user()->profile->saved_jobs()->where('job_id', $this->id)->exists();
+        return auth('candidate')->check() && auth('candidate')->user()->candidate?->savedJobs()->where('job_id', $this->id)->exists();
     }
     public function isAppliedByUser(): bool
     {
-        return auth('candidate')->check() && auth('candidate')->user()->profile->job_applications()->where('job_id', $this->id)->exists();
+        return auth('candidate')->check() && auth('candidate')->user()->candidate?->jobApplications()->where('job_id', $this->id)->exists();
     }
     public function applications()
     {

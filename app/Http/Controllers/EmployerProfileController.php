@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Industry;
-use App\Models\CompanyImage;
+use App\Models\Image;
+use App\Models\Employer;
 use App\Models\Organization;
 use Illuminate\Http\Request;
-use App\Models\EmployerProfile;
 
 class EmployerProfileController extends Controller
 {
@@ -40,78 +40,80 @@ class EmployerProfileController extends Controller
     {
         // dd($request);
         $request->validate([
-            'employer_id' => 'required|exists:employers,id',
             'company_name' => 'required|string',
             'company_description' => 'required|string',
 
             'organization_id' => 'required|exists:organizations,id',
             'industry_id' => 'required|exists:industries,id',
             'company_size' => 'required|string',
-            'company_website' => 'required|active_url',
+            'company_website' => 'nullable|active_url',
             'company_founding_year' => 'required|date',
             'company_vision' => 'required|string',
 
             'company_location' => 'required|string',
             'company_email' => 'required|email',
         ]);
-        $profile = EmployerProfile::where('employer_id', auth('employer')->id())->first();
-        if ($profile->exists()) {
-            $profile->update($request->all());
-            // return response(['success' =>true, ])
-        } else {
-            EmployerProfile::create($request->all());
-        }
-        $redirect_url = redirect()->route('employer.company-profile', ['tab' => 'account-image-upload'])->with('success', 'profile updated successfully')->getTargetUrl();
+        $id = $request->user('employer')->id;
+        // $employer = Employer::where('user_id', $id);
+        Employer::updateOrCreate([
+            'user_id' => $id
+        ], [
+            'user_id' => $id,
+            'company_name' => $request->company_name,
+            'company_description' => $request->company_description,
+
+            'organization_id' => $request->organization_id,
+            'industry_id' => $request->industry_id,
+            'company_size' => $request->company_size,
+            'company_website' => $request->company_website,
+            'company_founding_year' => $request->company_founding_year,
+            'company_vision' => $request->company_vision,
+
+            'company_location' => $request->company_location,
+            'company_email' => $request->company_email,
+        ]);
+        $redirect_url = redirect()->route('employer.company-profile', ['#verify-business'])->with('success', 'profile updated successfully')->getTargetUrl();
         return response(['success' => true, 'next_tab' => $redirect_url]);
     }
     public function storeImages(Request $request)
     {
-        $profile = EmployerProfile::where('employer_id', auth('employer')->id())->first();
+        $user = auth('employer')->user();
+        if (!$user) {
+            abort(403);
+        }
         if ($request->hasFile('logo')) {
             $request->validate([
                 'logo' => 'required|image|mimes:jpg,png,jpeg,webp,bmp|max:2048',
             ]);
-            $logo = $request->file('logo');
-
-            $path = url('/storage/' . $logo->store('/company/images', 'public'));
-            if ($profile->image?->logo_image !== null) {
-                unlink($profile->image->logo_image);
-                $profile->image()->update([
-                    'logo_image' => $path,
-                ]);
-            } else {
-                CompanyImage::create([
-                    'employer_profile_id' => auth('employer')->id(),
-                    'logo_image' => $path,
-                ]);
-            }
-            return response(['success' => true, 'file' => $path]);
+            $logo = $request->file('logo')->store('/employer/images', 'public');
+            Image::updateOrCreate([
+                'employer_id' => $user->employer->id
+            ], [
+                'employer_id' => $user->employer->id,
+                'logo' => '/storage/' . $logo
+            ]);
+            return response(['success' => true, 'file' => url('/storage/' . $logo)]);
         }
         if ($request->hasFile('banner')) {
             $request->validate([
-                'banner' => 'required|image|mimes:jpg,png,jpeg,webp,bmp|max:4096',
+                'banner' => 'required|image|mimes:jpg,png,jpeg,webp,bmp|max:2048',
             ]);
-            $banner = $request->file('banner');
-            $path = url('/storage/' . $banner->store('/company/images', 'public'));
-            if ($profile->image->banner_image) {
-                unlink($profile->image->banner_image);
-                $profile->image()->update([
-                    'banner_image' => $path,
-                ]);
-            } else {
-                CompanyImage::create([
-                    'employer_profile_id' => auth('employer')->id(),
-                    'banner_image' => $path,
-                ]);
-            }
-            return response(['success' => true, 'file' => $path]);
+            $banner = $request->file('banner')->store('/employer/images', 'public');
+            Image::updateOrCreate([
+                'employer_id' => $user->employer->id
+            ], [
+                'employer_id' => $user->employer->id,
+                'banner' => '/storage/' . $banner
+            ]);
+
+            return response(['success' => true, 'file' => url('/storage/' . $banner)]);
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(EmployerProfile $employerProfile, Request $request)
+    public function show(Employer $employer, Request $request)
     {
         $path = 'profile setup';
         $profile = auth('employer')->user();
@@ -123,14 +125,12 @@ class EmployerProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(EmployerProfile $employerProfile)
-    {
-    }
+    public function edit(Employer $employer) {}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, EmployerProfile $employerProfile)
+    public function update(Request $request, Employer $employer)
     {
         //
     }
@@ -138,28 +138,28 @@ class EmployerProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(EmployerProfile $employerProfile)
+    public function destroy(Employer $employer)
     {
         //
     }
     public function save_candidate(Request $request)
     {
-        $savedCandidate = auth('employer')->user()->profile->saved_candidates()->where('candidate_profile_id', $request->candidate_id);
-        $isCandidateSaved = auth('employer')->user()->profile->saved_candidates->contains('candidate_profile_id', $request->candidate_id);
+        $savedCandidate = auth('employer')->user()->employer->savedCandidates()->where('candidate_id', $request->candidate_id);
+        $isCandidateSaved = auth('employer')->user()->employer->savedCandidates->contains('candidate_id', $request->candidate_id);
         if ($isCandidateSaved) {
             $savedCandidate->delete();
             return response(['success' => true, 'message' => 'candidate removed from favourites']);
         }
         // Save the candidate
-        auth('employer')->user()->profile->saved_candidates()->create([
-            'candidate_profile_id' => $request->candidate_id,
-            'employer_profile_id' => auth('employer')->user()->profile->id,
+        auth('employer')->user()->employer->savedCandidates()->create([
+            'candidate_id' => $request->candidate_id,
+            'employer_id' => auth('employer')->user()->employer->id,
         ]);
         return response(['success' => true, 'message' => 'candidate added to favourites']);
     }
     public function unsave_candidate(Request $request)
     {
-        $savedCandidate = auth('employer')->user()->profile->saved_candidates()->where('candidate_profile_id', $request->candidate_id);
+        $savedCandidate = auth('employer')->user()->employer->savedCandidates()->where('candidate_id', $request->candidate_id);
         $savedCandidate->delete();
         $redirect_url = redirect()->back()->with('success', 'candidate removed from favourites')->getTargetUrl();
         return response(['success' => true, 'url' => $redirect_url, 'message' => 'candidate removed from favourites']);

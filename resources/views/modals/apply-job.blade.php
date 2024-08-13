@@ -16,7 +16,7 @@
                 <h5 class="modal-title text-capitalize" id="modalTitleId">
                     apply job
                 </h5>
-                <button type="button" title="exit" class="btn-close" data-bs-dismiss="modal"
+                <button type="button" onclick="window.location.reload(0)" title="exit" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">

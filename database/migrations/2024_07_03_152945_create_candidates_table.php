@@ -13,18 +13,19 @@ return new class extends Migration
     {
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->string('password');
-            // $table->string('first_name');
-            // $table->boolean('is_candidate')->default(true);
-            // $table->enum('gender', ['male', 'female']);
-            // $table->string('last_name');
-            // $table->string('full_name')->virtualAs("CONCAT(first_name, ' ', last_name)");
-            $table->string('phone_number')->unique('phone_number');
-            $table->boolean('accept_terms');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('first_name');
+            $table->string('last_name');    
+            $table->string('full_name')->virtualAs('CONCAT(first_name, " ", last_name)');
+            $table->enum('gender', ['male', 'female']);
+            $table->string('website_url')->nullable();
+            $table->enum('marital_status', ['single', 'married', 'divorced']);
+            $table->string('nationality')->default('ghanaian');
+            $table->date('date_of_birth');
+            $table->string('profession');
+            $table->string('experience');
+            $table->string('location');
+            $table->string('dp')->nullable();
             $table->timestamps();
         });
     }

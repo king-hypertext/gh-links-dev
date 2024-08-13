@@ -1,7 +1,7 @@
     <!-- If you do not have a consistent goal in life, you can not live it in a consistent way. - Marcus Aurelius -->
     <header class="d-flex w-100 justify-content-center shadow animate__animated" style="z-index: 1040;">
         <div style="z-index: 1045;"
-            class="app-container bg-secondary py-2 d-flex align-items-center justify-content-between">
+            class="app-container py-2 d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center justify-content-sm-between justify-content-start">
                 <style>
                     .dropdown-menu.dropdown-item {
@@ -155,7 +155,7 @@
                     <a href="#"
                         class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ auth('candidate')->user()->profile->profile_picture ?? (auth('employer')->user()->profile->profile_picture ?? asset('icons/svgs/solid/user.svg')) }}"
+                        <img src="{{ auth('candidate')->user()->candidate->dp ?? (auth('employer')->user()->profile->profile_picture ?? asset('app/plugins/icons/svgs/solid/user.svg')) }}"
                             alt="" width="32" height="32" class="shadow-2 rounded-circle me-2">
                         <strong>{{ auth('candidate')->user()->username ?? auth('employer')->user()->username }}</strong>
                     </a>

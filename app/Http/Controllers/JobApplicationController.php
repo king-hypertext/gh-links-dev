@@ -7,17 +7,18 @@ use App\Models\Candidate;
 use App\Models\CandidateProfile;
 use Illuminate\Http\Request;
 use App\Models\JobApplication;
+use App\Models\Tags;
 
 class JobApplicationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $page_title = 'JOB APPLICATIONS';
-        return view('employer.applications', compact('page_title'));
-    }
+    // public function index()
+    // {
+    //     $page_title = 'JOB APPLICATIONS';
+    //     return view('employer.applications', compact('page_title'));
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -73,10 +74,18 @@ class JobApplicationController extends Controller
     }
     public function approve_application($id)
     {
-        dd($id);
-        JobApplication::find($id)->update([
+        // dd($id); 
+        JobApplication::where('id', $id)->update([
             'approved' => true
         ]);
         return response(['success' => true, 'message' => 'application approved successfully']);
+    }
+    public function add_skill_set(Request $request)
+    {
+        $request->validate([
+            'name' => 'required'
+        ]); 
+        Tags::create($request->all('name'));
+        return response(['success' => true, 'message' => 'skill set addedd successfully']);
     }
 }

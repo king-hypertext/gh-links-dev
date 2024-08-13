@@ -13,18 +13,17 @@ return new class extends Migration
     {
         Schema::create('employers', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
-            $table->string('email')->unique();
-            // $table->boolean('is_employer')->default(true);
-            $table->string('password');
-            // $table->string('first_name');
-            // $table->string('last_name');
-            // $table->enum('gender', ['male', 'female']);
-            // $table->string('full_name')->virtualAs("CONCAT(first_name, ' ', last_name)");
-            $table->string('phone_number')->unique('phone_number');
-            $table->boolean('accept_terms');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('company_name')->unique('company')->index('company_name');
+            $table->longText('company_description');
+            $table->foreignId('organization_id')->constrained('organizations');
+            $table->foreignId('industry_id')->constrained('industries');
+            $table->string('company_size');
+            $table->string('company_website');
+            $table->date('company_founding_year');
+            $table->longText('company_vision');
+            $table->text('company_location');
+            $table->string('company_email');
             $table->timestamps();
         });
     }

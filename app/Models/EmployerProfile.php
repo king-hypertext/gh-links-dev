@@ -24,6 +24,7 @@ class EmployerProfile extends Model
         'company_location',
         'company_email',
     ];
+
     // a table has been created for phone numbers, images and social media accounts
     public function employer()
     {
@@ -31,7 +32,7 @@ class EmployerProfile extends Model
     }
     public function isProfileActive(): bool
     {
-        if ($this->whereNotnull($this->employer_id, $this->company_name, $this->phoneNumbers())) {
+        if ($this->whereNotnull($this->employer_id, $this->company_name, $this->phoneNumbers(), $this->employer->email_verified_at)) {
             return true;
         };
         return false;

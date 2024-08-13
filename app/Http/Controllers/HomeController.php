@@ -38,9 +38,8 @@ class HomeController extends Controller
     }
     public function home(Request $request)
     {
-        $companies = EmployerProfile::select(['company_name', 'id', 'employer_id', 'company_location'])->paginate(10);
-        // dd($companies);
         $page_title = 'HOME';
+        $companies = Employer::select(['company_name', 'id', 'company_location'])->paginate(10);
         $jobs = Job::where('status', '=', 1)->paginate(10);
         return view('pages.home', compact('companies', 'page_title', 'jobs'));
     }

@@ -18,6 +18,7 @@
             outline: 0 !important;
         }
     </style>
+    @use(Carbon\Carbon)
     <div class="row shadow-2 mb-4 rounded-0 bg-secondary body-picture-bg bg:transparent-dark">
         <form class="form-search">
             <div class="card-body p-1">
@@ -97,37 +98,48 @@
                                 @endauth
                             </div>
                         </div>
-                        <div class="d-flex flex-row justify-start align-items-center">
+                        <div class="d-flex flex-row justify-start align-items-center ">
                             <div class="col-4">
                                 <span class="btn btn-outline-success text-nowrap px-2 py-0">{{ $job->type }}</span>
                             </div>
-                            <div class="col-8">
+                            <span class="fw-normal text-truncate">
                                 {{ 'GHS ' . number_format($job->min_salary, 2) }} / {{ $job->salary->type }}
-                                <span class="fw-bold text-capitalize"></span>
-                            </div>
+                            </span>
                         </div>
-                        <div class="d-flex flex-row justify-center align-items-center ">
+                        <div class="d-flex flex-row justify-center align-items-center flex-wrap">
                             <div class="col-auto d-flex justify-content-start align-items-center">
                                 <h6 class="h6 fw-semibold text-capitalize text-truncate mb-0">
                                     @ {{ $job->company?->company_name }}
                                 </h6>
                                 <span class="flex-nowrap text-nowrap text-truncate text-capitalize ms-2">
-                                    <i class="fas fa-map-marker-alt me-2"></i>
+                                    <i class="fas fa-map-marker-alt"></i>
                                     {{ $job->city?->name }}
                                 </span>
                             </div>
                         </div>
-                        <div class="d-flex flex-row align-items-center flex-wrap">
-                            @forelse ($job->tags as $tag)
-                                <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
-                                    {{ $tag->name }}
-                                </span>
-                            @empty
-                            @endforelse
+                        <div class="tag-container pb-2">
+                            <div class="d-flex flex-row align-items-center flex-wrap overflow-hidden">
+                                @forelse ($job->tags as $tag)
+                                    <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
+                                        {{ $tag->name }}
+                                    </span>
+                                @empty
+                                @endforelse
+                            </div>
+                            <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
+                                {{ $job->job_experience->level }}
+                            </span>
                         </div>
-                        <span class="btn btn-sm btn-secondary px-2 py-0 mx-1 my-1">
-                            {{ $job->job_experience->level }}
-                        </span>
+                        <div class="d-flex flex-row align-items-center justify-content-between" style="font-size: 12px;">
+                            <div class="col-auto">
+                                <i class="far fa-calendar-alt me-2"></i>
+                                {{ Carbon::parse($job->created_at)->longRelativeDiffForHuman() }}
+                            </div>
+                            <div class="col-auto">
+                                Applications:
+                                {{ $job->applications->count() ?? 0 }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -142,7 +154,7 @@
             <div class="col-12 text-center">
                 @if ($jobs->currentPage() > 1)
                     <a class="btn-floating btn btn-sm btn-secondary rounded"
-                        href="{{ url('companies?page=' . ($jobs->currentPage() - 1)) }}" title="previous page">
+                        href="{{ url('jobs?page=' . ($jobs->currentPage() - 1)) }}" title="previous page">
                         <i class="fas fa-angle-left"></i>
                     </a>
                 @endif
@@ -151,7 +163,7 @@
                     {{ $jobs->lastPage() }}</span>
                 @if ($jobs->currentPage() < $jobs->lastPage())
                     <a class="btn-floating btn btn-sm btn-secondary rounded"
-                        href="{{ url('companies?page=' . ($jobs->currentPage() + 1)) }}" title="next page">
+                        href="{{ url('jobs?page=' . ($jobs->currentPage() + 1)) }}" title="next page">
                         <i class="fas fa-angle-right"></i>
                     </a>
                 @endif

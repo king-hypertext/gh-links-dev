@@ -9,15 +9,15 @@ class SavedCandidate extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'candidate_profile_id',
-        'employer_profile_id',
+        'candidate_id',
+        'employer_id',
     ];
-    public function profile()
+    public function employer()
     {
-        return $this->belongsTo(EmployerProfile::class, 'employer_profile_id', 'id');
+        return $this->belongsTo(Employer::class, 'employer_id', 'id');
     }
     public function candidate()
     {
-        return $this->belongsTo(CandidateProfile::class, 'candidate_profile_id', 'id');
+        return $this->belongsTo(Candidate::class, 'candidate_id', 'id');
     }
 }
