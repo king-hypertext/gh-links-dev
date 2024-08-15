@@ -70,7 +70,7 @@
                                 founded in:
                             </span>
                             <h6 class="h6 mb-0  text-black">
-                                {{ Carbon::parse($company->company_founding_year)->format('d M Y') }} <br>
+                                {{ Carbon::parse($company->company_founding_year)->format('Y') }} 
                                 {{ '(' . Carbon::parse($company->company_founding_year)->longRelativeDiffForHumans() . ')' }}
                             </h6>
                         </div>
@@ -176,22 +176,50 @@
                     </h6>
                     <div class="col-12">
                         <ul class="list-unstyled d-flex">
-                            <li>
-                                <a href="#" class="btn btn-sm btn-secondary m-1 copy-url" title="facebook">
-                                    <i class="fab fa-facebook-f"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="btn btn-sm btn-secondary m-1 copy-url"
-                                    title="join whatsapp channel">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="btn btn-sm btn-secondary m-1 copy-url" title="X (twitter)">
-                                    <i class="fab fa-x-twitter"></i>
-                                </a>
-                            </li>
+                            @if ($company->socialMediaAccounts)
+                                @foreach ($company->socialMediaAccounts as $link)
+                                    @if ($link->fb)
+                                        <li>
+                                            <a href="{{ $link->fb }}" class="btn btn-sm btn-secondary m-1 copy-url"
+                                                title="facebook">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if ($link->whatsapp)
+                                        <li>
+                                            <a href="#" class="btn btn-sm btn-secondary m-1 copy-url"
+                                                title="whatsapp">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if ($link->x)
+                                        <li>
+                                            <a href="{{ $link->x }}" class="btn btn-sm btn-secondary m-1 copy-url"
+                                                title="X (twitter)">
+                                                <i class="fab fa-x-twitter"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if ($link->linkedin)
+                                        <li>
+                                            <a href="{{ $link->linkedin }}" class="btn btn-sm btn-secondary m-1 copy-url"
+                                                title="X (twitter)">
+                                                <i class="fab fa-linkedin-in"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if ($link->instagram)
+                                        <li>
+                                            <a href="{{ $link->instagram }}"
+                                                class="btn btn-sm btn-secondary m-1 copy-url" title="X (twitter)">
+                                                <i class="fab fa-instagram"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @endif
                         </ul>
                     </div>
                 </div>

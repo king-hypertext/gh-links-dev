@@ -86,7 +86,7 @@ class AuthController extends Controller
                 ],
                 [
                     'user.exists' => 'The email you entered does not exist',
-                    'account_type.exists' => 'account not exists',
+                    'account_type.exists' => 'Account not exists',
                 ]
             );
         } else {
@@ -102,7 +102,7 @@ class AuthController extends Controller
                 'password' => 'required'
             ], [
                 "user.exists" => "Username '{$request->user}' does not exist",
-                'account_type.exists' => 'account not exists',
+                'account_type.exists' => 'Account not exists',
             ]);
         }
         if (Auth::guard($guard)->attempt($credentials)) {

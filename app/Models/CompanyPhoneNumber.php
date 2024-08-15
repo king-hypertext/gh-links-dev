@@ -10,7 +10,8 @@ class CompanyPhoneNumber extends Model
     use HasFactory;
     protected $table = 'employer_phone_numbers';
     protected $fillable = [
-        'phone'
+        'number',
+        'employer_id'
     ];
     public function employer()
     {

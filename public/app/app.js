@@ -211,7 +211,7 @@
             var candidate_id = $(this).data('candidate-id');
             await $.ajax({
                 type: 'POST',
-                url: '/candidate/unsave_job',
+                url: '/dashboard/save-candidate',
                 data: {
                     _token: token,
                     candidate_id: candidate_id,

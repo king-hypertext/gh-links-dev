@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('employer_social_media_links', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employer_profile_id')->constrained('employer_profiles')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('name');
-            $table->longText('url');
+            $table->foreignId('employer_id')->constrained('employers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->text('fb')->nullable();
+            $table->text('x')->nullable();
+            $table->text('instagram')->nullable();
+            $table->text('whatsapp')->nullable();
+            $table->text('linkedin')->nullable();
             $table->timestamps();
         });
     }

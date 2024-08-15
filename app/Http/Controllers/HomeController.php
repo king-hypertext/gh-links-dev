@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Candidate;
 use App\Models\Job;
 use App\Models\Employer;
 use Illuminate\Http\Request;
-use App\Models\EmployerProfile;
-use App\Models\CandidateProfile;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -19,11 +18,11 @@ class HomeController extends Controller
         $cs = false;
         $js = false;
         $es = false;
-        $c = CandidateProfile::query()->orwhere("full_name", "LIKE", "%$search%")->orWhere("job_role", "LIKE", "%$search%")->get(['id', 'full_name']);
+        $c = Candidate::query()->orwhere("full_name", "LIKE", "%$search%")->orWhere("profession", "LIKE", "%$search%")->get(['id', 'full_name']);
         if ($c->isNotEmpty()) {
             $cs = true;
         }
-        $e = EmployerProfile::query()->orwhere("company_name", "LIKE", "%$search%")->get(['id', 'company_name']);
+        $e = Employer::query()->orwhere("company_name", "LIKE", "%$search%")->get(['id', 'company_name']);
         if ($e->isNotEmpty()) {
             $es = true;
         }

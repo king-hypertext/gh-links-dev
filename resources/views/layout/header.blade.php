@@ -136,7 +136,7 @@
                                     </div>
                                     <div class="form-group d-flex flex-row justify-content-between">
                                         <input type="search" name="q" class="form-control"
-                                            placeholder="Search: companies, positions...">
+                                            placeholder="Search: jobs, companies, candidates, open positions...">
                                         <button id="close-search" title="exit search" type="button"
                                             class="btn btn-secondary shadow-sm ms-2 p-2 ">
                                             <i class="fa fa-xmark fa-2x"></i>

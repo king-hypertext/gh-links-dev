@@ -11,6 +11,8 @@ Route::middleware(['employer'])->group(function () {
     Route::resource('/employers', EmployersController::class);
     Route::prefix('dashboard')->group(function () {
         Route::post('/upload-images', [EmployerProfileController::class, 'storeImages'])->name('employer.profile.upload-images');
+        Route::post('/store-contact', [EmployerProfileController::class, 'storeContacts'])->name('employer.profile.store-contacts');
+        Route::post('/social-media-links', [EmployerProfileController::class, 'storeSocialMediaLink'])->name('employer.profile.social-media-links');
         Route::get('/', [EmployersController::class, 'dashboard'])->name('employer.dashboard');
         Route::get('/profile', [EmployerProfileController::class, 'show'])->name('employer.company-profile');
         Route::post('/profile', [EmployerProfileController::class, 'store'])->name('employer.company-profile.save');
@@ -21,7 +23,7 @@ Route::middleware(['employer'])->group(function () {
         Route::get('/job-applications/{job_id}', [JobApplicationController::class, 'show'])->name('job-applications.show');
         Route::get('/my-candidates', [EmployerProfileController::class, 'candidates'])->name('employer.candidates');
         Route::post('/save-candidate', [EmployerProfileController::class, 'save_candidate'])->name('employer.save_candidate');
-        Route::post('/unsave-candidate', [EmployerProfileController::class, 'unsave_candidate'])->name('employer.unsave_candidate');
+        // Route::post('/unsave-candidate', [EmployerProfileController::class, 'unsave_candidate'])->name('employer.unsave_candidate');
         Route::put('/approve-application/{id}', [JobApplicationController::class, 'approve_application'])->name('approve_application');
         Route::any('/logout', [EmployersController::class, 'logout'])->name('employer.logout');
     });

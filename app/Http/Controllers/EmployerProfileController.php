@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CompanyPhoneNumber;
+use App\Models\CompanySocialMediaLink;
 use App\Models\Industry;
 use App\Models\Image;
 use App\Models\Employer;
@@ -109,7 +111,64 @@ class EmployerProfileController extends Controller
             return response(['success' => true, 'file' => url('/storage/' . $banner)]);
         }
     }
+    public function storeContacts(Request $request)
+    {
+        $user = auth('employer')->user();
+        $request->validate(
+            [
+                'phone.0' => 'required|numeric',
+                'phone.*' => 'nullable|numeric|different:phone',
+            ],
+            [
+                'phone.*.different' => 'phone number already added',
+            ]
+        );
 
+        $value = $request->input('phone');
+        CompanyPhoneNumber::where('employer_id', $user->employer->id)->delete();
+        for ($i = 0; $i < count($value); $i++) {
+            if ($value[$i] !== null) {
+                CompanyPhoneNumber::create([
+                    'employer_id' => $user->employer->id,
+                    'number' => $value[$i]
+                ]);
+            }
+        }
+        return response(['success' => true, 'message' => 'contact has been created successfully']);
+    }
+    public function storeSocialMediaLink(Request $request)
+    {
+        $user = auth('employer')->user();
+        $request->validate(
+            [
+                'fb' => 'nullable|url|active_url|different:url',
+                'x' => 'nullable|url|active_url|different:url',
+                'linkedin' => 'nullable|url|active_url|different:url',
+                'instagram' => 'nullable|url|active_url|different:url',
+                'whatsapp' => 'nullable|url|active_url|different:url',
+            ],
+            [
+                'x.active_url' => 'The x(twitter) field must be a valid url',
+                'fb.active_url' => 'The facebook field must be a valid url',
+            ]
+        );
+        CompanySocialMediaLink::where('employer_id', $user->employer->id)->delete();
+        if (!$request->anyFilled(['x', 'fb', 'instagram', 'linkedin', 'whatsapp'])) {
+            return response(['success' => true, 'message' => 'At least one field must be filled.'], 422);
+        }
+        CompanySocialMediaLink::updateOrCreate(
+            ['employer_id' => $user->employer->id],
+            [
+                'employer_id' => $user->employer->id,
+                'fb' => $request->fb,
+                'x' => $request->x,
+                'instagram' => $request->instagram,
+                'whatsapp' => $request->whatsapp,
+                'linkedin' => $request->linkedin
+            ]
+        );
+        return response(['success' => true, 'message' => 'success ✅']);
+    }
     /**
      * Display the specified resource.
      */
@@ -148,7 +207,8 @@ class EmployerProfileController extends Controller
         $isCandidateSaved = auth('employer')->user()->employer->savedCandidates->contains('candidate_id', $request->candidate_id);
         if ($isCandidateSaved) {
             $savedCandidate->delete();
-            return response(['success' => true, 'message' => 'candidate removed from favourites']);
+            $redirect_url = redirect()->back()->with('success', 'candidate removed from favourites')->getTargetUrl();
+            return response(['success' => true, 'url' => $redirect_url, 'message' => 'candidate removed from favourites']);
         }
         // Save the candidate
         auth('employer')->user()->employer->savedCandidates()->create([
@@ -156,12 +216,5 @@ class EmployerProfileController extends Controller
             'employer_id' => auth('employer')->user()->employer->id,
         ]);
         return response(['success' => true, 'message' => 'candidate added to favourites']);
-    }
-    public function unsave_candidate(Request $request)
-    {
-        $savedCandidate = auth('employer')->user()->employer->savedCandidates()->where('candidate_id', $request->candidate_id);
-        $savedCandidate->delete();
-        $redirect_url = redirect()->back()->with('success', 'candidate removed from favourites')->getTargetUrl();
-        return response(['success' => true, 'url' => $redirect_url, 'message' => 'candidate removed from favourites']);
     }
 }

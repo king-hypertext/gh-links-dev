@@ -197,7 +197,7 @@
                                 placeholder="" />
                         </div>
                         <div class="form-group">
-                            <label for="" class="form-label">Registeration Certificate (pdf)</label>
+                            <label for="" class="form-label">Document (pdf)</label>
                             <input type="file" class="form-control" name="" id="" placeholder=""
                                 aria-describedby="fileHelpId" />
                         </div>
@@ -211,7 +211,7 @@
                                 placeholder="" />
                         </div>
                         <div class="form-group">
-                            <label for="" class="form-label">Registeration Certificate (pdf)</label>
+                            <label for="" class="form-label">Document (pdf)</label>
                             <input type="file" class="form-control" name="" id="" placeholder=""
                                 aria-describedby="fileHelpId" />
                         </div>
@@ -225,7 +225,7 @@
                                 placeholder="" />
                         </div>
                         <div class="form-group">
-                            <label for="" class="form-label">Registeration Certificate (pdf)</label>
+                            <label for="" class="form-label">Document (pdf)</label>
                             <input type="file" class="form-control" name="" id="" placeholder=""
                                 aria-describedby="fileHelpId" />
                         </div>
@@ -236,45 +236,177 @@
                         </button>
                     </div>
                 </div>
+
                 <div class="row my-3 shadow-3 py-2">
                     <h6 class="h4 text-capitalize fw-bold" id="social-media-links">social media links</h6>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label for="" class="form-label">
-                                facebook
-                            </label>
-                            <input type="url" class="form-control" />
+                    <form id="social-media">
+                        <div id="alert-4" style="display: " class="alert " role="alert">
                         </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label for="" class="form-label">
-                                linked in
-                            </label>
-                            <input type="url" class="form-control">
+                        @csrf
+                        <div class="row">
+                            @if ($user->employer->socialMediaAccounts->isNotEmpty())
+                                @foreach ($user->employer->socialMediaAccounts as $link)
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="fb" class="form-label text-capitalize">
+                                                facebook
+                                            </label>
+                                            {{-- <input type="hidden" name="name[]" value="fb" /> --}}
+                                            <input type="url" name="fb" id="fb"
+                                                value="{{ $link->fb !== null ? $link->fb : '' }}"
+                                                placeholder="https://url" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="linkedin" class="form-label text-capitalize">
+                                                linkedIn
+                                            </label>
+                                            {{-- <input type="hidden" name="name[]" value="linkedin"> --}}
+                                            <input type="url" name="linkedin" id="linkedin"
+                                                value="{{ $link->linkedin !== null ? $link->linkedin : '' }}"
+                                                placeholder="https://url" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="instagram" class="form-label text-capitalize">
+                                                instagram
+                                            </label>
+                                            {{-- <input type="hidden" name="name[]" value="instagram"> --}}
+                                            <input type="url" name="instagram" id="instagram"
+                                                value="{{ $link->instragram !== null ? $link->instragram : '' }}"
+                                                placeholder="https://url" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="x" class="form-label text-capitalize">
+                                                x(twitter)
+                                            </label>
+                                            {{-- <input type="hidden" name="name[]" value="x"> --}}
+                                            <input type="url" name="x" id="x"
+                                                value="{{ !is_null($link->x) ? $link->x : '' }}"
+                                                placeholder="https://url" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="whatsapp" class="form-label text-capitalize">
+                                                whatsapp
+                                            </label>
+                                            {{-- <input type="hidden" name="name[]" value="whatsapp"> --}}
+                                            <input type="url" name="whatsapp" id="whatsapp"
+                                                value="{{ $link->whatsapp !== null ? $link->whatsapp : '' }}"
+                                                placeholder="https://url" class="form-control">
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="fb" class="form-label text-capitalize">
+                                            facebook
+                                        </label>
+                                        {{-- <input type="hidden" name="name[]" value="fb" /> --}}
+                                        <input type="url" name="fb" id="fb" placeholder="https://url"
+                                            class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="linkedin" class="form-label text-capitalize">
+                                            linkedIn
+                                        </label>
+                                        {{-- <input type="hidden" name="name[]" value="linkedin"> --}}
+                                        <input type="url" name="linkedin" id="linkedin" placeholder="https://url"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="instagram" class="form-label text-capitalize">
+                                            instagram
+                                        </label>
+                                        {{-- <input type="hidden" name="name[]" value="instagram"> --}}
+                                        <input type="url" name="instagram" id="instagram" placeholder="https://url"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="x" class="form-label text-capitalize">
+                                            x(twitter)
+                                        </label>
+                                        {{-- <input type="hidden" name="name[]" value="x"> --}}
+                                        <input type="url" name="x" id="x" placeholder="https://url"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="whatsapp" class="form-label text-capitalize">
+                                            whatsapp
+                                        </label>
+                                        {{-- <input type="hidden" name="name[]" value="whatsapp"> --}}
+                                        <input type="url" name="whatsapp" id="whatsapp" placeholder="https://url"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                            @endif
                         </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label for="" class="form-label">
-                                instagram
-                            </label>
-                            <input type="url" class="form-control">
+                        <div class="form-group my-3">
+                            <button type="submit" class="btn btn-primary">
+                                save
+                            </button>
                         </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label for="" class="form-label">
-                                x(twitter)
-                            </label>
-                            <input type="url" class="form-control">
+                    </form>
+                </div>
+                <div class="row my-3 shadow-3 py-2">
+                    <h6 class="h4 text-capitalize fw-bold" id="phone-numbers">active phone numbers</h6>
+                    <form id="add-contact">
+                        <div id="alert-3" style="display: none;" class="alert" role="alert">
                         </div>
-                    </div>
-                    <div class="form-group my-3">
-                        <button type="button" class="btn btn-primary">
-                            save
-                        </button>
-                    </div>
+
+                        @csrf
+                        {{-- <input type="hidden" name="contacts" value="contacts"> --}}
+                        <div class="row" id="contact-block">
+                            @if ($user->employer->phoneNumbers->isNotEmpty())
+                                <input class="d-none" readonly name="row-count"
+                                    value="{{ $user->employer->phoneNumbers->count() ?? 0 }}">
+                                @foreach ($user->employer->phoneNumbers as $contact)
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="phone" class="form-label">
+                                                phone number {{ $loop->iteration }}
+                                            </label>
+                                            <input required type="text" class="form-control" name="phone[]"
+                                                id="phone" value="{{ $contact->number }}" />
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="phone" class="form-label">
+                                            phone number
+                                        </label>
+                                        <input required type="text" class="form-control" name="phone[]"
+                                            id="phone" />
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="form-group my-3">
+                            <button type="submit" class="btn btn-primary">
+                                save
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="add-phone-field"
+                                title="add more phone field">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
                 <div class="row my-3 shadow-3 py-2">
                     <div id="alert-2" style="display: none;" class="alert" role="alert">
@@ -306,75 +438,6 @@
                         </label>
                     </div>
                 </div>
-                {{-- <div class="row mb-3">
-                <div id="error" style="display: none;" class="alert alert-danger" role="alert">
-                </div>
-
-                <div class="col-sm-5">
-                    <label for="logo" class="form-label">Upload Logo</label>
-                    <div class="file-upload">
-                        <div class="file-input">
-                            <input required type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" id="logo"
-                                name="logo" />
-                            <label for="logo">
-                                <div class="file-icon">
-                                    <i class="fa-solid fa-cloud-arrow-up fa-2xl"></i>
-                                </div>
-                                <div class="file-label">click to upload image</div>
-                                <p style="font-size: 10px;" class="b-0 m-0">
-                                    Supported format are PNG, JPEG, WEBP, JPG, and BMP.
-                                </p>
-                                <p style="font-size: 10px;" class="b-0 m-0"> Max size is 2MB.</p>
-                            </label>
-                        </div>
-                        <div id="f-logo" class="progress mt-3" style="height: 12px;display: none;">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-                                aria-valuemax="100">0%</div>
-                        </div>
-                        <div style="display: none!important;"
-                            class="uploaded-file f-logo d-flex flex-row align-items-center justify-content-center mt-2">
-                            <img width="65" height="auto" src="#" alt="" id="img-logo"
-                                class="img-thumbnail" />
-                            <i class="fa fa-check"></i>
-                        </div>
-                    </div>
-                    <img class="mt-2" src="{{ $user->employer?->image?->logo_image }}" alt="" width="100"
-                        height="100">
-                </div>
-                <div class="col-sm-7">
-                    <label for="banner" class="form-label">Upload Banner Image</label>
-                    <div class="file-upload">
-                        <div class="file-input">
-                            <input required type="file" accept=".jpg,.jpeg,.png,.webp,.bmp" id="banner"
-                                name="banner">
-                            <label for="banner">
-                                <div class="file-icon">
-                                    <i class="fa-solid fa-cloud-arrow-up fa-2xl"></i>
-                                </div>
-                                <div class="file-label">click to upload image</div>
-                                <span style="font-size: 10px;" class="b-0 m-0">
-                                    Supported format are PNG, JPEG, WEBP, JPG, and BMP.
-                                    <p style="font-size: 10px;" class="b-0 m-0"> Max size is 4MB.</p>
-                                </span>
-                            </label>
-                        </div>
-                        <div id="banner" class="progress mt-3" style="height: 12px;display: none;">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-                                aria-valuemax="100">0%</div>
-                        </div>
-                        <div class="uploaded-file banner">
-                            <div style="display: none!important;"
-                                class="uploaded-file f-banner d-flex flex-row align-items-center justify-content-center mt-2">
-                                <img width="65" height="auto" src="#" alt="" id="img-banner"
-                                    class="img-thumbnail" />
-                                <i class="fa fa-check"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <img class="mt-2" src="{{ $user->employer?->image?->banner_image }}" alt=""
-                        width="100" height="100">
-                </div>
-            </div> --}}
             @endif
         </div>
     </div>
@@ -494,6 +557,80 @@
                         }
                         $error.show().text(error.responseJSON.message).addClass('alert-danger');
                         // return $('#upload-msg').addClass('alert-danger').show();
+                    }
+                });
+            });
+            var row = parseInt($('input[name="row-count"]').val() ?? 0) + 1;
+            $('button#add-phone-field').on('click', function(e) {
+                var block = $('#contact-block');
+                var content = `
+                <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="phone_${row}" class="form-label">
+                                phone number ${row}
+                            </label>
+                            <input type="text" class="form-control" name="phone[]" id="phone_${row}"/>
+                        </div>
+                    </div>
+                `;
+                if (row > 0 && row <= 4) {
+                    block.append(content);
+                    row++;
+                } else {
+                    alert('Maximum phone number must be 4')
+                }
+            });
+            $('form#add-contact').on('submit', function(e) {
+                e.preventDefault();
+                const alert = $('#alert-3');
+                let btn = $('form#add-contact :submit');
+                btn.addClass('disabled').html($loader + 'saving data...');
+                $.ajax('{{ route('employer.profile.store-contacts') }}', {
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        btn.removeClass('disabled').text('save');
+                        alert.show().text(data.message).addClass('alert-success').removeClass(
+                            'alert-danger');
+                    },
+                    error: function(error) {
+                        btn.removeClass('disabled').text('save');
+                        if (error.status == 500) {
+                            alert.show().text('server error, please try again after some time.')
+                                .addClass('alert-danger');
+                        }
+                        alert.show().text(error.responseJSON.message).addClass('alert-danger')
+                            .removeClass('alert-success');
+                    }
+                });
+            });
+            $('form#social-media').on('submit', function(e) {
+                e.preventDefault();
+                const alert = $('#alert-4');
+                let btn = $('form#social-media :submit');
+                btn.addClass('disabled').html($loader + 'saving data...');
+                $.ajax('{{ route('employer.profile.social-media-links') }}', {
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        btn.removeClass('disabled').text('save');
+                        alert.show().text(data.message).addClass('alert-success').removeClass(
+                            'alert-danger').removeClass('alert-warning');
+                    },
+                    error: function(error) {
+                        btn.removeClass('disabled').text('save');
+                        if (error.status == 500) {
+                            alert.show().text('server error, please try again after some time.')
+                                .addClass('alert-danger');
+                        }
+                        if (error.status == 422) {
+                            console.log(error);
+
+                            alert.show().text(error.message).addClass('alert-warning')
+                                .removeClass('alert-danger');
+                        }
+                        alert.show().text(error.responseJSON.message).addClass('alert-danger')
+                            .removeClass('alert-success');
                     }
                 });
             });
